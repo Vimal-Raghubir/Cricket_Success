@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "455208907638",
+    "firebase_url": "https://cricketapp-b0aaa.firebaseio.com",
+    "project_id": "cricketapp-b0aaa",
+    "storage_bucket": "cricketapp-b0aaa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455208907638:android:29989c08a5119648e04057",
+        "android_client_info": {
+          "package_name": "com.example.cricket_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "455208907638-kc93uc7asal0u4nh84b5eqk42ledhabk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCw8DNdtkdkiCvTfoonA6UnpINZ5lxWTDE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "455208907638-kc93uc7asal0u4nh84b5eqk42ledhabk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
