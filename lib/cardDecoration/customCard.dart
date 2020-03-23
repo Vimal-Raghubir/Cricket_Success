@@ -4,9 +4,12 @@ import 'package:cricket_app/cardDecoration/quad_clipper.dart';
 
 class CustomCard {
   double width;
+  //Colors for the different goal types
   var goalTypeColors = [Colors.blue, Colors.teal, Colors.deepOrange];
+  //background colors corresponding to goal types
   var backgroundColors = [Colors.cyan[400], Colors.tealAccent[700], Colors.deepOrange[400]];
 
+  //Chip is for the goal type display circle
   Widget _chip(String text, Color textColor,{double height = 0, bool isPrimaryCard = false}) {
     return Container(
       alignment: Alignment.center,
@@ -23,6 +26,7 @@ class CustomCard {
     );
   }
 
+  //Card is the colorful display next to the goal information
   Widget _card({Color primaryColor = Colors.redAccent,String imgPath,Widget backWidget}) {
     return Container(
         height: 190,
@@ -43,6 +47,7 @@ class CustomCard {
         ));
   }
 
+  //Small container is used to build the card
   Positioned _smallContainer(Color primaryColor, double top, double left,{double radius = 10}) {
       return Positioned(
         top: top,
@@ -53,6 +58,7 @@ class CustomCard {
         ));
   }
 
+  //Also used to build the card
   Widget _circularContainer(double height, Color color,{Color borderColor = Colors.transparent, double borderWidth = 2}) {
       return Container(
         height: height,
@@ -65,6 +71,7 @@ class CustomCard {
       );
   }
 
+  //Used to render the Process Goal card
   Widget _decorationContainerA(Color primaryColor, double top, double left) {
     return Stack(
       children: <Widget>[
@@ -97,6 +104,7 @@ class CustomCard {
     );
   }
 
+  //Used to render the Performance goal card
   Widget _decorationContainerB() {
     return Stack(
       children: <Widget>[
@@ -125,6 +133,7 @@ class CustomCard {
     );
   }
 
+    //Used to render the Outcome Goal card
     Widget _decorationContainerC() {
     return Stack(
       children: <Widget>[
@@ -152,6 +161,7 @@ class CustomCard {
     );
   }
 
+  //Used to determine the appropriate card for the specific goal type
   Widget getDecoration(int index) {
     switch (index) {
       case 0: return _decorationContainerA(Colors.redAccent, -110, -85);
@@ -162,6 +172,7 @@ class CustomCard {
     }
   }
 
+  //Used to create the display for all the goal information itself
   Widget createCustomCard(GoalInformation goal, double screenWidth) {
     width = screenWidth;
     return Container(
