@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cricket_app/navigation/bottom_navigation.dart';
 import 'package:cricket_app/header/header.dart';
 
+
+//Used to handle the tutorial page
 class Tutorials extends StatefulWidget {
   _TutorialState createState() => _TutorialState();
 }

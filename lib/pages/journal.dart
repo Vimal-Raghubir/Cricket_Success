@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cricket_app/navigation/bottom_navigation.dart';
 import 'package:cricket_app/header/header.dart';
 
+//Used to handle the Journal page
 class Journal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

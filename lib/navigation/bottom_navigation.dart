@@ -4,10 +4,12 @@ import 'package:cricket_app/pages/goals.dart';
 import 'package:flutter/material.dart';
 import 'package:cricket_app/pages/journal.dart';
 
+//Used to generate the bottom navigation portion
 class Bottom_Navigation {
   int _selectedIndex;
   BuildContext temp;
 
+  //Used to navigate to respective pages based on the option selected
   void _onItemTapped(int index) {
     if (index != _selectedIndex) {
       if (index == 0) {
@@ -36,6 +38,7 @@ class Bottom_Navigation {
     _selectedIndex = index;
 }
 
+  //Widget used to generate the buttom navigation bar itself
   Widget createBottomNavigation(BuildContext context, int currentIndex) {
     temp = context;
     _selectedIndex = currentIndex;
@@ -46,6 +49,7 @@ class Bottom_Navigation {
       unselectedItemColor: Colors.grey.shade300,
       type: BottomNavigationBarType.fixed,
       currentIndex: _selectedIndex,
+      //The options in the navigation bar can be modified below
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
