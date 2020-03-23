@@ -1,33 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:cricket_app/navigation/bottom_navigation.dart';
-import 'package:cricket_app/header/header.dart';
-import 'package:cricket_app/cardDecoration/customCard.dart';
-import 'package:cricket_app/dialogBox/dialogBox.dart';
+import 'package:cricket_app/pages/goals.dart';
 
+class MyDialog extends StatefulWidget {
+  const MyDialog({Key key, this.notifyParent}) : super(key: key);
 
-final List<GoalInformation> goals = [];
-class GoalInformation {
-  String name;
-  String type;
-  int typeIndex;
-  String description;
-  String length;
-  
-  GoalInformation(String goalName, String goalType, int goalTypeIndex, String goalDescription, double goalLength) {
-    name = goalName;
-    type = goalType;
-    typeIndex = goalTypeIndex;
-    description = goalDescription;
-    length = goalLength.toInt().toString() + " days";
-  }
+  @override
+  _MyDialogState createState() => new _MyDialogState();
+
+  final Function() notifyParent;
 }
 
-class Goals extends StatefulWidget {
-  _GoalState createState() => _GoalState();
-}
 
-class _GoalState extends State<Goals> {
+class _MyDialogState extends State<MyDialog> {
   var selectedGoal = 'Process Goal';
   var selectedGoalIndex = 0;
   var goalLength = 1.0;
@@ -35,17 +19,9 @@ class _GoalState extends State<Goals> {
   var goalDescription;
   String hintGoal = 'Process Goal';
   final List<String> goalOptions = ['Process Goal', 'Performance Goal', 'Outcome Goal'];
-
-  final TextEditingController description = new TextEditingController();
-  final TextEditingController length = new TextEditingController();
-  double width;
-
   final _formKey = GlobalKey<FormState>();
-
-  Future createDialogBox(BuildContext context) {
-    /* return showDialog(context: context, builder: (context) {
-      return StatefulBuilder(
-        builder: (context, setState) {
+  
+  Widget build(BuildContext context) {
           return SimpleDialog(
           children: <Widget>[
             Form(
@@ -156,9 +132,8 @@ class _GoalState extends State<Goals> {
                       if (_formKey.currentState.validate()) {
                         GoalInformation newGoal = new GoalInformation(goalName, selectedGoal, selectedGoalIndex, goalDescription, goalLength);
                         goals.add(newGoal);
-                        description.clear();
-                        length.clear();
-                        super.setState(() {});
+                        print(goals.length);
+                        widget.notifyParent();
                         Navigator.pop(context);
                       }
                       },
@@ -166,62 +141,6 @@ class _GoalState extends State<Goals> {
                     ),
                   ),      
             ],),),
-            //dialogBox().createDialogBoxForm(context, _formKey),
           ],);
-        });
-      }); */
-  }
-
-  refresh() {
-    setState(() {});
-    print(goals.length);
-  }
-
-   Widget build(BuildContext context) {
-     width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      bottomNavigationBar: Bottom_Navigation().createBottomNavigation(context, 1),
-      body: Container(
-          child: Column(
-            children: <Widget>[
-              Header().createHeader(context, 1),
-              Container(
-                padding: const EdgeInsets.all(16),
-                child: Text(
-                  'Insert Description here',
-                  softWrap: true,
-                ),
-              ),
-              Expanded(
-                child: new ListView.builder (
-                  physics: BouncingScrollPhysics(),
-                  itemCount: goals.length,
-                  itemBuilder: (BuildContext ctxt, int index) {
-                    return InkWell(
-                      onTap: () {
-                        print("YOU CLICKED!");
-                      },
-                      child: CustomCard().createCustomCard(goals[index], width),
-                    );  
-                  }
-                )
-              ),
-            ],
-          ),
-        ),
-      floatingActionButton: FloatingActionButton (
-        onPressed: () {
-          //createDialogBox(context);
-
-          showDialog(
-            context: context,
-            builder: (_) {
-              return MyDialog(notifyParent: refresh);
-            });
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.green,
-      ),
-    );
-  }
-}
+        }
+      }        

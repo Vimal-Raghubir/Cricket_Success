@@ -196,7 +196,7 @@ class CustomCard {
                       SizedBox(
                         width: 5,
                       ),
-                      Text(goal.length,
+                      Text(goal.length.toString(),
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 14,
