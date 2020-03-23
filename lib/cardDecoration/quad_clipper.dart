@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//Used in the creation of Outcome Goal card decoration
 class QuadClipper extends CustomClipper<Rect> {
   @override
   Rect getClip(Size size) {
