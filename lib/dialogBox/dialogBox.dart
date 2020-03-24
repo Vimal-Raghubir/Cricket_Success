@@ -7,6 +7,7 @@ class MyDialog extends StatefulWidget {
   @override
   _MyDialogState createState() => new _MyDialogState();
 
+  //This function is used to call the Goal page refresh function to setState
   final Function() notifyParent;
 }
 
@@ -19,6 +20,8 @@ class _MyDialogState extends State<MyDialog> {
   var goalDescription;
   String hintGoal = 'Process Goal';
   final List<String> goalOptions = ['Process Goal', 'Performance Goal', 'Outcome Goal'];
+
+  //Key used to validate form input
   final _formKey = GlobalKey<FormState>();
   
   Widget build(BuildContext context) {
@@ -39,6 +42,7 @@ class _MyDialogState extends State<MyDialog> {
                     softWrap: true,
                     ),
                   ),
+                  //This is used to make the dropdown menu look like a form
                   InputDecorator(
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -52,6 +56,7 @@ class _MyDialogState extends State<MyDialog> {
                               setState(() {
                                 selectedGoal = newValue;
                                 if (selectedGoal == 'Process Goal') {
+                                  //selectedGoalIndex is the index of the dropdown menu item selected and is used in the card creation
                                   selectedGoalIndex = 0;
                                 } else if (selectedGoal == 'Performance Goal') {
                                   selectedGoalIndex = 1;
@@ -78,7 +83,9 @@ class _MyDialogState extends State<MyDialog> {
                     ),
                   ),
                   TextFormField(
+                    //Used to validate user input
                     validator: (value) {
+                      //Checks if the value is empty or else return error message
                       if (value.isEmpty) {
                         return 'Please enter some text';
                       } else {
@@ -111,7 +118,7 @@ class _MyDialogState extends State<MyDialog> {
                     softWrap: true,
                     ),
                   ),
-
+                  //This is a slider used to handle the number of days for a goal
                   Slider.adaptive(
                     value: goalLength,
                     onChanged: (newRating) {
@@ -121,19 +128,23 @@ class _MyDialogState extends State<MyDialog> {
                     },
                     min: 1.0,
                     max: 365.0,
+                    //Need to fix this label since not showing
                     label: "$goalLength",
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     child: RaisedButton(
                       onPressed: () {
-                      // Validate returns true if the form is valid, or false
-                      // otherwise.
+                      // Validate returns true if the form is valid
                       if (_formKey.currentState.validate()) {
+                        //Create a new goal object with the parameters
                         GoalInformation newGoal = new GoalInformation(goalName, selectedGoal, selectedGoalIndex, goalDescription, goalLength);
+                        //Add the goal to the global goals list in the goals.dart file
                         goals.add(newGoal);
                         print(goals.length);
+                        //Calls the function in the goals.dart class to refresh the goals page with setState. This is used to fix cards not appearing on the goals page after submitting this form
                         widget.notifyParent();
+                        //Navigates back to the previous page and in this case the goals page
                         Navigator.pop(context);
                       }
                       },
