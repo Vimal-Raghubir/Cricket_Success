@@ -23,6 +23,91 @@ class _MyDialogState extends State<MyDialog> {
 
   //Key used to validate form input
   final _formKey = GlobalKey<FormState>();
+
+Widget createDescriptionField() {
+  return TextFormField(
+    textCapitalization: TextCapitalization.words,
+    keyboardType: TextInputType.text ,
+    decoration: InputDecoration(
+      labelText: "Any additional details?",
+    ),
+    textInputAction: TextInputAction.next,
+    validator: (value) {
+      RegExp regex = new RegExp(r"^[a-zA-Z\s]*$");
+      if (value.isEmpty) {
+        return 'Please enter a value';
+      } else if(!regex.hasMatch(value)) {
+        return 'Invalid characters detected';
+      }
+      else {
+        return null;
+      }
+    },
+    onSaved: (value)=> goalDescription = value,
+  );
+}
+
+Widget createGoalNameField() {
+  return TextFormField(
+    textCapitalization: TextCapitalization.words,
+    keyboardType: TextInputType.text ,
+    decoration: InputDecoration(
+      labelText: "What is your goal?",
+      hintText: "e.g. Work on bowling run up",
+    ),
+    textInputAction: TextInputAction.next,
+    //Used to validate user input
+    validator: (value) {
+      RegExp regex = new RegExp(r"^[a-zA-Z\s]*$");
+
+      //Checks if the value is empty or else return error message
+      if (value.isEmpty) {
+        return 'Please enter a value';
+      } else if(!regex.hasMatch(value)) {
+        return 'Invalid characters detected';
+      } else {
+        return null;
+      }
+    },
+    onSaved: (value)=> goalName = value,
+  );
+}
+
+Widget createDropdownMenu() {
+  //This is used to make the dropdown menu look like a form
+  return InputDecorator(
+    decoration: InputDecoration(
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(5.0))),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          hint: Text("Process Goal"),
+          value: selectedGoal,
+          isDense: true,
+          onChanged: (String newValue) {
+            setState(() {
+              selectedGoal = newValue;
+              if (selectedGoal == 'Process Goal') {
+                //selectedGoalIndex is the index of the dropdown menu item selected and is used in the card creation
+                selectedGoalIndex = 0;
+              } else if (selectedGoal == 'Performance Goal') {
+                selectedGoalIndex = 1;
+              } else if (selectedGoal == 'Outcome Goal') {
+                selectedGoalIndex = 2;
+              }
+              print(selectedGoalIndex);
+            });
+          },
+          items: goalOptions.map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+          ),
+        ),
+    );
+}
   
   Widget build(BuildContext context) {
           return SimpleDialog(
@@ -42,75 +127,9 @@ class _MyDialogState extends State<MyDialog> {
                     softWrap: true,
                     ),
                   ),
-                  //This is used to make the dropdown menu look like a form
-                  InputDecorator(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5.0))),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            hint: Text("Process Goal"),
-                            value: selectedGoal,
-                            isDense: true,
-                            onChanged: (String newValue) {
-                              setState(() {
-                                selectedGoal = newValue;
-                                if (selectedGoal == 'Process Goal') {
-                                  //selectedGoalIndex is the index of the dropdown menu item selected and is used in the card creation
-                                  selectedGoalIndex = 0;
-                                } else if (selectedGoal == 'Performance Goal') {
-                                  selectedGoalIndex = 1;
-                                } else if (selectedGoal == 'Outcome Goal') {
-                                  selectedGoalIndex = 2;
-                                }
-                                print(selectedGoalIndex);
-                              });
-                              },
-                            items: goalOptions.map((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          ),
-                        )
-                    ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: Text(
-                      'What is your goal?',
-                    softWrap: true,
-                    ),
-                  ),
-                  TextFormField(
-                    //Used to validate user input
-                    validator: (value) {
-                      //Checks if the value is empty or else return error message
-                      if (value.isEmpty) {
-                        return 'Please enter some text';
-                      } else {
-                        goalName = value;
-                        return null;
-                      }
-                    },
-                  ),
-
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    child: Text(
-                      'Any additional details?',
-                    softWrap: true,
-                    ),
-                  ),
-                  TextFormField(
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter some text';
-                      }
-                      goalDescription = value;
-                      return null;
-                    },
-                  ),
+                  createDropdownMenu(),
+                  createGoalNameField(),
+                  createDescriptionField(),
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     child: Text(
@@ -137,6 +156,7 @@ class _MyDialogState extends State<MyDialog> {
                       onPressed: () {
                       // Validate returns true if the form is valid
                       if (_formKey.currentState.validate()) {
+                        _formKey.currentState.save();
                         //Create a new goal object with the parameters
                         GoalInformation newGoal = new GoalInformation(goalName, selectedGoal, selectedGoalIndex, goalDescription, goalLength);
                         //Add the goal to the global goals list in the goals.dart file
