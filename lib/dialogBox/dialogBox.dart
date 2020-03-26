@@ -158,7 +158,7 @@ Widget createDropdownMenu() {
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
                         //Create a new goal object with the parameters
-                        GoalInformation newGoal = new GoalInformation(goalName, selectedGoal, selectedGoalIndex, goalDescription, goalLength);
+                        GoalInformation newGoal = new GoalInformation(goals.length, goalName, selectedGoal, selectedGoalIndex, goalDescription, goalLength);
                         //Add the goal to the global goals list in the goals.dart file
                         goals.add(newGoal);
                         print(goals.length);

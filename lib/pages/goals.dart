@@ -5,11 +5,26 @@ import 'package:cricket_app/header/header.dart';
 import 'package:cricket_app/cardDecoration/customCard.dart';
 import 'package:cricket_app/dialogBox/dialogBox.dart';
 
+import 'dart:async';
+
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+
 //Global list of goals that is updated by the dialogBox.dart file
 final List<GoalInformation> goals = [];
 
+// database table and column names
+final String tableGoals = 'Goals';
+final String column_id = 'ID';
+final String column_name = 'Name';
+final String column_type = 'Type';
+final String column_type_index = 'Type Index';
+final String column_description = 'Description';
+final String column_length = 'Length';
+
 //Custom class defining the structure of a goal
 class GoalInformation {
+  int id;
   String name;
   String type;
   int typeIndex;
@@ -17,13 +32,39 @@ class GoalInformation {
   String length;
   
   //Constructor initializing the values of the class variables
-  GoalInformation(String goalName, String goalType, int goalTypeIndex, String goalDescription, double goalLength) {
+  GoalInformation(int goalIndex, String goalName, String goalType, int goalTypeIndex, String goalDescription, double goalLength) {
+    id = goalIndex;
     name = goalName;
     type = goalType;
     typeIndex = goalTypeIndex;
     description = goalDescription;
     length = goalLength.toInt().toString() + " days";
   }
+
+        // convenience constructor to create a Word object
+  GoalInformation.fromMap(Map<String, dynamic> map) {
+        id = map[column_id];
+        name = map[column_name];
+        type = map[column_type];
+        typeIndex = map[column_type_index];
+        description = map[column_description];
+        length = map[column_length];
+  }
+
+        // convenience method to create a Map from this Word object
+  Map<String, dynamic> toMap() {
+    var map = <String, dynamic>{
+      column_name: name,
+      column_type: type,
+      column_description: description,
+      column_length: length,
+    };
+    if (id != null) {
+      map[column_id] = id;
+      map[column_type_index] = typeIndex;
+    }
+      return map;
+    } 
 }
 
 class Goals extends StatefulWidget {
