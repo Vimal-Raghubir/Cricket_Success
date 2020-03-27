@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cricket_app/pages/goals.dart';
+import 'package:cricket_app/database/database.dart';
 
 class MyDialog extends StatefulWidget {
   const MyDialog({Key key, this.notifyParent}) : super(key: key);
@@ -33,7 +34,7 @@ Widget createDescriptionField() {
     ),
     textInputAction: TextInputAction.next,
     validator: (value) {
-      RegExp regex = new RegExp(r"^[a-zA-Z\s]*$");
+      RegExp regex = new RegExp(r"^[a-zA-Z0-9\s]*$");
       if (value.isEmpty) {
         return 'Please enter a value';
       } else if(!regex.hasMatch(value)) {
@@ -58,7 +59,7 @@ Widget createGoalNameField() {
     textInputAction: TextInputAction.next,
     //Used to validate user input
     validator: (value) {
-      RegExp regex = new RegExp(r"^[a-zA-Z\s]*$");
+      RegExp regex = new RegExp(r"^[a-zA-Z0-9\s]*$");
 
       //Checks if the value is empty or else return error message
       if (value.isEmpty) {
@@ -158,10 +159,10 @@ Widget createDropdownMenu() {
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
                         //Create a new goal object with the parameters
-                        GoalInformation newGoal = new GoalInformation(goals.length, goalName, selectedGoal, selectedGoalIndex, goalDescription, goalLength);
-                        //Add the goal to the global goals list in the goals.dart file
-                        goals.add(newGoal);
-                        print(goals.length);
+                        GoalInformation newGoal = new GoalInformation(goalName, selectedGoal, selectedGoalIndex, goalDescription, goalLength);
+                        
+                        //Insert the newGoal into the database
+                        _save(newGoal);
                         //Calls the function in the goals.dart class to refresh the goals page with setState. This is used to fix cards not appearing on the goals page after submitting this form
                         widget.notifyParent();
                         //Navigates back to the previous page and in this case the goals page
@@ -174,4 +175,10 @@ Widget createDropdownMenu() {
             ],),),
           ],);
         }
-      }        
+  //Function to insert a goal into the database
+  _save(GoalInformation goal) async {
+    DatabaseHelper helper = DatabaseHelper.instance;
+    int id = await helper.insert(goal);
+    print('inserted row: $id');
+  }
+}        

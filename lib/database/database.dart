@@ -1,0 +1,83 @@
+import 'dart:io';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:cricket_app/pages/goals.dart';
+
+// singleton class to manage the database
+    class DatabaseHelper {
+
+      // This is the actual database filename that is saved in the docs directory.
+      static final _databaseName = "database.db";
+      // Increment this version when you need to change the schema.
+      static final _databaseVersion = 1;
+
+      // Make this a singleton class.
+      DatabaseHelper._privateConstructor();
+      static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
+
+      // Only allow a single open connection to the database.
+      static Database _database;
+      Future<Database> get database async {
+        if (_database != null) return _database;
+        _database = await _initDatabase();
+        return _database;
+      }
+
+      // open the database
+      _initDatabase() async {
+        // The path_provider plugin gets the right directory for Android or iOS.
+        Directory documentsDirectory = await getApplicationDocumentsDirectory();
+        String path = join(documentsDirectory.path, _databaseName);
+        // Open the database. Can also add an onUpdate callback parameter.
+        return await openDatabase(path,
+            version: _databaseVersion,
+            onCreate: _onCreate);
+      }
+
+      // SQL string to create the database 
+      Future _onCreate(Database db, int version) async {
+        await db.execute('''
+              CREATE TABLE $tableGoals (
+                $column_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                $column_name TEXT NOT NULL,
+                $column_type TEXT NOT NULL,
+                $column_type_index INTEGER NOT NULL,
+                $column_description TEXT NOT NULL,
+                $column_length INTEGER NOT NULL
+              )''');
+      }
+
+      // Database helper methods:
+
+      Future<int> insert(GoalInformation goal) async {
+        Database db = await database;
+        int id = await db.insert(tableGoals, goal.toMap());
+        return id;
+      }
+
+      //Function to query only one goal from the list
+      Future<GoalInformation> queryGoal(int id) async {
+        Database db = await database;
+        List<Map> maps = await db.query(tableGoals,
+            columns: [column_id, column_name, column_type, column_type_index, column_description, column_length],
+            where: '$column_id = ?',
+            whereArgs: [id]);
+        if (maps.length > 0) {
+          return GoalInformation.fromMap(maps.first);
+        }
+        return null;
+      }
+
+      //Get all goals in the database
+      Future<List<GoalInformation>> getGoals() async {
+        Database db = await database;
+        final List<Map<String, dynamic>> maps = await db.query('Goals');
+        return List.generate(maps.length, (i) {
+          return GoalInformation(maps[i][column_name], maps[i][column_type], maps[i][column_type_index], maps[i][column_description], maps[i][column_length].toDouble());
+        });
+      }
+
+      //TODO: Need to add update function to update a goal
+      //TODO: Need to add delete function to remove a goal
+}

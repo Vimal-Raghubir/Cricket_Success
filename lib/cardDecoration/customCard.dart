@@ -207,7 +207,7 @@ class CustomCard {
                       SizedBox(
                         width: 5,
                       ),
-                      Text(goal.length.toString(),
+                      Text(goal.length.toString() + " days",
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 14,

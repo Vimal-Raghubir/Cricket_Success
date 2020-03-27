@@ -4,65 +4,60 @@ import 'package:cricket_app/navigation/bottom_navigation.dart';
 import 'package:cricket_app/header/header.dart';
 import 'package:cricket_app/cardDecoration/customCard.dart';
 import 'package:cricket_app/dialogBox/dialogBox.dart';
-
+import 'package:cricket_app/database/database.dart';
 import 'dart:async';
-
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 //Global list of goals that is updated by the dialogBox.dart file
-final List<GoalInformation> goals = [];
+List<GoalInformation> goals = [];
+int totalGoalEntries = 0;
 
 // database table and column names
 final String tableGoals = 'Goals';
 final String column_id = 'ID';
 final String column_name = 'Name';
 final String column_type = 'Type';
-final String column_type_index = 'Type Index';
+final String column_type_index = 'Type_Index';
 final String column_description = 'Description';
 final String column_length = 'Length';
 
 //Custom class defining the structure of a goal
 class GoalInformation {
-  int id;
   String name;
   String type;
   int typeIndex;
   String description;
-  String length;
+  int length;
   
   //Constructor initializing the values of the class variables
-  GoalInformation(int goalIndex, String goalName, String goalType, int goalTypeIndex, String goalDescription, double goalLength) {
-    id = goalIndex;
+  GoalInformation(String goalName, String goalType, int goalTypeIndex, String goalDescription, double goalLength) {
     name = goalName;
     type = goalType;
     typeIndex = goalTypeIndex;
     description = goalDescription;
-    length = goalLength.toInt().toString() + " days";
+    length = goalLength.toInt();
   }
 
-        // convenience constructor to create a Word object
+  // convenience constructor to create a Word object
   GoalInformation.fromMap(Map<String, dynamic> map) {
-        id = map[column_id];
-        name = map[column_name];
-        type = map[column_type];
-        typeIndex = map[column_type_index];
-        description = map[column_description];
-        length = map[column_length];
+    name = map[column_name];
+    type = map[column_type];
+    typeIndex = map[column_type_index];
+    description = map[column_description];
+    length = map[column_length];
   }
 
-        // convenience method to create a Map from this Word object
+  // convenience method to create a Map from this Word object
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       column_name: name,
       column_type: type,
+      column_type_index: typeIndex,
       column_description: description,
       column_length: length,
     };
-    if (id != null) {
-      map[column_id] = id;
-      map[column_type_index] = typeIndex;
-    }
+    
       return map;
     } 
 }
@@ -84,10 +79,12 @@ class _GoalState extends State<Goals> {
   //Function that is called in the dialogBox.dart file to refresh this page and render the goals after submitting a form
   refresh() {
     setState(() {});
+    _read();
     print(goals.length);
   }
 
    Widget build(BuildContext context) {
+     _read();
      width = MediaQuery.of(context).size.width;
     return Scaffold(
       //Creates bottom navigation and passes the index of the current page in relation to main page
@@ -138,5 +135,11 @@ class _GoalState extends State<Goals> {
         backgroundColor: Colors.green,
       ),
     );
+  }
+
+  //Function to read all goals from the database for rendering
+  _read() async {
+    DatabaseHelper helper = DatabaseHelper.instance;
+    goals = await helper.getGoals();
   }
 }
