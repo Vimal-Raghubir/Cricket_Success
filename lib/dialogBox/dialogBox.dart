@@ -122,9 +122,11 @@ Widget createGoalNameField() {
         return 'Invalid characters detected';
       
       //Checks if the database goal names contain the passed in value to prevent duplicates
-      } else if(goalNames.contains(value.toLowerCase())) {
+      } else if(goalNames.contains(value.toLowerCase()) && widget.type == "dialog") {
         print("CHECK IS WORKING");
         return 'A goal with the same name already exists';
+
+      //Need to add another check for a user to update existing goal name to another existing goal name
       } else {
         return null;
       }
@@ -193,7 +195,6 @@ Widget submitButton(String buttonText) {
         _formKey.currentState.save();
         //Create a new goal object with the parameters
         GoalInformation newGoal = new GoalInformation(selectedGoalName, selectedGoal, selectedGoalIndex, selectedGoalDescription, selectedGoalLength);
-
         if (buttonText == "Submit") {
             //Insert the newGoal into the database
           _save(newGoal);
@@ -202,8 +203,10 @@ Widget submitButton(String buttonText) {
           //Navigates back to the previous page and in this case the goals page
           Navigator.pop(context);
         } else if (buttonText == "Update") {
-          //Updates goal with newGoal content
-          _updateGoal(newGoal);
+          //Retrieve the index of the passed in goal
+          index = widget.notifyParent();
+          //Updates goal with newGoal content and id
+          _updateGoal(newGoal, index);
           //Goes back to previous page which in this case is goals.dart
           Navigator.pop(context);
         } 
@@ -262,10 +265,12 @@ Widget createDialogForm(String title, String dropdownMessage, String buttonText)
     print('inserted row: $id');
   }
 
-  //Function to retrieve a goal by name and update in the database
-  _updateGoal(GoalInformation goal) async {
+
+
+  //Function to retrieve a goal by id and update in the database
+  _updateGoal(GoalInformation goal, int index) async {
     DatabaseHelper helper = DatabaseHelper.instance;
-    await helper.update(goal);
+    await helper.update(goal, index);
   }
 
   //Function to get all goal names in the database

@@ -25,6 +25,8 @@ final String column_length = 'Length';
 
 //Custom class defining the structure of a goal
 class GoalInformation {
+  //Will use this to keep track of ID in table
+  int id;
   String name;
   String type;
   int typeIndex;
@@ -32,7 +34,9 @@ class GoalInformation {
   int length;
   
   //Constructor initializing the values of the class variables. The constructor has default values in case a default goal is needed
-  GoalInformation([String goalName = "", String goalType = "Process Goal", int goalTypeIndex = 0, String goalDescription = "", double goalLength = 1.0]) {
+  GoalInformation([String goalName = "", String goalType = "Process Goal", int goalTypeIndex = 0, String goalDescription = "", double goalLength = 1.0, int index = 0]) {
+    //initialize this by default to 0
+    id = index;
     name = goalName;
     type = goalType;
     typeIndex = goalTypeIndex;
@@ -40,7 +44,7 @@ class GoalInformation {
     length = goalLength.toInt();
   }
 
-  // convenience constructor to create a Word object
+  // convenience constructor to create a Goal object
   GoalInformation.fromMap(Map<String, dynamic> map) {
     name = map[column_name];
     type = map[column_type];
@@ -49,7 +53,12 @@ class GoalInformation {
     length = map[column_length];
   }
 
-  // convenience method to create a Map from this Word object
+  //Convenience function set this value
+  void setId(int index) {
+    id = index;
+  }
+
+  // convenience method to create a Map from this Goal object
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       column_name: name,
@@ -75,7 +84,6 @@ class _GoalState extends State<Goals> {
   refresh() {
     setState(() {});
     _read();
-    print(goals.length);
   }
 
    Widget build(BuildContext context) {
@@ -112,7 +120,6 @@ class _GoalState extends State<Goals> {
                           MaterialPageRoute(
                             builder: (context) => GoalDetails(
                             goal: goals[index],
-                            id: index,
                             )
                           ),
                         );
@@ -147,6 +154,7 @@ class _GoalState extends State<Goals> {
   //Function to read all goals from the database for rendering
   _read() async {
     DatabaseHelper helper = DatabaseHelper.instance;
+    //goals now stores the index of each goalInformation in the database
     goals = await helper.getGoals();
   }
 }

@@ -74,7 +74,8 @@ import 'package:cricket_app/pages/goals.dart';
         Database db = await database;
         final List<Map<String, dynamic>> maps = await db.query(tableGoals);
         return List.generate(maps.length, (i) {
-          return GoalInformation(maps[i][column_name], maps[i][column_type], maps[i][column_type_index], maps[i][column_description], maps[i][column_length].toDouble());
+          //Returns the column index along with the other fields since the goalinformation class has an id field
+          return GoalInformation(maps[i][column_name], maps[i][column_type], maps[i][column_type_index], maps[i][column_description], maps[i][column_length].toDouble(), maps[i][column_id]);
         });
       }
 
@@ -87,8 +88,8 @@ import 'package:cricket_app/pages/goals.dart';
         });
       }
       
-      //Function to update a specific goal based on unique goal name
-      Future<void> update(GoalInformation goal) async {
+      //Function to update a specific goal based on unique goal id
+      Future<void> update(GoalInformation goal, int index) async {
         // Get a reference to the database.
         final db = await database;
 
@@ -97,15 +98,17 @@ import 'package:cricket_app/pages/goals.dart';
           tableGoals,
           goal.toMap(),
           // Ensure that the Goal has a matching id.
-          where: "$column_name = ?",
+          where: "$column_id = ?",
           // Pass the Goal's id as a whereArg to prevent SQL injection.
-          whereArgs: [goal.name],
+          whereArgs: [index],
         );
       }
 
-      Future<int> deleteGoal(GoalInformation goal) async {
+      //GoalInformation goal, 
+      Future<int> deleteGoal(int id) async {
         final db = await database;
-        return await db.delete(tableGoals, where: '$column_name = ?', whereArgs: [goal.name]);
+        return await db.delete(tableGoals, where: '$column_id = ?', whereArgs: [id]);
+        //return await db.delete(tableGoals, where: '$column_name = ?', whereArgs: [goal.name]);
       }
 
       //TODO: Need to add update function to update a goal
