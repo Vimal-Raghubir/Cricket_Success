@@ -1,3 +1,4 @@
+import 'package:cricket_app/pages/goalDetails.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cricket_app/navigation/bottom_navigation.dart';
@@ -30,8 +31,8 @@ class GoalInformation {
   String description;
   int length;
   
-  //Constructor initializing the values of the class variables
-  GoalInformation(String goalName, String goalType, int goalTypeIndex, String goalDescription, double goalLength) {
+  //Constructor initializing the values of the class variables. The constructor has default values in case a default goal is needed
+  GoalInformation([String goalName = "", String goalType = "Process Goal", int goalTypeIndex = 0, String goalDescription = "", double goalLength = 1.0]) {
     name = goalName;
     type = goalType;
     typeIndex = goalTypeIndex;
@@ -67,12 +68,6 @@ class Goals extends StatefulWidget {
 }
 
 class _GoalState extends State<Goals> {
-  var selectedGoal = 'Process Goal';
-  var selectedGoalIndex = 0;
-  var goalLength = 1.0;
-  var goalName;
-  var goalDescription;
-  String hintGoal = 'Process Goal';
   final List<String> goalOptions = ['Process Goal', 'Performance Goal', 'Outcome Goal'];
   double width;
 
@@ -111,6 +106,17 @@ class _GoalState extends State<Goals> {
                     return InkWell(
                       onTap: () {
                         print("YOU CLICKED!");
+                        //Pass the goal information to the goalDetails.dart page
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => GoalDetails(
+                            goal: goals[index],
+                            id: index,
+                            )
+                          ),
+                        );
+                        //Add other logic here
                       },
                       //Render custom card for each goal
                       child: CustomCard().createCustomCard(goals[index], width),
@@ -128,7 +134,8 @@ class _GoalState extends State<Goals> {
             context: context,
             builder: (_) {
               //Passes a function pointer to my custom dialog class so the dialog class can call setState on this page.
-              return MyDialog(notifyParent: refresh);
+              GoalInformation defaultGoal = new GoalInformation();
+              return MyDialog(notifyParent: refresh, passedGoal: defaultGoal, type: "dialog");
             });
         },
         child: Icon(Icons.add),

@@ -72,10 +72,40 @@ import 'package:cricket_app/pages/goals.dart';
       //Get all goals in the database
       Future<List<GoalInformation>> getGoals() async {
         Database db = await database;
-        final List<Map<String, dynamic>> maps = await db.query('Goals');
+        final List<Map<String, dynamic>> maps = await db.query(tableGoals);
         return List.generate(maps.length, (i) {
           return GoalInformation(maps[i][column_name], maps[i][column_type], maps[i][column_type_index], maps[i][column_description], maps[i][column_length].toDouble());
         });
+      }
+
+      //Function to retrieve all goal names from the database
+      Future<List> getGoalNames() async {
+        Database db = await database;
+        var maps = await db.query(tableGoals, columns: [column_name]);
+        return List.generate(maps.length, (i) {
+          return maps[i][column_name].toLowerCase();
+        });
+      }
+      
+      //Function to update a specific goal based on unique goal name
+      Future<void> update(GoalInformation goal) async {
+        // Get a reference to the database.
+        final db = await database;
+
+        // Update the given Goal.
+        await db.update(
+          tableGoals,
+          goal.toMap(),
+          // Ensure that the Goal has a matching id.
+          where: "$column_name = ?",
+          // Pass the Goal's id as a whereArg to prevent SQL injection.
+          whereArgs: [goal.name],
+        );
+      }
+
+      Future<int> deleteGoal(GoalInformation goal) async {
+        final db = await database;
+        return await db.delete(tableGoals, where: '$column_name = ?', whereArgs: [goal.name]);
       }
 
       //TODO: Need to add update function to update a goal
