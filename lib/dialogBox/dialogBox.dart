@@ -121,12 +121,13 @@ Widget createGoalNameField() {
       } else if(!regex.hasMatch(value)) {
         return 'Invalid characters detected';
       
-      //Checks if the database goal names contain the passed in value to prevent duplicates
+      //Checks if the database goal names contain the passed in value to prevent duplicates and you are trying to create a new goal
       } else if(goalNames.contains(value.toLowerCase()) && widget.type == "dialog") {
         print("CHECK IS WORKING");
         return 'A goal with the same name already exists';
-
-      //Need to add another check for a user to update existing goal name to another existing goal name
+      //Checks if the goal name already exists in the database and the initial goal name has been modified. This guards against changing an existing goal name to another existing goal name
+      } else if (goalNames.contains(value.toLowerCase()) && widget.passedGoal.name != value) {
+        return 'An existing goal has that name';
       } else {
         return null;
       }
