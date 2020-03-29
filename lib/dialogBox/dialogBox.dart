@@ -49,7 +49,7 @@ class _MyDialogState extends State<MyDialog> {
 Widget createTitle(String title) {
   //Allows a title to be passed in dynamically
   return Text(title,
-    style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold, color: Colors.black),
+    style: TextStyle(fontSize: 18.0,fontWeight: FontWeight.bold, color: Colors.black),
     textAlign: TextAlign.center,
   );
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cricket_app/dialogBox/dialogBox.dart';
 import 'package:cricket_app/database/database.dart';
+import 'package:cricket_app/pages/goals.dart';
 
 //Used to handle the tutorial page
 class GoalDetails extends StatefulWidget {
@@ -21,9 +22,55 @@ class _GoalDetailState extends State<GoalDetails> {
     return widget.goal.id;
   }
 
+
+  //Alert box to confirm deletion of a goal
+  void confirmDelete(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Are you sure you want to delete this goal?"),
+          content: Text("This action cannot be undone."),
+          actions: [
+           FlatButton(child: Text("No"), onPressed: () {
+             Navigator.pop(context);
+           },),
+           //Will delete the goal and pop back to the goals page
+           FlatButton(child: Text("Yes"), onPressed: () {
+             _deleteGoal(widget.goal.id);
+             Navigator.push(context, MaterialPageRoute(builder: (context) => Goals()));
+           },),
+          ],
+          elevation: 24.0,
+          backgroundColor: Colors.white,
+          //shape: CircleBorder(),
+        );
+      }
+
+    
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //Appbar is needed for drawer and back button
+      appBar: AppBar(backgroundColor: Colors.lime, title: Text("              Goal Details")),
+      endDrawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            ListTile(
+              leading: Icon(Icons.delete),
+              title: Text('Delete Goal'),
+              onTap: () {
+                confirmDelete(context);
+              }
+            )
+          ]
+        )
+      ),
+      //This helps to avoid page overflow issues
+      resizeToAvoidBottomPadding: false,
       body: Container(
         //Create a form using dialogBox.dart implementation but not a dialog box.
         child: MyDialog(notifyParent: getId, passedGoal: widget.goal, type: "detail"),
@@ -31,8 +78,8 @@ class _GoalDetailState extends State<GoalDetails> {
     );
   }
 
-  _deleteGoal() async {
+  _deleteGoal(int id) async {
     DatabaseHelper helper = DatabaseHelper.instance;
-    await helper.deleteGoal(9);
+    await helper.deleteGoal(id);
   }
 }

@@ -88,6 +88,7 @@ class _GoalState extends State<Goals> {
 
    Widget build(BuildContext context) {
      _read();
+     print(goals.length);
      width = MediaQuery.of(context).size.width;
     return Scaffold(
       //Creates bottom navigation and passes the index of the current page in relation to main page
@@ -119,7 +120,8 @@ class _GoalState extends State<Goals> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => GoalDetails(
-                            goal: goals[index],
+                            //Helps to prevent range issues
+                            goal: goals?.elementAt(index) ?? "",
                             )
                           ),
                         );
