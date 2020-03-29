@@ -47,58 +47,17 @@ class CustomCard {
         ));
   }
 
-  //Small container is used to build the card
-  Positioned _smallContainer(Color primaryColor, double top, double left,{double radius = 10}) {
-      return Positioned(
-        top: top,
-        left: left,
-        child: CircleAvatar(
-          radius: radius,
-          backgroundColor: primaryColor.withAlpha(255),
-        ));
-  }
-
-  //Also used to build the card
-  Widget _circularContainer(double height, Color color,{Color borderColor = Colors.transparent, double borderWidth = 2}) {
-      return Container(
-        height: height,
-        width: height,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: color,
-          border: Border.all(color: borderColor, width: borderWidth),
-        ),
-      );
-  }
-
   //Used to render the Process Goal card
   Widget _decorationContainerA(Color primaryColor, double top, double left) {
     return Stack(
       children: <Widget>[
+        //This is used to render the process.png image instead of previous card decoration
         Positioned(
-          top: top,
-          left: left,
-          child: CircleAvatar(
-            radius: 100,
-            backgroundColor: Colors.cyan[600],
-          ),
-        ),
-        _smallContainer(Colors.orange, 40, 20),
-        Positioned(
-          top: -30,
-          right: -10,
-          child: _circularContainer(80, Colors.transparent,
-              borderColor: Colors.white),
-        ),
-        Positioned(
-          top: 110,
-          right: -50,
-          child: CircleAvatar(
-            radius: 60,
-            backgroundColor: Colors.cyan[600],
-            child:
-                CircleAvatar(radius: 40, backgroundColor: Colors.cyan[400]),
-          ),
+          top: 0,
+          bottom: 0,
+          right: 0,
+          left: 0,
+          child: Image.asset('assets/images/non-colored/process.png'),
         ),
       ],
     );
@@ -108,26 +67,13 @@ class CustomCard {
   Widget _decorationContainerB() {
     return Stack(
       children: <Widget>[
+        //This is used to render the performance.png image instead of previous card decoration
         Positioned(
-          top: -65,
-          left: -65,
-          child: CircleAvatar(
-            radius: 70,
-            backgroundColor: Colors.orange[300],
-            child: CircleAvatar(
-                radius: 30, backgroundColor: Colors.tealAccent[700]),
-          ),
-        ),
-        Positioned(
-            bottom: -35,
-            right: -40,
-            child:
-                CircleAvatar(backgroundColor: Colors.yellow, radius: 40)),
-        Positioned(
-          top: 50,
-          left: -40,
-          child: _circularContainer(70, Colors.transparent,
-              borderColor: Colors.white),
+          top: 0,
+          bottom: 0,
+          right: 0,
+          left: 0,
+          child: Image.asset('assets/images/non-colored/performance.png'),
         ),
       ],
     );
@@ -137,25 +83,13 @@ class CustomCard {
     Widget _decorationContainerC() {
     return Stack(
       children: <Widget>[
+        //This is used to render the outcome.jpg image instead of previous card decoration
         Positioned(
-          bottom: -65,
-          left: -35,
-          child: CircleAvatar(
-            radius: 70,
-            backgroundColor: Color(0xfffeeaea),
-          ),
-        ),
-        Positioned(
-            bottom: -30,
-            right: -25,
-            child: ClipRect(
-                clipper: QuadClipper(),
-                child: CircleAvatar(
-                    backgroundColor: Colors.orange, radius: 40))),
-        _smallContainer(
-          Colors.yellow,
-          35,
-          70,
+          top: 0,
+          bottom: 0,
+          right: 0,
+          left: 0,
+          child: Image.asset('assets/images/non-colored/outcome.jpg'),
         ),
       ],
     );

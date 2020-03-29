@@ -181,7 +181,8 @@ Widget dayPicker() {
     },
     min: 1.0,
     max: 365.0,
-    //Need to fix this label since not showing
+    //Divisions help to show a label above the slider
+    divisions: 91,
     label: "$selectedGoalLength",
   );
 }
