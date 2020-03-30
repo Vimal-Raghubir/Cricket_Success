@@ -122,10 +122,62 @@ class _GoalState extends State<Goals> {
               Container(
                 padding: const EdgeInsets.all(16),
                 child: Text(
-                  'Insert Description here',
+                  'There are 3 main types of goals that you will need to use.',
+                  textAlign: TextAlign.justify,
                   softWrap: true,
                 ),
               ),
+              RichText(
+                textAlign: TextAlign.justify,
+                text: TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(text: 'Process Goals',
+                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 14),
+                    ),
+                    TextSpan(text: ' are strategies that help you to achieve success. These include small controllable habits such as',
+                      style: TextStyle(fontStyle: FontStyle.normal, color: Colors.black, fontSize: 14),
+                    ),
+                    TextSpan(text: ' watching the ball. (Usually short term)',
+                      style: TextStyle(fontStyle: FontStyle.italic, color: Colors.black, fontSize: 14),
+                    )
+                  ]
+                )
+              ),
+              SizedBox(height: 15),
+              RichText(
+                textAlign: TextAlign.justify,
+                text: TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(text: 'Performance Goals',
+                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 14),
+                    ),
+                    TextSpan(text: ' are goals that define a level of performance you desire to reach. These include amibitions such as',
+                      style: TextStyle(fontStyle: FontStyle.normal, color: Colors.black, fontSize: 14),
+                    ),
+                    TextSpan(text: ' scoring a century. (Mix of short and long-term)',
+                      style: TextStyle(fontStyle: FontStyle.italic, color: Colors.black, fontSize: 14),
+                    )
+                  ]
+                )
+              ),
+              SizedBox(height: 15),
+              RichText(
+                textAlign: TextAlign.justify,
+                text: TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(text: 'Outcome Goals',
+                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 14),
+                    ),
+                    TextSpan(text: ' are goals that define the desired end result. These include large successes such as',
+                      style: TextStyle(fontStyle: FontStyle.normal, color: Colors.black, fontSize: 14),
+                    ),
+                    TextSpan(text: ' winning the player of the tournament award. (Mostly long-term)',
+                      style: TextStyle(fontStyle: FontStyle.italic, color: Colors.black, fontSize: 14),
+                    )
+                  ]
+                )
+              ),
+
               Expanded(
                 //Used to dynamically render the goals in a list format
                 child: new ListView.builder (
