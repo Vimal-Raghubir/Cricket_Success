@@ -25,6 +25,7 @@ class _MyDialogState extends State<MyDialog> {
   var selectedGoalLength;
   var selectedGoalName;
   var selectedGoalDescription;
+  var currentProgress;
   //Stores all goal names for the goal name field. Used to prevent duplicate goal names
   List goalNames = [];
   int index;
@@ -42,6 +43,7 @@ class _MyDialogState extends State<MyDialog> {
     selectedGoalLength = widget.passedGoal.length.toDouble();
     selectedGoalName = widget.passedGoal.name;
     selectedGoalDescription = widget.passedGoal.description;
+    currentProgress = widget.passedGoal.currentProgress;
     //Retrieves a list of all goalnames in the database
     _getGoalNames();
   }
@@ -176,7 +178,6 @@ Widget dayPicker() {
     onChanged: (newRating) {
       setState(() {
         selectedGoalLength = newRating;
-        print(selectedGoalLength);
       });
     },
     min: 1.0,
@@ -196,7 +197,7 @@ Widget submitButton(String buttonText) {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
         //Create a new goal object with the parameters
-        GoalInformation newGoal = new GoalInformation(selectedGoalName, selectedGoal, selectedGoalIndex, selectedGoalDescription, selectedGoalLength);
+        GoalInformation newGoal = new GoalInformation(selectedGoalName, selectedGoal, selectedGoalIndex, selectedGoalDescription, selectedGoalLength, currentProgress);
         if (buttonText == "Submit") {
             //Insert the newGoal into the database
           _save(newGoal);

@@ -76,7 +76,7 @@ import 'package:cricket_app/pages/goals.dart';
         final List<Map<String, dynamic>> maps = await db.query(tableGoals);
         return List.generate(maps.length, (i) {
           //Returns the column index along with the other fields since the goalinformation class has an id field
-          return GoalInformation(maps[i][column_name], maps[i][column_type], maps[i][column_type_index], maps[i][column_description], maps[i][column_length].toDouble(), maps[i][column_id], maps[i][column_progress]);
+          return GoalInformation(maps[i][column_name], maps[i][column_type], maps[i][column_type_index], maps[i][column_description], maps[i][column_length].toDouble(), maps[i][column_progress], maps[i][column_id]);
         });
       }
 
@@ -111,7 +111,4 @@ import 'package:cricket_app/pages/goals.dart';
         return await db.delete(tableGoals, where: '$column_id = ?', whereArgs: [id]);
         //return await db.delete(tableGoals, where: '$column_name = ?', whereArgs: [goal.name]);
       }
-
-      //TODO: Need to add update function to update a goal
-      //TODO: Need to add delete function to remove a goal
 }

@@ -18,7 +18,6 @@ class _GoalDetailState extends State<GoalDetails> {
   //Will return the goal id
   getId() {
     //This stores the passed in goal's id from the goals.dart page
-    print(widget.goal.id);
     return widget.goal.id;
   }
 
