@@ -8,7 +8,7 @@ import 'package:cricket_app/pages/goals.dart';
     class DatabaseHelper {
 
       // This is the actual database filename that is saved in the docs directory.
-      static final _databaseName = "database.db";
+      static final _databaseName = "custom_database.db";
       // Increment this version when you need to change the schema.
       static final _databaseVersion = 1;
 
@@ -44,7 +44,8 @@ import 'package:cricket_app/pages/goals.dart';
                 $column_type TEXT NOT NULL,
                 $column_type_index INTEGER NOT NULL,
                 $column_description TEXT NOT NULL,
-                $column_length INTEGER NOT NULL
+                $column_length INTEGER NOT NULL,
+                $column_progress INTEGER NOT NULL
               )''');
       }
 
@@ -60,7 +61,7 @@ import 'package:cricket_app/pages/goals.dart';
       Future<GoalInformation> queryGoal(int id) async {
         Database db = await database;
         List<Map> maps = await db.query(tableGoals,
-            columns: [column_id, column_name, column_type, column_type_index, column_description, column_length],
+            columns: [column_id, column_name, column_type, column_type_index, column_description, column_length, column_progress],
             where: '$column_id = ?',
             whereArgs: [id]);
         if (maps.length > 0) {
@@ -75,7 +76,7 @@ import 'package:cricket_app/pages/goals.dart';
         final List<Map<String, dynamic>> maps = await db.query(tableGoals);
         return List.generate(maps.length, (i) {
           //Returns the column index along with the other fields since the goalinformation class has an id field
-          return GoalInformation(maps[i][column_name], maps[i][column_type], maps[i][column_type_index], maps[i][column_description], maps[i][column_length].toDouble(), maps[i][column_id]);
+          return GoalInformation(maps[i][column_name], maps[i][column_type], maps[i][column_type_index], maps[i][column_description], maps[i][column_length].toDouble(), maps[i][column_id], maps[i][column_progress]);
         });
       }
 

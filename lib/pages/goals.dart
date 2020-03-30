@@ -22,6 +22,7 @@ final String column_type = 'Type';
 final String column_type_index = 'Type_Index';
 final String column_description = 'Description';
 final String column_length = 'Length';
+final String column_progress = 'Progress';
 
 //Custom class defining the structure of a goal
 class GoalInformation {
@@ -32,9 +33,10 @@ class GoalInformation {
   int typeIndex;
   String description;
   int length;
+  int currentProgress;
   
   //Constructor initializing the values of the class variables. The constructor has default values in case a default goal is needed
-  GoalInformation([String goalName = "", String goalType = "Process Goal", int goalTypeIndex = 0, String goalDescription = "", double goalLength = 1.0, int index = 0]) {
+  GoalInformation([String goalName = "", String goalType = "Process Goal", int goalTypeIndex = 0, String goalDescription = "", double goalLength = 1.0, int index = 0, int completedDays = 0]) {
     //initialize this by default to 0
     id = index;
     name = goalName;
@@ -42,6 +44,7 @@ class GoalInformation {
     typeIndex = goalTypeIndex;
     description = goalDescription;
     length = goalLength.toInt();
+    currentProgress = completedDays;
   }
 
   // convenience constructor to create a Goal object
@@ -51,11 +54,29 @@ class GoalInformation {
     typeIndex = map[column_type_index];
     description = map[column_description];
     length = map[column_length];
+    currentProgress = map[currentProgress];
   }
 
   //Convenience function set this value
   void setId(int index) {
     id = index;
+  }
+
+  //Function to updateProgress by 1 day
+  double updateProgress() {
+    currentProgress += 1;
+    var progress = (currentProgress / length);
+    return num.parse(progress.toStringAsFixed(2));
+  }
+
+  //Retrieve progress percentage fixed to 2 decimal points
+  double getProgress() {
+    if (currentProgress == 0) {
+      return 0.0;
+    } else {
+      var progress = (currentProgress / length);
+      return num.parse(progress.toStringAsFixed(2));
+    }
   }
 
   // convenience method to create a Map from this Goal object
@@ -66,6 +87,7 @@ class GoalInformation {
       column_type_index: typeIndex,
       column_description: description,
       column_length: length,
+      column_progress: currentProgress
     };
     
       return map;
@@ -88,7 +110,6 @@ class _GoalState extends State<Goals> {
 
    Widget build(BuildContext context) {
      _read();
-     print(goals.length);
      width = MediaQuery.of(context).size.width;
     return Scaffold(
       //Creates bottom navigation and passes the index of the current page in relation to main page
@@ -114,7 +135,6 @@ class _GoalState extends State<Goals> {
                     //Need to change below
                     return InkWell(
                       onTap: () {
-                        print("YOU CLICKED!");
                         //Pass the goal information to the goalDetails.dart page
                         Navigator.push(
                           context,

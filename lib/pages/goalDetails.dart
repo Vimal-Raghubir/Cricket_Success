@@ -65,7 +65,17 @@ class _GoalDetailState extends State<GoalDetails> {
               onTap: () {
                 confirmDelete(context);
               }
-            )
+            ),
+
+            //Add a listTile to handle updating progress
+            ListTile(
+               leading: Icon(Icons.update),
+               title: Text('Update Progress'),
+               onTap: () {
+                 widget.goal.updateProgress();
+                 _updateGoal(widget.goal, widget.goal.id);
+               }                       
+            ,)
           ]
         )
       ),
@@ -81,5 +91,11 @@ class _GoalDetailState extends State<GoalDetails> {
   _deleteGoal(int id) async {
     DatabaseHelper helper = DatabaseHelper.instance;
     await helper.deleteGoal(id);
+  }
+
+  //Function to update goal for the update progress button
+  _updateGoal(GoalInformation goal, int index) async {
+    DatabaseHelper helper = DatabaseHelper.instance;
+    await helper.update(goal, index);
   }
 }

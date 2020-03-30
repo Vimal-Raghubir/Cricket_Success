@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cricket_app/pages/goals.dart';
-import 'package:cricket_app/cardDecoration/quad_clipper.dart';
+import 'package:percent_indicator/percent_indicator.dart';
+import 'package:cricket_app/database/database.dart';
 
 class CustomCard {
   double width;
+  var progress;
+  var viewProgress;
   //Colors for the different goal types
   var goalTypeColors = [Colors.blue, Colors.teal, Colors.deepOrange];
   //background colors corresponding to goal types
@@ -108,6 +111,11 @@ class CustomCard {
 
   //Used to create the display for all the goal information itself
   Widget createCustomCard(GoalInformation goal, double screenWidth) {
+
+    //Get the progress stored in the object and then multiply by 100 for viewing
+    progress = goal.getProgress();
+    viewProgress = (progress * 100).toString();
+    viewProgress += "%";
     width = screenWidth;
     return Container(
         height: 170,
@@ -155,6 +163,24 @@ class CustomCard {
                     style: TextStyle(fontSize: 14).copyWith(
                         fontSize: 12, color: Colors.black)),
                 SizedBox(height: 15),
+
+                //Putting progress text field
+                Text("Current Progress",
+                  style: TextStyle(fontSize: 14).copyWith(
+                  fontSize: 12, color: Colors.black)),
+                SizedBox(height: 5),
+
+                //Progress bar
+                LinearPercentIndicator(
+                  width: 250.0,
+                  lineHeight: 15.0,
+                  progressColor: Colors.blue,
+                  percent: progress,
+                  center: Text("$viewProgress"),
+                  animation: true,
+                ),
+                
+                SizedBox(height: 15),
                 Row(
                   children: <Widget>[
                     _chip(goal.type, goalTypeColors[goal.typeIndex], height: 5),
@@ -168,4 +194,10 @@ class CustomCard {
           ],
         ));
       }
+
+    _deleteGoal(int id) async {
+      DatabaseHelper helper = DatabaseHelper.instance;
+      //goals now stores the index of each goalInformation in the database
+      await helper.deleteGoal(id);
+  }
 }
