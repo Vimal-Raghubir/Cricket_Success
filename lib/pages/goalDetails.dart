@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cricket_app/dialogBox/dialogBox.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/pages/goals.dart';
+import 'package:cricket_app/classes/goalInformation.dart';
 
 //Used to handle the tutorial page
 class GoalDetails extends StatefulWidget {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cricket_app/pages/goals.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:cricket_app/database/database.dart';
+import 'package:cricket_app/classes/goalInformation.dart';
 
 class CustomCard {
   double width;

@@ -3,6 +3,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:cricket_app/pages/goals.dart';
+import 'package:cricket_app/classes/goalInformation.dart';
 
 // singleton class to manage the database
     class DatabaseHelper {

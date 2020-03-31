@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:cricket_app/navigation/bottom_navigation.dart';
 import 'package:cricket_app/header/header.dart';
 
-//Used to handle the Journal page
-class Journal extends StatelessWidget {
+//Used to handle the tutorial page
+class Journal extends StatefulWidget {
+  _JournalState createState() => _JournalState();
+}
+
+class _JournalState extends State<Journal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

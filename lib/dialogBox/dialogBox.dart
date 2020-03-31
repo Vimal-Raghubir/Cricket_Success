@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cricket_app/pages/goals.dart';
 import 'package:cricket_app/database/database.dart';
+import 'package:cricket_app/classes/goalInformation.dart';
 
 class MyDialog extends StatefulWidget {
   //Receives either a default goal or already built goal and stores it in passedGoal
