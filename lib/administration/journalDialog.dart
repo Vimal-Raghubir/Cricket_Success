@@ -41,10 +41,12 @@ class _MyJournalDialogState extends State<JournalDialog> {
     selectedJournalDetails = widget.passedJournal.details;
 
     if (widget.passedJournal.date != "") {
+      //Used to parse datetime object from a ISO string
       selectedJournalDate = DateTime.parse(widget.passedJournal.date);
     } else {
       selectedJournalDate = DateTime.now();
     }
+    //Allows the date to be a day after the current day
     latestDate = DateTime(currentDate.year, currentDate.month, currentDate.day + 1);
     //Retrieves a list of all journal names in the database
     _getJournalNames();
