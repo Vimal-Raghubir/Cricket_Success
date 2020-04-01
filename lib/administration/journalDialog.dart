@@ -1,36 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:cricket_app/pages/goals.dart';
 import 'package:cricket_app/database/database.dart';
-import 'package:cricket_app/classes/goalInformation.dart';
+import 'package:cricket_app/classes/journalInformation.dart';
 
-class MyDialog extends StatefulWidget {
-  //Receives either a default goal or already built goal and stores it in passedGoal
-  final passedGoal;
+class JournalDialog extends StatefulWidget {
+  //Receives either a default journal or already built journal and stores it in passedjournal
+  final passedJournal;
 
   //This describes the type of page. Either a dialog or something else
   final type;
 
-  const MyDialog({Key key, this.notifyParent, this.passedGoal, this.type}) : super(key: key);
+  const JournalDialog({Key key, this.notifyParent, this.passedJournal, this.type}) : super(key: key);
 
   @override
-  _MyDialogState createState() => new _MyDialogState();
+  _MyJournalDialogState createState() => new _MyJournalDialogState();
 
-  //This function is used to call the Goal page refresh function to setState
+  //This function is used to call the Journal page refresh function to setState
   final Function() notifyParent;
 }
 
 
-class _MyDialogState extends State<MyDialog> {
-  var selectedGoal;
-  var selectedGoalIndex;
-  var selectedGoalLength;
-  var selectedGoalName;
-  var selectedGoalDescription;
-  var currentProgress;
+class _MyJournalDialogState extends State<JournalDialog> {
+  var selectedJournalName;
+  var selectedJournalDetails;
+  String parsedDate;
+  DateTime selectedJournalDate;
+  DateTime currentDate = DateTime.now();
+  DateTime latestDate;
   //Stores all goal names for the goal name field. Used to prevent duplicate goal names
-  List goalNames = [];
+  List journalNames = [];
   int index;
-  final List<String> goalOptions = ['Process Goal', 'Performance Goal', 'Outcome Goal'];
 
   //Key used to validate form input
   final _formKey = GlobalKey<FormState>();
@@ -39,14 +37,17 @@ class _MyDialogState extends State<MyDialog> {
   @mustCallSuper
   initState() {
     //Extract passed in goal and initializes dynamic variables with their values. Starting point
-    selectedGoal = widget.passedGoal.type;
-    selectedGoalIndex = widget.passedGoal.typeIndex;
-    selectedGoalLength = widget.passedGoal.length.toDouble();
-    selectedGoalName = widget.passedGoal.name;
-    selectedGoalDescription = widget.passedGoal.description;
-    currentProgress = widget.passedGoal.currentProgress;
-    //Retrieves a list of all goalnames in the database
-    _getGoalNames();
+    selectedJournalName = widget.passedJournal.name;
+    selectedJournalDetails = widget.passedJournal.details;
+
+    if (widget.passedJournal.date != "") {
+      selectedJournalDate = DateTime.parse(widget.passedJournal.date);
+    } else {
+      selectedJournalDate = DateTime.now();
+    }
+    latestDate = DateTime(currentDate.year, currentDate.month, currentDate.day + 1);
+    //Retrieves a list of all journal names in the database
+    _getJournalNames();
   }
 
 Widget createTitle(String title) {
@@ -67,7 +68,7 @@ Widget createDropDownHeader(String dropDownMessage) {
     ),
   );
 }
-
+/*
 Widget createDropdownMenu() {
   //This is used to make the dropdown menu look like a form
   return InputDecorator(
@@ -77,7 +78,6 @@ Widget createDropdownMenu() {
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           hint: Text(selectedGoal),
-          value: selectedGoal,
           isDense: true,
           onChanged: (String newValue) {
             setState(() {
@@ -102,17 +102,17 @@ Widget createDropdownMenu() {
           ),
         ),
     );
-}
+}*/
 
-Widget createGoalNameField() {
+Widget createJournalNameField() {
   return TextFormField(
     textCapitalization: TextCapitalization.words,
     //Starts with the passed in goal as initial value
-    initialValue: widget.passedGoal.name,
+    initialValue: widget.passedJournal.name,
     keyboardType: TextInputType.text ,
     decoration: InputDecoration(
-      labelText: "What is your goal?",
-      hintText: "e.g. Work on bowling run up",
+      labelText: "What would you like to name this journal entry?",
+      hintText: "e.g. First training session",
     ),
     textInputAction: TextInputAction.next,
     //Used to validate user input
@@ -125,32 +125,32 @@ Widget createGoalNameField() {
         return 'Invalid characters detected';
       
       //Checks if the database goal names contain the passed in value to prevent duplicates and you are trying to create a new goal
-      } else if(goalNames.contains(value.toLowerCase()) && widget.type == "dialog") {
+      } else if(journalNames.contains(value.toLowerCase()) && widget.type == "dialog") {
         print("CHECK IS WORKING");
-        return 'A goal with the same name already exists';
-      //Checks if the goal name already exists in the database and the initial goal name has been modified. This guards against changing an existing goal name to another existing goal name
-      } else if (goalNames.contains(value.toLowerCase()) && widget.passedGoal.name != value) {
-        return 'An existing goal has that name';
+        return 'A journal with the same name already exists';
+      //Checks if the journal name already exists in the database and the initial journal name has been modified. This guards against changing an existing journal name to another existing journal name
+      } else if (journalNames.contains(value.toLowerCase()) && widget.passedJournal.name != value) {
+        return 'An existing journal has that name';
       } else {
         return null;
       }
     },
-    onSaved: (value)=> selectedGoalName = value,
+    onSaved: (value)=> selectedJournalName = value,
   );
 }
 
-Widget createDescriptionField() {
+Widget createDetailField() {
   return TextFormField(
     textCapitalization: TextCapitalization.words,
-    //Start with passed in goal description
-    initialValue: widget.passedGoal.description,
+    //Start with passed in goal details
+    initialValue: widget.passedJournal.details,
     keyboardType: TextInputType.text ,
     decoration: InputDecoration(
-      labelText: "Any additional details?",
+      labelText: "How was your session? How did you feel? State 3 positives and 1 area you need to work on more from this session.",
     ),
     textInputAction: TextInputAction.next,
     validator: (value) {
-      RegExp regex = new RegExp(r"^[a-zA-Z0-9\s]*$");
+      RegExp regex = new RegExp(r"^[a-zA-Z0-9.\s]*$");
       if (value.isEmpty) {
         return 'Please enter a value';
       } else if(!regex.hasMatch(value)) {
@@ -160,7 +160,7 @@ Widget createDescriptionField() {
         return null;
       }
     },
-    onSaved: (value)=> selectedGoalDescription = value,
+    onSaved: (value)=> selectedJournalDetails = value,
   );
 }
 
@@ -168,24 +168,28 @@ Widget dayPickerHeader() {
   return Container(
     padding: const EdgeInsets.symmetric(vertical: 12),
     child: Text(
-      'How many days do you think before you can achieve this goal?',
+      'When did this session take place?',
       softWrap: true,
     ),
   );
 }
-Widget dayPicker() {
-  return Slider(
-    value: selectedGoalLength,
-    onChanged: (newRating) {
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: selectedJournalDate,
+        firstDate: DateTime(2019, 1),
+        lastDate: latestDate);
+    if (picked != null && picked != selectedJournalDate)
       setState(() {
-        selectedGoalLength = newRating;
+        selectedJournalDate = picked;
       });
-    },
-    min: 1.0,
-    max: 365.0,
-    //Divisions help to show a label above the slider
-    divisions: 91,
-    label: "$selectedGoalLength",
+  }
+
+Widget dateButton(BuildContext context) {
+  return RaisedButton(
+    onPressed: () => _selectDate(context),
+      child: Text('Select date'),
   );
 }
 
@@ -197,21 +201,23 @@ Widget submitButton(String buttonText) {
       // Validate returns true if the form is valid
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
-        //Create a new goal object with the parameters
-        GoalInformation newGoal = new GoalInformation(selectedGoalName, selectedGoal, selectedGoalIndex, selectedGoalDescription, selectedGoalLength, currentProgress);
+        //Have to parse the datetime object to ISO string to be saved in the database
+        parsedDate = selectedJournalDate.toIso8601String();
+        //Create a new journal object with the parameters
+        JournalInformation newJournal = new JournalInformation(selectedJournalName, selectedJournalDetails, parsedDate);
         if (buttonText == "Submit") {
-            //Insert the newGoal into the database
-          _save(newGoal);
-          //Calls the function in the goals.dart class to refresh the goals page with setState. This is used to fix cards not appearing on the goals page after submitting this form
+            //Insert the new Journal into the database
+          _save(newJournal);
+          //Calls the function in the journals.dart class to refresh the journal page with setState. This is used to fix cards not appearing on the journal page after submitting this form
           widget.notifyParent();
-          //Navigates back to the previous page and in this case the goals page
+          //Navigates back to the previous page and in this case the journal page
           Navigator.pop(context);
         } else if (buttonText == "Update") {
-          //Retrieve the index of the passed in goal
+          //Retrieve the index of the passed in journal
           index = widget.notifyParent();
-          //Updates goal with newGoal content and id
-          _updateGoal(newGoal, index);
-          //Goes back to previous page which in this case is goals.dart
+          //Updates goal with newJournal content and id
+          _updateJournal(newJournal, index);
+          //Goes back to previous page which in this case is journals.dart
           Navigator.pop(context);
         } 
       }                     
@@ -222,31 +228,30 @@ Widget submitButton(String buttonText) {
 }
 
 //This widget is responsible for creating all the contents of the form
-Widget createDialogForm(String title, String dropdownMessage, String buttonText) {
+Widget createDialogForm(String title,String buttonText) {
   return Column(
     children: <Widget>[
       createTitle(title),
-      createDropDownHeader(dropdownMessage),
-      createDropdownMenu(),
-      createGoalNameField(),
-      createDescriptionField(),
+      //createDropDownHeader(dropdownMessage),
+      //createDropdownMenu(),
+      createJournalNameField(),
+      createDetailField(),
       dayPickerHeader(),
-      //This is a slider used to handle the number of days for a goal
-      dayPicker(),
+      dateButton(context),
       submitButton(buttonText),    
     ],
   );
 }
   
   Widget build(BuildContext context) {
-    //If the passed in widget type is a dialog then the call is being made from goals.dart
+    //If the passed in widget type is a dialog then the call is being made from journals.dart
     if (widget.type == "dialog") {
       return SimpleDialog(
         children: <Widget>[
           Form(
             key: _formKey,
             //Pass in correct variables for assignment
-            child: createDialogForm("New Goal", "What kind of goal would you like to create?", "Submit")
+            child: createDialogForm("New Journal", "Submit")
           ),
         ],
       );
@@ -256,30 +261,30 @@ Widget createDialogForm(String title, String dropdownMessage, String buttonText)
         children: <Widget>[
           Form(
             key: _formKey,
-            child: createDialogForm("Update Goal", "Do you want to change the type of goal?", "Update")
+            child: createDialogForm("Update Journal", "Update")
           )
       ],
       );  
     }
   }
-  //Function to insert a goal into the database
-  _save(GoalInformation goal) async {
+  //Function to insert a  journal into the database
+  _save(JournalInformation journal) async {
     DatabaseHelper helper = DatabaseHelper.instance;
-    int id = await helper.insert(goal);
+    int id = await helper.insertJournal(journal);
     print('inserted row: $id');
   }
 
 
 
-  //Function to retrieve a goal by id and update in the database
-  _updateGoal(GoalInformation goal, int index) async {
+  //Function to retrieve a journal by id and update in the database
+  _updateJournal(JournalInformation journal, int index) async {
     DatabaseHelper helper = DatabaseHelper.instance;
-    await helper.update(goal, index);
+    await helper.updateJournal(journal, index);
   }
 
-  //Function to get all goal names in the database
-  _getGoalNames() async {
+  //Function to get all journal names in the database
+  _getJournalNames() async {
     DatabaseHelper helper = DatabaseHelper.instance;
-    goalNames = await helper.getGoalNames();
+    journalNames = await helper.getJournalNames();
   }
 }        

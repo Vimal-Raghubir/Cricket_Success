@@ -3,6 +3,7 @@ import 'package:cricket_app/pages/goals.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/classes/goalInformation.dart';
+import 'package:cricket_app/classes/journalInformation.dart';
 
 class CustomCard {
   double width;
@@ -111,7 +112,7 @@ class CustomCard {
   }
 
   //Used to create the display for all the goal information itself
-  Widget createCustomCard(GoalInformation goal, double screenWidth) {
+  Widget createCustomGoalCard(GoalInformation goal, double screenWidth) {
 
     //Get the progress stored in the object and then multiply by 100 for viewing
     progress = goal.getProgress();
@@ -195,6 +196,88 @@ class CustomCard {
           ],
         ));
       }
+
+  //Used to create the display for all the journal information itself
+  Widget createCustomJournalCard(JournalInformation journal, double screenWidth) {
+
+    width = screenWidth;
+    return Container(
+        height: 170,
+        width: width - 20,
+        child: Row(
+          children: <Widget>[
+            AspectRatio(
+              aspectRatio: .7,
+              child: _card(primaryColor: Colors.blue, backWidget: _decorationContainerJournal()),
+            ),
+            Expanded(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(height: 15),
+                Container(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(journal.name,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                      CircleAvatar(
+                        radius: 3,
+                        backgroundColor: Colors.blue,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(journal.date.toString(),
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14,
+                          )),
+                      SizedBox(width: 10)
+                    ],
+                  ),
+                ),
+                SizedBox(height: 15),
+                Text(journal.details,
+                    style: TextStyle(fontSize: 14).copyWith(
+                        fontSize: 12, color: Colors.black)),
+                SizedBox(height: 15),
+             
+                SizedBox(height: 15),
+                /*Row(
+                  children: <Widget>[
+                    _chip(journal.journalNames[0], Colors.blue, height: 5),
+                    SizedBox(
+                      width: 10,
+                    ),
+                  ],
+                )*/
+              ],
+            ))
+          ],
+        ));
+      }
+
+          //Used to render the Outcome Goal card
+    Widget _decorationContainerJournal() {
+    return Stack(
+      children: <Widget>[
+        //This is used to render the outcome.jpg image instead of previous card decoration
+        Positioned(
+          top: 0,
+          bottom: 0,
+          right: 0,
+          left: 0,
+          child: Image.asset('assets/images/non-colored/outcome.jpg'),
+        ),
+      ],
+    );
+  }
 
     _deleteGoal(int id) async {
       DatabaseHelper helper = DatabaseHelper.instance;

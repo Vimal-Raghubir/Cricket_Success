@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:cricket_app/administration/goalDialog.dart';
+import 'package:cricket_app/administration/journalDialog.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/pages/goals.dart';
-import 'package:cricket_app/classes/goalInformation.dart';
+import 'package:cricket_app/classes/journalInformation.dart';
+import 'package:cricket_app/cardDecoration/customCard.dart';
 
 //Used to handle the tutorial page
-class GoalDetails extends StatefulWidget {
+class JournalDetails extends StatefulWidget {
 
   //Stores passed in goal information in goal variable
-  final goal;
+  final journal;
 
-  const GoalDetails({Key key, this.goal}) : super(key: key);
+  const JournalDetails({Key key, this.journal}) : super(key: key);
   
-  _GoalDetailState createState() => _GoalDetailState();
+  _JournalDetailState createState() => _JournalDetailState();
 }
 
-class _GoalDetailState extends State<GoalDetails> {
+class _JournalDetailState extends State<JournalDetails> {
   //Will return the goal id
   getId() {
     //This stores the passed in goal's id from the goals.dart page
-    return widget.goal.id;
+    return widget.journal.id;
   }
 
 
@@ -37,7 +38,7 @@ class _GoalDetailState extends State<GoalDetails> {
            },),
            //Will delete the goal and pop back to the goals page
            FlatButton(child: Text("Yes"), onPressed: () {
-             _deleteGoal(widget.goal.id);
+             _deleteJournal(widget.journal.id);
              Navigator.push(context, MaterialPageRoute(builder: (context) => Goals()));
            },),
           ],
@@ -72,8 +73,8 @@ class _GoalDetailState extends State<GoalDetails> {
                leading: Icon(Icons.update),
                title: Text('Update Progress'),
                onTap: () {
-                 widget.goal.updateProgress();
-                 _updateGoal(widget.goal, widget.goal.id);
+                 widget.journal.updateProgress();
+                 _updateJournal(widget.journal, widget.journal.id);
                }                       
             ,)
           ]
@@ -83,19 +84,19 @@ class _GoalDetailState extends State<GoalDetails> {
       resizeToAvoidBottomPadding: false,
       body: Container(
         //Create a form using dialogBox.dart implementation but not a dialog box.
-        child: GoalDialog(notifyParent: getId, passedGoal: widget.goal, type: "detail"),
+        child: JournalDialog(notifyParent: getId, passedJournal: widget.journal, type: "detail"),
       )
     );
   }
 
-  _deleteGoal(int id) async {
+  _deleteJournal(int id) async {
     DatabaseHelper helper = DatabaseHelper.instance;
-    await helper.deleteGoal(id);
+    await helper.deleteJournal(id);
   }
 
   //Function to update goal for the update progress button
-  _updateGoal(GoalInformation goal, int index) async {
+  _updateJournal(JournalInformation journal, int index) async {
     DatabaseHelper helper = DatabaseHelper.instance;
-    await helper.updateGoal(goal, index);
+    await helper.updateJournal(journal, index);
   }
 }

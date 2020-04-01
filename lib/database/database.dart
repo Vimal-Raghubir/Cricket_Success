@@ -2,14 +2,14 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:cricket_app/pages/goals.dart';
 import 'package:cricket_app/classes/goalInformation.dart';
+import 'package:cricket_app/classes/journalInformation.dart';
 
 // singleton class to manage the database
     class DatabaseHelper {
 
       // This is the actual database filename that is saved in the docs directory.
-      static final _databaseName = "custom_database.db";
+      static final _databaseName = "dynamic_database.db";
       // Increment this version when you need to change the schema.
       static final _databaseVersion = 1;
 
@@ -40,19 +40,90 @@ import 'package:cricket_app/classes/goalInformation.dart';
       Future _onCreate(Database db, int version) async {
         await db.execute('''
               CREATE TABLE $tableGoals (
-                $column_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                $column_name TEXT NOT NULL,
+                $column_goal_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                $column_goal_name TEXT NOT NULL,
                 $column_type TEXT NOT NULL,
                 $column_type_index INTEGER NOT NULL,
                 $column_description TEXT NOT NULL,
                 $column_length INTEGER NOT NULL,
                 $column_progress INTEGER NOT NULL
               )''');
+
+        await db.execute('''
+              CREATE TABLE $tableJournals (
+                $column_journal_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                $column_journal_name TEXT NOT NULL,
+                $column_details TEXT NOT NULL,
+                $column_date TEXT NOT NULL
+              )''');
+      }
+      // Database helper methods for Journals:
+
+      //Handles inserting a journal
+      Future<int> insertJournal(JournalInformation journal) async {
+        Database db = await database;
+        int id = await db.insert(tableJournals, journal.toMap());
+        return id;
       }
 
-      // Database helper methods:
+      //Function to query only one journal from the list
+      Future<JournalInformation> queryJournal(int id) async {
+        Database db = await database;
+        List<Map> maps = await db.query(tableJournals,
+            columns: [column_journal_id, column_journal_name, column_details, column_date],
+            where: '$column_journal_id = ?',
+            whereArgs: [id]);
+        if (maps.length > 0) {
+          return JournalInformation.fromMap(maps.first);
+        }
+        return null;
+      }
 
-      Future<int> insert(GoalInformation goal) async {
+      //Get all journals in the database
+      Future<List<JournalInformation>> getJournals() async {
+        Database db = await database;
+        final List<Map<String, dynamic>> maps = await db.query(tableJournals);
+        return List.generate(maps.length, (i) {
+          //Returns the column index along with the other fields since the journalinformation class has an id field
+          return JournalInformation(maps[i][column_journal_name], maps[i][column_details], maps[i][column_date], maps[i][column_journal_id]);
+        });
+      }
+
+      //Function to retrieve all journal names from the database
+      Future<List> getJournalNames() async {
+        Database db = await database;
+        var maps = await db.query(tableJournals, columns: [column_journal_name]);
+        return List.generate(maps.length, (i) {
+          return maps[i][column_journal_name].toLowerCase();
+        });
+      }
+
+            //Function to update a specific journal based on unique goal id
+      Future<void> updateJournal(JournalInformation journal, int index) async {
+        // Get a reference to the database.
+        final db = await database;
+
+        // Update the given Journal.
+        await db.update(
+          tableJournals,
+          journal.toMap(),
+          // Ensure that the Journal has a matching id.
+          where: "$column_journal_id = ?",
+          // Pass the Journal's id as a whereArg to prevent SQL injection.
+          whereArgs: [index],
+        );
+      }
+
+      //Handles the deletion of a journal object 
+      Future<int> deleteJournal(int id) async {
+        final db = await database;
+        return await db.delete(tableJournals, where: '$column_journal_id = ?', whereArgs: [id]);
+      }
+      
+      // Database helper methods for Goals:
+
+      //Handles inserting a goal
+      Future<int> insertGoal(GoalInformation goal) async {
         Database db = await database;
         int id = await db.insert(tableGoals, goal.toMap());
         return id;
@@ -62,8 +133,8 @@ import 'package:cricket_app/classes/goalInformation.dart';
       Future<GoalInformation> queryGoal(int id) async {
         Database db = await database;
         List<Map> maps = await db.query(tableGoals,
-            columns: [column_id, column_name, column_type, column_type_index, column_description, column_length, column_progress],
-            where: '$column_id = ?',
+            columns: [column_goal_id, column_goal_name, column_type, column_type_index, column_description, column_length, column_progress],
+            where: '$column_goal_id = ?',
             whereArgs: [id]);
         if (maps.length > 0) {
           return GoalInformation.fromMap(maps.first);
@@ -77,21 +148,21 @@ import 'package:cricket_app/classes/goalInformation.dart';
         final List<Map<String, dynamic>> maps = await db.query(tableGoals);
         return List.generate(maps.length, (i) {
           //Returns the column index along with the other fields since the goalinformation class has an id field
-          return GoalInformation(maps[i][column_name], maps[i][column_type], maps[i][column_type_index], maps[i][column_description], maps[i][column_length].toDouble(), maps[i][column_progress], maps[i][column_id]);
+          return GoalInformation(maps[i][column_goal_name], maps[i][column_type], maps[i][column_type_index], maps[i][column_description], maps[i][column_length].toDouble(), maps[i][column_progress], maps[i][column_goal_id]);
         });
       }
 
       //Function to retrieve all goal names from the database
       Future<List> getGoalNames() async {
         Database db = await database;
-        var maps = await db.query(tableGoals, columns: [column_name]);
+        var maps = await db.query(tableGoals, columns: [column_goal_name]);
         return List.generate(maps.length, (i) {
-          return maps[i][column_name].toLowerCase();
+          return maps[i][column_goal_name].toLowerCase();
         });
       }
       
       //Function to update a specific goal based on unique goal id
-      Future<void> update(GoalInformation goal, int index) async {
+      Future<void> updateGoal(GoalInformation goal, int index) async {
         // Get a reference to the database.
         final db = await database;
 
@@ -100,16 +171,16 @@ import 'package:cricket_app/classes/goalInformation.dart';
           tableGoals,
           goal.toMap(),
           // Ensure that the Goal has a matching id.
-          where: "$column_id = ?",
+          where: "$column_goal_id = ?",
           // Pass the Goal's id as a whereArg to prevent SQL injection.
           whereArgs: [index],
         );
       }
 
-      //GoalInformation goal, 
+      //Handles the deletion of a goal object 
       Future<int> deleteGoal(int id) async {
         final db = await database;
-        return await db.delete(tableGoals, where: '$column_id = ?', whereArgs: [id]);
+        return await db.delete(tableGoals, where: '$column_goal_id = ?', whereArgs: [id]);
         //return await db.delete(tableGoals, where: '$column_name = ?', whereArgs: [goal.name]);
       }
 }

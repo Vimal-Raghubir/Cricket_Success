@@ -2,8 +2,8 @@ import 'package:cricket_app/pages/goals.dart';
 
 // database table and column names
 final String tableGoals = 'Goals';
-final String column_id = 'ID';
-final String column_name = 'Name';
+final String column_goal_id = 'ID';
+final String column_goal_name = 'Name';
 final String column_type = 'Type';
 final String column_type_index = 'Type_Index';
 final String column_description = 'Description';
@@ -35,7 +35,7 @@ class GoalInformation {
 
   // convenience constructor to create a Goal object
   GoalInformation.fromMap(Map<String, dynamic> map) {
-    name = map[column_name];
+    name = map[column_goal_name];
     type = map[column_type];
     typeIndex = map[column_type_index];
     description = map[column_description];
@@ -68,7 +68,7 @@ class GoalInformation {
   // convenience method to create a Map from this Goal object
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
-      column_name: name,
+      column_goal_name: name,
       column_type: type,
       column_type_index: typeIndex,
       column_description: description,

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cricket_app/navigation/bottom_navigation.dart';
 import 'package:cricket_app/header/header.dart';
 import 'package:cricket_app/cardDecoration/customCard.dart';
-import 'package:cricket_app/dialogBox/dialogBox.dart';
+import 'package:cricket_app/administration/goalDialog.dart';
 import 'package:cricket_app/database/database.dart';
 import 'dart:async';
 import 'package:path/path.dart';
@@ -128,7 +128,7 @@ class _GoalState extends State<Goals> {
                         //Add other logic here
                       },
                       //Render custom card for each goal
-                      child: CustomCard().createCustomCard(goals[index], width),
+                      child: CustomCard().createCustomGoalCard(goals[index], width),
                     );  
                   }
                 )
@@ -144,7 +144,7 @@ class _GoalState extends State<Goals> {
             builder: (_) {
               //Passes a function pointer to my custom dialog class so the dialog class can call setState on this page.
               GoalInformation defaultGoal = new GoalInformation();
-              return MyDialog(notifyParent: refresh, passedGoal: defaultGoal, type: "dialog");
+              return GoalDialog(notifyParent: refresh, passedGoal: defaultGoal, type: "dialog");
             });
         },
         child: Icon(Icons.add),
