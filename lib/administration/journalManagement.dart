@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/classes/journalInformation.dart';
+import 'package:cricket_app/pages/journal.dart';
 import 'package:intl/intl.dart';
 import 'package:toast/toast.dart';
 
-class JournalDialog extends StatefulWidget {
+class JournalManagement extends StatefulWidget {
   //Receives either a default journal or already built journal and stores it in passedjournal
   final passedJournal;
 
-  //This describes the type of page. Either a dialog or something else
+  //This describes the type of page. Either a new journal or existing journal
   final type;
 
-  const JournalDialog({Key key, this.notifyParent, this.passedJournal, this.type}) : super(key: key);
+  const JournalManagement({Key key, this.notifyParent, this.passedJournal, this.type}) : super(key: key);
 
   @override
-  _MyJournalDialogState createState() => new _MyJournalDialogState();
+  _MyJournalManagementState createState() => new _MyJournalManagementState();
 
   //This function is used to call the Journal page refresh function to setState
   final Function() notifyParent;
 }
 
 
-class _MyJournalDialogState extends State<JournalDialog> {
+class _MyJournalManagementState extends State<JournalManagement> {
   var selectedJournalName;
   var selectedJournalDetails;
   String parsedDate;
@@ -55,14 +56,6 @@ class _MyJournalDialogState extends State<JournalDialog> {
     //Retrieves a list of all journal names in the database
     _getJournalNames();
   }
-
-Widget createTitle(String title) {
-  //Allows a title to be passed in dynamically
-  return Text(title,
-    style: TextStyle(fontSize: 18.0,fontWeight: FontWeight.bold, color: Colors.black),
-    textAlign: TextAlign.center,
-  );
-}
 
 Widget createDropDownHeader(String dropDownMessage) {
   //Allows dynamic dropdown header
@@ -131,7 +124,7 @@ Widget createJournalNameField() {
         return 'Invalid characters detected';
       
       //Checks if the database journal names contain the passed in value to prevent duplicates and you are trying to create a new journal
-      } else if(journalNames.contains(value.toLowerCase()) && widget.type == "dialog") {
+      } else if(journalNames.contains(value.toLowerCase()) && widget.type == "new") {
         print("CHECK IS WORKING");
         return 'A journal with the same name already exists';
       //Checks if the journal name already exists in the database and the initial journal name has been modified. This guards against changing an existing journal name to another existing journal name
@@ -152,7 +145,7 @@ Widget createDetailField() {
     initialValue: widget.passedJournal.details,
     keyboardType: TextInputType.text ,
     decoration: InputDecoration(
-      labelText: "How was your session? How did you feel? State 3 positives and 1 area you need to work on more from this session.",
+      labelText: "How was your session? How did you feel?",
     ),
     textInputAction: TextInputAction.next,
     validator: (value) {
@@ -240,18 +233,79 @@ Widget submitButton(String buttonText) {
   );
 }
 
+ //Alert box to confirm deletion of a journal
+  void confirmDelete(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Are you sure you want to delete this journal?"),
+          content: Text("This action cannot be undone."),
+          actions: [
+           FlatButton(child: Text("No"), onPressed: () {
+             Navigator.pop(context);
+           },),
+           //Will delete the journal and pop back to the journals page
+           FlatButton(child: Text("Yes"), onPressed: () {
+             _deleteJournal(widget.passedJournal.id);
+             Navigator.push(context, MaterialPageRoute(builder: (context) => Journal()));
+             Toast.show("Successfully deleted your journal entry!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+           },),
+          ],
+          elevation: 24.0,
+          backgroundColor: Colors.white,
+        );
+      }
+    );
+  }
+
+
+Widget deleteButton(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 16.0),
+    child: RaisedButton(
+      onPressed: () {
+        confirmDelete(context);
+      },
+      child: Text("Delete")
+    )
+    
+  );
+}
+
 //This widget is responsible for creating all the contents of the form
-Widget createDialogForm(String title,String buttonText) {
+Widget newPage() {
   return Column(
     children: <Widget>[
-      createTitle(title),
       //createDropDownHeader(dropdownMessage),
       //createDropdownMenu(),
       createJournalNameField(),
       createDetailField(),
       dayPickerHeader(),
       dateButton(context),
-      submitButton(buttonText),    
+      submitButton("Submit"),    
+    ],
+  );
+}
+
+//This widget is responsible for creating all the contents of the form
+Widget updatePage(BuildContext context) {
+  return Column(
+    children: <Widget>[
+      //createDropDownHeader(dropdownMessage),
+      //createDropdownMenu(),
+      createJournalNameField(),
+      createDetailField(),
+      dayPickerHeader(),
+      dateButton(context),
+      ButtonBar(
+        alignment: MainAxisAlignment.center,
+        children: <Widget> [
+          deleteButton(context),
+          submitButton("Update")
+        ]
+      ),
+        
     ],
   );
 }
@@ -259,24 +313,24 @@ Widget createDialogForm(String title,String buttonText) {
   Widget build(BuildContext context) {
     var formatter = new DateFormat('MMMM dd,yyyy');
     dateDisplay = formatter.format(selectedJournalDate);
-    //If the passed in widget type is a dialog then the call is being made from journals.dart
-    if (widget.type == "dialog") {
-      return SimpleDialog(
+    //If the passed in widget type is a new journal then the call is being made from journals.dart
+    if (widget.type == "new") {
+      return Column(
         children: <Widget>[
           Form(
             key: _formKey,
             //Pass in correct variables for assignment
-            child: createDialogForm("New Journal", "Submit")
+            child: newPage()
           ),
         ],
       );
-    // If the passed in widget type is not a dialog then it comes from journalDetails.dart
+    // If the passed in widget type is not a new journal then it comes from journalDetails.dart
     } else {
       return Column(
         children: <Widget>[
           Form(
             key: _formKey,
-            child: createDialogForm("Update Journal", "Update")
+            child: updatePage(context)
           )
       ],
       );  
@@ -301,5 +355,10 @@ Widget createDialogForm(String title,String buttonText) {
   _getJournalNames() async {
     DatabaseHelper helper = DatabaseHelper.instance;
     journalNames = await helper.getJournalNames();
+  }
+
+    _deleteJournal(int id) async {
+    DatabaseHelper helper = DatabaseHelper.instance;
+    await helper.deleteJournal(id);
   }
 }        

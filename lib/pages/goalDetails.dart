@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cricket_app/administration/goalDialog.dart';
+import 'package:cricket_app/administration/goalManagement.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/pages/goals.dart';
 import 'package:cricket_app/classes/goalInformation.dart';
@@ -57,7 +57,7 @@ class _GoalDetailState extends State<GoalDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       //Appbar is needed for drawer and back button
-      appBar: AppBar(backgroundColor: Colors.lime, title: Text("              Goal Details")),
+      appBar: AppBar(backgroundColor: Colors.lime, title: Text("              Update Goal")),
       endDrawer: Drawer(
         child: ListView(
           children: <Widget>[
@@ -97,7 +97,7 @@ class _GoalDetailState extends State<GoalDetails> {
       resizeToAvoidBottomPadding: false,
       body: Container(
         //Create a form using dialogBox.dart implementation but not a dialog box.
-        child: GoalDialog(notifyParent: getId, passedGoal: widget.goal, type: "detail"),
+        child: GoalManagement(notifyParent: getId, passedGoal: widget.goal, type: "detail"),
       )
     );
   }

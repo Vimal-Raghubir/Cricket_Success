@@ -1,14 +1,11 @@
 import 'package:cricket_app/pages/goalDetails.dart';
+import 'package:cricket_app/pages/createGoal.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cricket_app/navigation/bottom_navigation.dart';
 import 'package:cricket_app/header/header.dart';
 import 'package:cricket_app/cardDecoration/customCard.dart';
-import 'package:cricket_app/administration/goalDialog.dart';
 import 'package:cricket_app/database/database.dart';
-import 'dart:async';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:cricket_app/classes/goalInformation.dart';
 
 //Global list of goals that is updated by the dialogBox.dart file
@@ -23,14 +20,19 @@ class _GoalState extends State<Goals> {
   final List<String> goalOptions = ['Process Goal', 'Performance Goal', 'Outcome Goal'];
   double width;
 
+  initState() {
+    refresh();
+    print(goals.length);
+  }
+
   //Function that is called in the dialogBox.dart file to refresh this page and render the goals after submitting a form
   refresh() {
-    setState(() {});
     _read();
+    setState(() {});
   }
 
    Widget build(BuildContext context) {
-     _read();
+     refresh();
      width = MediaQuery.of(context).size.width;
     return Scaffold(
       //Creates bottom navigation and passes the index of the current page in relation to main page
@@ -114,9 +116,9 @@ class _GoalState extends State<Goals> {
                   itemBuilder: (BuildContext ctxt, int index) {
                     //Need to change below
                     return InkWell(
-                      onTap: () {
+                      onTap: () async {
                         //Pass the goal information to the goalDetails.dart page
-                        Navigator.push(
+                        await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => GoalDetails(
@@ -125,6 +127,9 @@ class _GoalState extends State<Goals> {
                             )
                           ),
                         );
+                        setState(() {
+                          refresh();
+                        });
                         //Add other logic here
                       },
                       //Render custom card for each goal
@@ -137,15 +142,16 @@ class _GoalState extends State<Goals> {
           ),
         ),
       floatingActionButton: FloatingActionButton (
-        onPressed: () {
-          //Creates the dialog whenever the button is pressed
-          showDialog(
-            context: context,
-            builder: (_) {
-              //Passes a function pointer to my custom dialog class so the dialog class can call setState on this page.
-              GoalInformation defaultGoal = new GoalInformation();
-              return GoalDialog(notifyParent: refresh, passedGoal: defaultGoal, type: "dialog");
-            });
+        onPressed: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => NewGoal(
+                //Helps to prevent range issues
+                goal: GoalInformation(),
+              )
+            ),
+          );
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.green,

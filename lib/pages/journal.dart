@@ -1,4 +1,5 @@
-import 'package:cricket_app/administration/journalDialog.dart';
+import 'package:cricket_app/administration/journalManagement.dart';
+import 'package:cricket_app/pages/createjournal.dart';
 import 'package:flutter/material.dart';
 import 'package:cricket_app/navigation/bottom_navigation.dart';
 import 'package:cricket_app/header/header.dart';
@@ -73,15 +74,16 @@ class _JournalState extends State<Journal> {
       ),
 
       floatingActionButton: FloatingActionButton (
-        onPressed: () {
-          //Creates the dialog whenever the button is pressed
-          showDialog(
-            context: context,
-            builder: (_) {
-              //Passes a function pointer to my custom dialog class so the dialog class can call setState on this page.
-              JournalInformation defaultJournal = new JournalInformation();
-              return JournalDialog(notifyParent: refresh, passedJournal: defaultJournal, type: "dialog");
-            });
+        onPressed: () async {
+          await Navigator.push(
+            context,
+              MaterialPageRoute(
+                builder: (context) => NewJournal(
+                  //Helps to prevent range issues
+                  journal: JournalInformation(),
+                )
+              ),
+          );
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.green,

@@ -4,24 +4,24 @@ import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/classes/goalInformation.dart';
 import 'package:toast/toast.dart';
 
-class GoalDialog extends StatefulWidget {
+class GoalManagement extends StatefulWidget {
   //Receives either a default goal or already built goal and stores it in passedGoal
   final passedGoal;
 
   //This describes the type of page. Either a dialog or something else
   final type;
 
-  const GoalDialog({Key key, this.notifyParent, this.passedGoal, this.type}) : super(key: key);
+  const GoalManagement({Key key, this.notifyParent, this.passedGoal, this.type}) : super(key: key);
 
   @override
-  _MyGoalDialogState createState() => new _MyGoalDialogState();
+  _MyGoalManagementState createState() => new _MyGoalManagementState();
 
   //This function is used to call the Goal page refresh function to setState
   final Function() notifyParent;
 }
 
 
-class _MyGoalDialogState extends State<GoalDialog> {
+class _MyGoalManagementState extends State<GoalManagement> {
   var selectedGoal;
   var selectedGoalIndex;
   var selectedGoalLength;
@@ -49,14 +49,6 @@ class _MyGoalDialogState extends State<GoalDialog> {
     //Retrieves a list of all goalnames in the database
     _getGoalNames();
   }
-
-Widget createTitle(String title) {
-  //Allows a title to be passed in dynamically
-  return Text(title,
-    style: TextStyle(fontSize: 18.0,fontWeight: FontWeight.bold, color: Colors.black),
-    textAlign: TextAlign.center,
-  );
-}
 
 Widget createDropDownHeader(String dropDownMessage) {
   //Allows dynamic dropdown header
@@ -126,7 +118,7 @@ Widget createGoalNameField() {
         return 'Invalid characters detected';
       
       //Checks if the database goal names contain the passed in value to prevent duplicates and you are trying to create a new goal
-      } else if(goalNames.contains(value.toLowerCase()) && widget.type == "dialog") {
+      } else if(goalNames.contains(value.toLowerCase()) && widget.type == "new") {
         print("CHECK IS WORKING");
         return 'A goal with the same name already exists';
       //Checks if the goal name already exists in the database and the initial goal name has been modified. This guards against changing an existing goal name to another existing goal name
@@ -151,7 +143,7 @@ Widget createDescriptionField() {
     ),
     textInputAction: TextInputAction.next,
     validator: (value) {
-      RegExp regex = new RegExp(r"^[a-zA-Z0-9\s]*$");
+      RegExp regex = new RegExp(r"^[a-zA-Z0-9.\s]*$");
       if (value.isEmpty) {
         return 'Please enter a value';
       } else if(!regex.hasMatch(value)) {
@@ -226,42 +218,105 @@ Widget submitButton(String buttonText) {
   );
 }
 
+  //Alert box to confirm deletion of a goal
+  void confirmDelete(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Are you sure you want to delete this goal?"),
+          content: Text("This action cannot be undone."),
+          actions: [
+           FlatButton(child: Text("No"), onPressed: () {
+             Navigator.pop(context);
+           },),
+           //Will delete the goal and pop back to the goals page
+           FlatButton(child: Text("Yes"), onPressed: () {
+             _deleteGoal(widget.passedGoal.id);
+             Navigator.push(context, MaterialPageRoute(builder: (context) => Goals()));
+             Toast.show("Successfully deleted this goal!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+           },),
+          ],
+          elevation: 24.0,
+          backgroundColor: Colors.white,
+          //shape: CircleBorder(),
+        );
+      }
+
+    
+    );
+  }
+
+Widget deleteButton(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 16.0),
+    child: RaisedButton(
+      onPressed: () {
+        confirmDelete(context);
+      },
+      child: Text("Delete")
+    )
+    
+  );
+}
+
 //This widget is responsible for creating all the contents of the form
-Widget createDialogForm(String title, String dropdownMessage, String buttonText) {
+Widget newPage() {
   return Column(
     children: <Widget>[
-      createTitle(title),
-      createDropDownHeader(dropdownMessage),
+      createDropDownHeader("What kind of goal would you like to create?"),
       createDropdownMenu(),
       createGoalNameField(),
       createDescriptionField(),
       dayPickerHeader(),
       //This is a slider used to handle the number of days for a goal
       dayPicker(),
-      submitButton(buttonText),    
+      submitButton("Submit"),    
+    ],
+  );
+}
+
+//This widget is responsible for creating all the contents of the form
+Widget updatePage() {
+  return Column(
+    children: <Widget>[
+      createDropDownHeader("Do you want to change the type of goal?"),
+      createDropdownMenu(),
+      createGoalNameField(),
+      createDescriptionField(),
+      dayPickerHeader(),
+      //This is a slider used to handle the number of days for a goal
+      dayPicker(),
+      ButtonBar(
+        alignment: MainAxisAlignment.center,
+        children: <Widget> [
+          deleteButton(context),
+          submitButton("Update")
+        ]
+      ),    
     ],
   );
 }
   
   Widget build(BuildContext context) {
-    //If the passed in widget type is a dialog then the call is being made from goals.dart
-    if (widget.type == "dialog") {
-      return SimpleDialog(
+    //If the passed in widget type is a new goal then the call is being made from goals.dart
+    if (widget.type == "new") {
+      return Column(
         children: <Widget>[
           Form(
             key: _formKey,
             //Pass in correct variables for assignment
-            child: createDialogForm("New Goal", "What kind of goal would you like to create?", "Submit")
+            child: newPage()
           ),
         ],
       );
-    // If the passed in widget type is not a dialog then it comes from goalDetails.dart
+    // If the passed in widget type is not a new goal then it comes from goalDetails.dart
     } else {
       return Column(
         children: <Widget>[
           Form(
             key: _formKey,
-            child: createDialogForm("Update Goal", "Do you want to change the type of goal?", "Update")
+            child: updatePage()
           )
       ],
       );  
@@ -286,5 +341,10 @@ Widget createDialogForm(String title, String dropdownMessage, String buttonText)
   _getGoalNames() async {
     DatabaseHelper helper = DatabaseHelper.instance;
     goalNames = await helper.getGoalNames();
+  }
+
+  _deleteGoal(int id) async {
+    DatabaseHelper helper = DatabaseHelper.instance;
+    await helper.deleteGoal(id);
   }
 }        

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:cricket_app/administration/journalDialog.dart';
+import 'package:cricket_app/administration/journalManagement.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/pages/journal.dart';
-import 'package:cricket_app/classes/journalInformation.dart';
 import 'package:toast/toast.dart';
 
 //Used to handle the tutorial page
@@ -47,8 +46,6 @@ class _JournalDetailState extends State<JournalDetails> {
           backgroundColor: Colors.white,
         );
       }
-
-    
     );
   }
 
@@ -56,7 +53,7 @@ class _JournalDetailState extends State<JournalDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       //Appbar is needed for drawer and back button
-      appBar: AppBar(backgroundColor: Colors.lime, title: Text("              Journal Details")),
+      appBar: AppBar(backgroundColor: Colors.lime, title: Text("            Update Journal")),
       endDrawer: Drawer(
         child: ListView(
           children: <Widget>[
@@ -74,7 +71,7 @@ class _JournalDetailState extends State<JournalDetails> {
       resizeToAvoidBottomPadding: false,
       body: Container(
         //Create a form using dialogBox.dart implementation but not a dialog box.
-        child: JournalDialog(notifyParent: getId, passedJournal: widget.journal, type: "detail"),
+        child: JournalManagement(notifyParent: getId, passedJournal: widget.journal, type: "detail"),
       )
     );
   }

@@ -1,5 +1,3 @@
-import 'package:cricket_app/pages/goals.dart';
-
 // database table and column names
 final String tableGoals = 'Goals';
 final String column_goal_id = 'ID';
