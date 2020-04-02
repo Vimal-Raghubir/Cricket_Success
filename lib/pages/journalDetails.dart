@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cricket_app/administration/journalDialog.dart';
 import 'package:cricket_app/database/database.dart';
-import 'package:cricket_app/pages/goals.dart';
+import 'package:cricket_app/pages/journal.dart';
 import 'package:cricket_app/classes/journalInformation.dart';
-import 'package:cricket_app/cardDecoration/customCard.dart';
+import 'package:toast/toast.dart';
 
 //Used to handle the tutorial page
 class JournalDetails extends StatefulWidget {
 
-  //Stores passed in goal information in goal variable
+  //Stores passed in journal information in journal variable
   final journal;
 
   const JournalDetails({Key key, this.journal}) : super(key: key);
@@ -17,34 +17,34 @@ class JournalDetails extends StatefulWidget {
 }
 
 class _JournalDetailState extends State<JournalDetails> {
-  //Will return the goal id
+  //Will return the journal id
   getId() {
-    //This stores the passed in goal's id from the goals.dart page
+    //This stores the passed in journal's id from the journals.dart page
     return widget.journal.id;
   }
 
 
-  //Alert box to confirm deletion of a goal
+  //Alert box to confirm deletion of a journal
   void confirmDelete(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Are you sure you want to delete this goal?"),
+          title: Text("Are you sure you want to delete this journal?"),
           content: Text("This action cannot be undone."),
           actions: [
            FlatButton(child: Text("No"), onPressed: () {
              Navigator.pop(context);
            },),
-           //Will delete the goal and pop back to the goals page
+           //Will delete the journal and pop back to the journals page
            FlatButton(child: Text("Yes"), onPressed: () {
              _deleteJournal(widget.journal.id);
-             Navigator.push(context, MaterialPageRoute(builder: (context) => Goals()));
+             Navigator.push(context, MaterialPageRoute(builder: (context) => Journal()));
+             Toast.show("Successfully deleted your journal entry!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
            },),
           ],
           elevation: 24.0,
           backgroundColor: Colors.white,
-          //shape: CircleBorder(),
         );
       }
 
@@ -56,27 +56,17 @@ class _JournalDetailState extends State<JournalDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       //Appbar is needed for drawer and back button
-      appBar: AppBar(backgroundColor: Colors.lime, title: Text("              Goal Details")),
+      appBar: AppBar(backgroundColor: Colors.lime, title: Text("              Journal Details")),
       endDrawer: Drawer(
         child: ListView(
           children: <Widget>[
             ListTile(
               leading: Icon(Icons.delete),
-              title: Text('Delete Goal'),
+              title: Text('Delete Journal'),
               onTap: () {
                 confirmDelete(context);
               }
             ),
-
-            //Add a listTile to handle updating progress
-            ListTile(
-               leading: Icon(Icons.update),
-               title: Text('Update Progress'),
-               onTap: () {
-                 widget.journal.updateProgress();
-                 _updateJournal(widget.journal, widget.journal.id);
-               }                       
-            ,)
           ]
         )
       ),
@@ -92,11 +82,5 @@ class _JournalDetailState extends State<JournalDetails> {
   _deleteJournal(int id) async {
     DatabaseHelper helper = DatabaseHelper.instance;
     await helper.deleteJournal(id);
-  }
-
-  //Function to update goal for the update progress button
-  _updateJournal(JournalInformation journal, int index) async {
-    DatabaseHelper helper = DatabaseHelper.instance;
-    await helper.updateJournal(journal, index);
   }
 }

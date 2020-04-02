@@ -3,6 +3,7 @@ import 'package:cricket_app/administration/goalDialog.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/pages/goals.dart';
 import 'package:cricket_app/classes/goalInformation.dart';
+import 'package:toast/toast.dart';
 
 //Used to handle the tutorial page
 class GoalDetails extends StatefulWidget {
@@ -39,6 +40,7 @@ class _GoalDetailState extends State<GoalDetails> {
            FlatButton(child: Text("Yes"), onPressed: () {
              _deleteGoal(widget.goal.id);
              Navigator.push(context, MaterialPageRoute(builder: (context) => Goals()));
+             Toast.show("Successfully deleted this goal!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
            },),
           ],
           elevation: 24.0,
@@ -74,6 +76,18 @@ class _GoalDetailState extends State<GoalDetails> {
                onTap: () {
                  widget.goal.updateProgress();
                  _updateGoal(widget.goal, widget.goal.id);
+                 Navigator.pop(context);
+                 Toast.show("Successfully updated the progress!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+               }                       
+            ),
+            ListTile(
+               leading: Icon(Icons.clear),
+               title: Text('Clear Progress'),
+               onTap: () {
+                 widget.goal.currentProgress = 0; 
+                 _updateGoal(widget.goal, widget.goal.id);
+                 Navigator.pop(context);
+                 Toast.show("Successfully cleared your progress!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
                }                       
             ,)
           ]

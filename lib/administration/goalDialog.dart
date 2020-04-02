@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cricket_app/pages/goals.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/classes/goalInformation.dart';
+import 'package:toast/toast.dart';
 
 class GoalDialog extends StatefulWidget {
   //Receives either a default goal or already built goal and stores it in passedGoal
@@ -206,6 +207,8 @@ Widget submitButton(String buttonText) {
           widget.notifyParent();
           //Navigates back to the previous page and in this case the goals page
           Navigator.pop(context);
+          //Toast message to indicate the goal was created
+          Toast.show("Successfully created your goal!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
         } else if (buttonText == "Update") {
           //Retrieve the index of the passed in goal
           index = widget.notifyParent();
@@ -213,6 +216,8 @@ Widget submitButton(String buttonText) {
           _updateGoal(newGoal, index);
           //Goes back to previous page which in this case is goals.dart
           Navigator.pop(context);
+          //Toast message to indicate the goal was updated
+          Toast.show("Successfully updated your goal!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
         } 
       }                     
     },

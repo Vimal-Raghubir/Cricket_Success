@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cricket_app/pages/goals.dart';
+import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/classes/goalInformation.dart';
@@ -116,7 +116,8 @@ class CustomCard {
 
     //Get the progress stored in the object and then multiply by 100 for viewing
     progress = goal.getProgress();
-    viewProgress = (progress * 100).toString();
+    viewProgress = (progress * 100).round();
+    viewProgress = viewProgress.toString();
     viewProgress += "%";
     width = screenWidth;
     return Container(
@@ -199,6 +200,9 @@ class CustomCard {
 
   //Used to create the display for all the journal information itself
   Widget createCustomJournalCard(JournalInformation journal, double screenWidth) {
+    var journalDate = DateTime.parse(journal.date);
+    var formatter = new DateFormat('MMMM dd,yyyy');
+    String formatted = formatter.format(journalDate);
 
     width = screenWidth;
     return Container(
@@ -233,7 +237,7 @@ class CustomCard {
                       SizedBox(
                         width: 5,
                       ),
-                      Text(journal.date.toString(),
+                      Text(formatted,
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 14,
@@ -247,16 +251,6 @@ class CustomCard {
                     style: TextStyle(fontSize: 14).copyWith(
                         fontSize: 12, color: Colors.black)),
                 SizedBox(height: 15),
-             
-                SizedBox(height: 15),
-                /*Row(
-                  children: <Widget>[
-                    _chip(journal.journalNames[0], Colors.blue, height: 5),
-                    SizedBox(
-                      width: 10,
-                    ),
-                  ],
-                )*/
               ],
             ))
           ],

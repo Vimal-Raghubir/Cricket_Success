@@ -5,6 +5,7 @@ import 'package:cricket_app/header/header.dart';
 import 'package:cricket_app/classes/journalInformation.dart';
 import 'package:cricket_app/pages/journalDetails.dart';
 import 'package:cricket_app/cardDecoration/customCard.dart';
+import 'package:cricket_app/database/database.dart';
 
 
 List<JournalInformation> journals = [];
@@ -20,12 +21,13 @@ class _JournalState extends State<Journal> {
 
   refresh() {
     setState(() {});
-    //_read();
+    _read();
   }
 
 
   @override
   Widget build(BuildContext context) {
+    _read();
     width = MediaQuery.of(context).size.width;
     return Scaffold(
       bottomNavigationBar: Bottom_Navigation().createBottomNavigation(context, 3),
@@ -41,7 +43,7 @@ class _JournalState extends State<Journal> {
           ),
 
           Expanded(
-                //Used to dynamically render the goals in a list format
+                //Used to dynamically render the journals in a list format
                 child: new ListView.builder (
                   physics: BouncingScrollPhysics(),
                   itemCount: journals.length,
@@ -49,7 +51,7 @@ class _JournalState extends State<Journal> {
                     //Need to change below
                     return InkWell(
                       onTap: () {
-                        //Pass the goal information to the goalDetails.dart page
+                        //Pass the journal information to the journalDetails.dart page
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -61,7 +63,7 @@ class _JournalState extends State<Journal> {
                         );
                         //Add other logic here
                       },
-                      //Render custom card for each goal
+                      //Render custom card for each journal
                       child: CustomCard().createCustomJournalCard(journals[index], width),
                     );  
                   }
@@ -85,5 +87,12 @@ class _JournalState extends State<Journal> {
         backgroundColor: Colors.green,
       ),
     );
+  }
+
+    //Function to read all journals from the database for rendering
+  _read() async {
+    DatabaseHelper helper = DatabaseHelper.instance;
+    //stores the index of each journalInformation in the database
+    journals = await helper.getJournals();
   }
 }

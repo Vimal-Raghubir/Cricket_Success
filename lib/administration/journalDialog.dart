@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/classes/journalInformation.dart';
+import 'package:intl/intl.dart';
+import 'package:toast/toast.dart';
 
 class JournalDialog extends StatefulWidget {
   //Receives either a default journal or already built journal and stores it in passedjournal
@@ -23,10 +25,12 @@ class _MyJournalDialogState extends State<JournalDialog> {
   var selectedJournalName;
   var selectedJournalDetails;
   String parsedDate;
+  String dateDisplay;
+
   DateTime selectedJournalDate;
   DateTime currentDate = DateTime.now();
   DateTime latestDate;
-  //Stores all goal names for the goal name field. Used to prevent duplicate goal names
+  //Stores all journal names for the journal name field. Used to prevent duplicate journal names
   List journalNames = [];
   int index;
 
@@ -36,7 +40,7 @@ class _MyJournalDialogState extends State<JournalDialog> {
   @protected
   @mustCallSuper
   initState() {
-    //Extract passed in goal and initializes dynamic variables with their values. Starting point
+    //Extract passed in journal and initializes dynamic variables with their values. Starting point
     selectedJournalName = widget.passedJournal.name;
     selectedJournalDetails = widget.passedJournal.details;
 
@@ -79,23 +83,23 @@ Widget createDropdownMenu() {
       borderRadius: BorderRadius.circular(5.0))),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          hint: Text(selectedGoal),
+          hint: Text(selectedjournal),
           isDense: true,
           onChanged: (String newValue) {
             setState(() {
-              selectedGoal = newValue;
-              if (selectedGoal == 'Process Goal') {
-                //selectedGoalIndex is the index of the dropdown menu item selected and is used in the card creation
-                selectedGoalIndex = 0;
-              } else if (selectedGoal == 'Performance Goal') {
-                selectedGoalIndex = 1;
-              } else if (selectedGoal == 'Outcome Goal') {
-                selectedGoalIndex = 2;
+              selectedjournal = newValue;
+              if (selectedjournal == 'Process journal') {
+                //selectedjournalIndex is the index of the dropdown menu item selected and is used in the card creation
+                selectedjournalIndex = 0;
+              } else if (selectedjournal == 'Performance journal') {
+                selectedjournalIndex = 1;
+              } else if (selectedjournal == 'Outcome journal') {
+                selectedjournalIndex = 2;
               }
-              print(selectedGoal);
+              print(selectedjournal);
             });
           },
-          items: goalOptions.map((String value) {
+          items: journalOptions.map((String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
@@ -109,7 +113,7 @@ Widget createDropdownMenu() {
 Widget createJournalNameField() {
   return TextFormField(
     textCapitalization: TextCapitalization.words,
-    //Starts with the passed in goal as initial value
+    //Starts with the passed in journal as initial value
     initialValue: widget.passedJournal.name,
     keyboardType: TextInputType.text ,
     decoration: InputDecoration(
@@ -126,7 +130,7 @@ Widget createJournalNameField() {
       } else if(!regex.hasMatch(value)) {
         return 'Invalid characters detected';
       
-      //Checks if the database goal names contain the passed in value to prevent duplicates and you are trying to create a new goal
+      //Checks if the database journal names contain the passed in value to prevent duplicates and you are trying to create a new journal
       } else if(journalNames.contains(value.toLowerCase()) && widget.type == "dialog") {
         print("CHECK IS WORKING");
         return 'A journal with the same name already exists';
@@ -144,7 +148,7 @@ Widget createJournalNameField() {
 Widget createDetailField() {
   return TextFormField(
     textCapitalization: TextCapitalization.words,
-    //Start with passed in goal details
+    //Start with passed in journal details
     initialValue: widget.passedJournal.details,
     keyboardType: TextInputType.text ,
     decoration: InputDecoration(
@@ -182,16 +186,19 @@ Widget dayPickerHeader() {
         initialDate: selectedJournalDate,
         firstDate: DateTime(2019, 1),
         lastDate: latestDate);
-    if (picked != null && picked != selectedJournalDate)
+    if (picked != null && picked != selectedJournalDate) {
       setState(() {
         selectedJournalDate = picked;
       });
+    } else {
+
+    }
   }
 
 Widget dateButton(BuildContext context) {
-  return RaisedButton(
+  return OutlineButton(
     onPressed: () => _selectDate(context),
-      child: Text('Select date'),
+      child: Text(dateDisplay),
   );
 }
 
@@ -214,13 +221,17 @@ Widget submitButton(String buttonText) {
           widget.notifyParent();
           //Navigates back to the previous page and in this case the journal page
           Navigator.pop(context);
+          //Toast message to indicate successful creation of journal
+          Toast.show("Successfully created your journal entry!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
         } else if (buttonText == "Update") {
           //Retrieve the index of the passed in journal
           index = widget.notifyParent();
-          //Updates goal with newJournal content and id
+          //Updates journal with newJournal content and id
           _updateJournal(newJournal, index);
           //Goes back to previous page which in this case is journals.dart
           Navigator.pop(context);
+          //Toast message to indicate successful creation of journal
+          Toast.show("Successfully updated your journal entry!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
         } 
       }                     
     },
@@ -246,6 +257,8 @@ Widget createDialogForm(String title,String buttonText) {
 }
   
   Widget build(BuildContext context) {
+    var formatter = new DateFormat('MMMM dd,yyyy');
+    dateDisplay = formatter.format(selectedJournalDate);
     //If the passed in widget type is a dialog then the call is being made from journals.dart
     if (widget.type == "dialog") {
       return SimpleDialog(
@@ -257,7 +270,7 @@ Widget createDialogForm(String title,String buttonText) {
           ),
         ],
       );
-    // If the passed in widget type is not a dialog then it comes from goalDetails.dart
+    // If the passed in widget type is not a dialog then it comes from journalDetails.dart
     } else {
       return Column(
         children: <Widget>[
