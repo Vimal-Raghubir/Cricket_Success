@@ -4,6 +4,8 @@ import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/classes/goalInformation.dart';
 import 'package:toast/toast.dart';
 
+final key = new GlobalKey<_NumberCountDemoState>();
+
 class GoalManagement extends StatefulWidget {
   //Receives either a default goal or already built goal and stores it in passedGoal
   final passedGoal;
@@ -39,6 +41,7 @@ class _MyGoalManagementState extends State<GoalManagement> {
   @protected
   @mustCallSuper
   initState() {
+    super.initState();
     //Extract passed in goal and initializes dynamic variables with their values. Starting point
     selectedGoal = widget.passedGoal.type;
     selectedGoalIndex = widget.passedGoal.typeIndex;
@@ -182,6 +185,16 @@ Widget dayPicker() {
   );
 }
 
+Widget progressHeader() {
+  return Container(
+    padding: const EdgeInsets.symmetric(vertical: 12),
+    child: Text(
+      'How many days have you completed for this goal so far?',
+      softWrap: true,
+    ),
+  );
+}
+
 Widget submitButton(String buttonText) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -204,6 +217,8 @@ Widget submitButton(String buttonText) {
         } else if (buttonText == "Update") {
           //Retrieve the index of the passed in goal
           index = widget.notifyParent();
+
+          newGoal.currentProgress = key.currentState.finalProgress;
           //Updates goal with newGoal content and id
           _updateGoal(newGoal, index);
           //Goes back to previous page which in this case is goals.dart
@@ -287,6 +302,10 @@ Widget updatePage() {
       dayPickerHeader(),
       //This is a slider used to handle the number of days for a goal
       dayPicker(),
+      //Header for progress portion
+      progressHeader(),
+      //Progress tracker
+      NumberCountDemo(key: key, progress: currentProgress, dayLimit: selectedGoalLength),
       ButtonBar(
         alignment: MainAxisAlignment.center,
         children: <Widget> [
@@ -347,4 +366,68 @@ Widget updatePage() {
     DatabaseHelper helper = DatabaseHelper.instance;
     await helper.deleteGoal(id);
   }
-}        
+}  
+
+//Stateful widget to keep track of progress on goals
+class NumberCountDemo extends StatefulWidget {
+  //passed in current progress for goal
+  final progress;
+
+  //passed in limit for days
+  final dayLimit;
+  const NumberCountDemo({Key key, this.progress, this.dayLimit}) : super(key: key);
+  @override
+  _NumberCountDemoState createState() => new _NumberCountDemoState();
+  }
+  
+  class _NumberCountDemoState extends State<NumberCountDemo> {
+    int _n = 0;
+    //getter function to retrieve _n final value
+  int get finalProgress => _n;
+    @override
+  void initState() {
+    super.initState();
+    _n = widget.progress;
+    print(_n);
+  }
+
+    void add() {
+      setState(() {
+        //Prevent progress from exceeding day limit
+        if (_n < widget.dayLimit) {
+          _n++;
+        }
+      });
+    }
+
+    void minus() {
+      setState(() {
+        //Prevent negative values
+      if (_n != 0)
+        _n--;
+      });
+    }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+      child: new Center(
+        child: new Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            new FlatButton(
+              onPressed: minus,
+              child: new Icon(
+               const IconData(0xe15b, fontFamily: 'MaterialIcons'),color: Colors.black)),
+
+            new Text('$_n',style: new TextStyle(fontSize: 28.0)),
+
+            new FlatButton(
+              onPressed: add,
+              child: new Icon(Icons.add, color: Colors.black)),
+          ],
+        ),
+      ),
+    );
+  }
+}

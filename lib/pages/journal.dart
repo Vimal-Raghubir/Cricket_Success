@@ -1,4 +1,3 @@
-import 'package:cricket_app/administration/journalManagement.dart';
 import 'package:cricket_app/pages/createjournal.dart';
 import 'package:flutter/material.dart';
 import 'package:cricket_app/navigation/bottom_navigation.dart';
@@ -41,9 +40,8 @@ class _JournalState extends State<Journal> {
               softWrap: true,
             ),
           ),
-
-          Expanded(
-                //Used to dynamically render the journals in a list format
+          Expanded (
+            //Used to dynamically render the journals in a list format
                 child: new ListView.builder (
                   physics: BouncingScrollPhysics(),
                   itemCount: journals.length,

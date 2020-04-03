@@ -21,6 +21,7 @@ class _GoalState extends State<Goals> {
   double width;
 
   initState() {
+    super.initState();
     refresh();
     print(goals.length);
   }

@@ -4,7 +4,6 @@ import 'package:cricket_app/classes/journalInformation.dart';
 import 'package:cricket_app/pages/journal.dart';
 import 'package:intl/intl.dart';
 import 'package:toast/toast.dart';
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 
 class JournalManagement extends StatefulWidget {
   //Receives either a default journal or already built journal and stores it in passedjournal
@@ -44,6 +43,7 @@ class _MyJournalManagementState extends State<JournalManagement> {
   @protected
   @mustCallSuper
   initState() {
+    super.initState();
     //Extract passed in journal and initializes dynamic variables with their values. Starting point
     selectedJournalName = widget.passedJournal.name;
     selectedJournalDetails = widget.passedJournal.details;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/classes/goalInformation.dart';
 import 'package:cricket_app/classes/journalInformation.dart';
 
@@ -271,11 +270,5 @@ class CustomCard {
         ),
       ],
     );
-  }
-
-    _deleteGoal(int id) async {
-      DatabaseHelper helper = DatabaseHelper.instance;
-      //goals now stores the index of each goalInformation in the database
-      await helper.deleteGoal(id);
   }
 }
