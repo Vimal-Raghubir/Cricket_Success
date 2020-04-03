@@ -4,6 +4,7 @@ import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/pages/goals.dart';
 import 'package:cricket_app/classes/goalInformation.dart';
 import 'package:toast/toast.dart';
+import 'package:cricket_app/header/header.dart';
 
 //Used to handle the tutorial page
 class GoalDetails extends StatefulWidget {
@@ -56,8 +57,6 @@ class _GoalDetailState extends State<GoalDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //Appbar is needed for drawer and back button
-      appBar: AppBar(backgroundColor: Colors.lime, title: Text("              Update Goal")),
       endDrawer: Drawer(
         child: ListView(
           children: <Widget>[
@@ -95,10 +94,16 @@ class _GoalDetailState extends State<GoalDetails> {
       ),
       //This helps to avoid page overflow issues
       resizeToAvoidBottomPadding: false,
-      body: Container(
-        //Create a form using dialogBox.dart implementation but not a dialog box.
-        child: GoalManagement(notifyParent: getId, passedGoal: widget.goal, type: "detail"),
-      )
+      body: Column(
+        children: <Widget>[
+          Header().createHeader(context, 3),
+          Container(
+            //Create a form using dialogBox.dart implementation but not a dialog box.
+            child: GoalManagement(notifyParent: getId, passedGoal: widget.goal, type: "detail"),
+          )
+      ],) 
+      
+      
     );
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cricket_app/administration/goalManagement.dart';
+import 'package:cricket_app/header/header.dart';
 
 //Used to handle the tutorial page
 class NewGoal extends StatefulWidget {
@@ -21,14 +22,17 @@ class _NewGoalState extends State<NewGoal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //Appbar is needed for drawer and back button
-      appBar: AppBar(backgroundColor: Colors.lime, title: Text("                 New Goal")),
       //This helps to avoid page overflow issues
       resizeToAvoidBottomPadding: false,
-      body: Container(
-        //Create a form using dialogBox.dart implementation but not a dialog box.
-        child: GoalManagement(notifyParent: refresh, passedGoal: widget.goal, type: "new"),
-      )
+      body: Column(
+        children: <Widget>[
+          Header().createHeader(context, 2),
+          Container(
+            //Create a form using dialogBox.dart implementation but not a dialog box.
+            child: GoalManagement(notifyParent: refresh, passedGoal: widget.goal, type: "new"),
+          )
+        ],)
+      
     );
   }
 }

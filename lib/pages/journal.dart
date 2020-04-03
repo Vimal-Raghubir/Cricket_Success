@@ -34,7 +34,7 @@ class _JournalState extends State<Journal> {
       bottomNavigationBar: Bottom_Navigation().createBottomNavigation(context, 3),
       body: Column(
         children: <Widget> [
-          Header().createHeader(context, 3),
+          Header().createHeader(context, 5),
           Container(
             padding: const EdgeInsets.all(32),
             child: Text(

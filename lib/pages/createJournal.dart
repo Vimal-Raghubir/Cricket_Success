@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cricket_app/administration/journalManagement.dart';
+import 'package:cricket_app/header/header.dart';
 
 //Used to handle the tutorial page
 class NewJournal extends StatefulWidget {
@@ -21,14 +22,16 @@ class _NewJournalState extends State<NewJournal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //Appbar is needed for drawer and back button
-      appBar: AppBar(backgroundColor: Colors.lime, title: Text("               New Journal")),
       //This helps to avoid page overflow issues
       resizeToAvoidBottomPadding: false,
-      body: Container(
-        //Create a form using dialogBox.dart implementation but not a dialog box.
-        child: JournalManagement(notifyParent: refresh, passedJournal: widget.journal, type: "new"),
+      body: Column(
+        children: <Widget>[
+          Header().createHeader(context, 6),
+          Container(
+            //Create a form using dialogBox.dart implementation but not a dialog box.
+            child: JournalManagement(notifyParent: refresh, passedJournal: widget.journal, type: "new"),
       )
+      ],)
     );
   }
 }

@@ -15,7 +15,7 @@ class _TutorialState extends State<Tutorials> {
       bottomNavigationBar: Bottom_Navigation().createBottomNavigation(context, 2),
       body: Column(
         children: <Widget> [
-          Header().createHeader(context, 2),
+          Header().createHeader(context, 4),
           Container(
             padding: const EdgeInsets.all(32),
             child: Text(

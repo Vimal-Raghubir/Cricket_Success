@@ -3,6 +3,7 @@ import 'package:cricket_app/administration/journalManagement.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/pages/journal.dart';
 import 'package:toast/toast.dart';
+import 'package:cricket_app/header/header.dart';
 
 //Used to handle the tutorial page
 class JournalDetails extends StatefulWidget {
@@ -52,8 +53,6 @@ class _JournalDetailState extends State<JournalDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //Appbar is needed for drawer and back button
-      appBar: AppBar(backgroundColor: Colors.lime, title: Text("            Update Journal")),
       endDrawer: Drawer(
         child: ListView(
           children: <Widget>[
@@ -69,10 +68,16 @@ class _JournalDetailState extends State<JournalDetails> {
       ),
       //This helps to avoid page overflow issues
       resizeToAvoidBottomPadding: false,
-      body: Container(
-        //Create a form using dialogBox.dart implementation but not a dialog box.
-        child: JournalManagement(notifyParent: getId, passedJournal: widget.journal, type: "detail"),
-      )
+      body: Column(
+        children: <Widget>[
+          Header().createHeader(context, 7),
+          Container(
+            //Create a form using dialogBox.dart implementation but not a dialog box.
+            child: JournalManagement(notifyParent: getId, passedJournal: widget.journal, type: "detail"),
+          )
+      ],) 
+      
+      
     );
   }
 
