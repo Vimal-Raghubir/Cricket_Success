@@ -153,7 +153,7 @@ import 'package:cricket_app/classes/journalInformation.dart';
       }
 
       //Function to retrieve all goal names from the database
-      Future<List> getGoalNames() async {
+      Future<List<String>> getGoalNames() async {
         Database db = await database;
         var maps = await db.query(tableGoals, columns: [column_goal_name]);
         return List.generate(maps.length, (i) {

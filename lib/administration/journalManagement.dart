@@ -4,6 +4,7 @@ import 'package:cricket_app/classes/journalInformation.dart';
 import 'package:cricket_app/pages/journal.dart';
 import 'package:intl/intl.dart';
 import 'package:toast/toast.dart';
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 
 class JournalManagement extends StatefulWidget {
   //Receives either a default journal or already built journal and stores it in passedjournal
@@ -27,6 +28,9 @@ class _MyJournalManagementState extends State<JournalManagement> {
   var selectedJournalDetails;
   String parsedDate;
   String dateDisplay;
+  List<String> goalNames = [];
+  TextEditingController controller = new TextEditingController();
+  AutoCompleteTextField searchTextField;
 
   DateTime selectedJournalDate;
   DateTime currentDate = DateTime.now();
@@ -55,6 +59,7 @@ class _MyJournalManagementState extends State<JournalManagement> {
     latestDate = DateTime(currentDate.year, currentDate.month, currentDate.day + 1);
     //Retrieves a list of all journal names in the database
     _getJournalNames();
+    //_getGoalNames();
   }
 
 Widget createDropDownHeader(String dropDownMessage) {
@@ -67,41 +72,7 @@ Widget createDropDownHeader(String dropDownMessage) {
     ),
   );
 }
-/*
-Widget createDropdownMenu() {
-  //This is used to make the dropdown menu look like a form
-  return InputDecorator(
-    decoration: InputDecoration(
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(5.0))),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          hint: Text(selectedjournal),
-          isDense: true,
-          onChanged: (String newValue) {
-            setState(() {
-              selectedjournal = newValue;
-              if (selectedjournal == 'Process journal') {
-                //selectedjournalIndex is the index of the dropdown menu item selected and is used in the card creation
-                selectedjournalIndex = 0;
-              } else if (selectedjournal == 'Performance journal') {
-                selectedjournalIndex = 1;
-              } else if (selectedjournal == 'Outcome journal') {
-                selectedjournalIndex = 2;
-              }
-              print(selectedjournal);
-            });
-          },
-          items: journalOptions.map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-          ),
-        ),
-    );
-}*/
+
 
 Widget createJournalNameField() {
   return TextFormField(
@@ -279,6 +250,7 @@ Widget newPage() {
     children: <Widget>[
       //createDropDownHeader(dropdownMessage),
       //createDropdownMenu(),
+      //createGoalSuggestion(),
       createJournalNameField(),
       createDetailField(),
       dayPickerHeader(),
@@ -311,6 +283,7 @@ Widget updatePage(BuildContext context) {
 }
   
   Widget build(BuildContext context) {
+    _getGoalNames();
     var formatter = new DateFormat('MMMM dd,yyyy');
     dateDisplay = formatter.format(selectedJournalDate);
     //If the passed in widget type is a new journal then the call is being made from journals.dart
@@ -360,5 +333,11 @@ Widget updatePage(BuildContext context) {
     _deleteJournal(int id) async {
     DatabaseHelper helper = DatabaseHelper.instance;
     await helper.deleteJournal(id);
+  }
+
+  //Function to get all goal names in the database
+  _getGoalNames() async {
+    DatabaseHelper helper = DatabaseHelper.instance;
+    goalNames = await helper.getGoalNames();
   }
 }        
