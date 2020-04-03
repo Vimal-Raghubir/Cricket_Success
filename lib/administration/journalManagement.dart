@@ -28,9 +28,8 @@ class _MyJournalManagementState extends State<JournalManagement> {
   var selectedJournalDetails;
   String parsedDate;
   String dateDisplay;
-  List<String> goalNames = [];
-  TextEditingController controller = new TextEditingController();
-  AutoCompleteTextField searchTextField;
+
+  Map<String, bool> values;
 
   DateTime selectedJournalDate;
   DateTime currentDate = DateTime.now();
@@ -59,7 +58,6 @@ class _MyJournalManagementState extends State<JournalManagement> {
     latestDate = DateTime(currentDate.year, currentDate.month, currentDate.day + 1);
     //Retrieves a list of all journal names in the database
     _getJournalNames();
-    //_getGoalNames();
   }
 
 Widget createDropDownHeader(String dropDownMessage) {
@@ -248,9 +246,6 @@ Widget deleteButton(BuildContext context) {
 Widget newPage() {
   return Column(
     children: <Widget>[
-      //createDropDownHeader(dropdownMessage),
-      //createDropdownMenu(),
-      //createGoalSuggestion(),
       createJournalNameField(),
       createDetailField(),
       dayPickerHeader(),
@@ -264,8 +259,6 @@ Widget newPage() {
 Widget updatePage(BuildContext context) {
   return Column(
     children: <Widget>[
-      //createDropDownHeader(dropdownMessage),
-      //createDropdownMenu(),
       createJournalNameField(),
       createDetailField(),
       dayPickerHeader(),
@@ -283,7 +276,7 @@ Widget updatePage(BuildContext context) {
 }
   
   Widget build(BuildContext context) {
-    _getGoalNames();
+    //_getGoalNames();
     var formatter = new DateFormat('MMMM dd,yyyy');
     dateDisplay = formatter.format(selectedJournalDate);
     //If the passed in widget type is a new journal then the call is being made from journals.dart
@@ -333,11 +326,5 @@ Widget updatePage(BuildContext context) {
     _deleteJournal(int id) async {
     DatabaseHelper helper = DatabaseHelper.instance;
     await helper.deleteJournal(id);
-  }
-
-  //Function to get all goal names in the database
-  _getGoalNames() async {
-    DatabaseHelper helper = DatabaseHelper.instance;
-    goalNames = await helper.getGoalNames();
   }
 }        

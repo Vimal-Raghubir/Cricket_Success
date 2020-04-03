@@ -17,7 +17,6 @@ class Journal extends StatefulWidget {
 }
 
 class _JournalState extends State<Journal> {
-
   double width;
 
   refresh() {
@@ -28,7 +27,7 @@ class _JournalState extends State<Journal> {
 
   @override
   Widget build(BuildContext context) {
-    _read();
+   refresh();
     width = MediaQuery.of(context).size.width;
     return Scaffold(
       bottomNavigationBar: Bottom_Navigation().createBottomNavigation(context, 3),
