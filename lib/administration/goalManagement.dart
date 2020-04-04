@@ -4,7 +4,7 @@ import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/classes/goalInformation.dart';
 import 'package:toast/toast.dart';
 
-final key = new GlobalKey<_NumberCountDemoState>();
+GlobalKey<_NumberCountDemoState> key = new GlobalKey<_NumberCountDemoState>();
 
 class GoalManagement extends StatefulWidget {
   //Receives either a default goal or already built goal and stores it in passedGoal
@@ -340,6 +340,10 @@ Widget updatePage() {
       ],
       );  
     }
+  }
+  
+  void dispose() {
+    super.dispose();
   }
   //Function to insert a goal into the database
   _save(GoalInformation goal) async {

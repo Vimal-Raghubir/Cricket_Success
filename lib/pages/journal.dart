@@ -18,15 +18,22 @@ class Journal extends StatefulWidget {
 class _JournalState extends State<Journal> {
   double width;
 
-  refresh() {
+  initState() {
+    super.initState();
+    //For the initial state you will wait for the journal list to be updated then generate the UI
+    refresh();
+  }
+
+  refresh() async {
+    //Had to make read asynchronous to wait on the results of the database retrieval before rendering the UI
+    await _read();
+    print("refresh is called");
     setState(() {});
-    _read();
   }
 
 
   @override
   Widget build(BuildContext context) {
-   refresh();
     width = MediaQuery.of(context).size.width;
     return Scaffold(
       bottomNavigationBar: Bottom_Navigation().createBottomNavigation(context, 3),
@@ -48,9 +55,10 @@ class _JournalState extends State<Journal> {
                   itemBuilder: (BuildContext ctxt, int index) {
                     //Need to change below
                     return InkWell(
-                      onTap: () {
+                      //Need to wait for result of updates
+                      onTap: () async {
                         //Pass the journal information to the journalDetails.dart page
-                        Navigator.push(
+                        await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => JournalDetails(
@@ -59,10 +67,12 @@ class _JournalState extends State<Journal> {
                             )
                           ),
                         );
+                        //Then call refresh to rebuild widget
+                        refresh();
                         //Add other logic here
                       },
                       //Render custom card for each journal
-                      child: CustomCard().createCustomJournalCard(journals[index], width),
+                      child: CustomCard(object: journals[index], width: width,type: "journal"),
                     );  
                   }
                 )
@@ -71,6 +81,7 @@ class _JournalState extends State<Journal> {
       ),
 
       floatingActionButton: FloatingActionButton (
+        //Need to wait on results from new journal creation
         onPressed: () async {
           await Navigator.push(
             context,
@@ -81,6 +92,8 @@ class _JournalState extends State<Journal> {
                 )
               ),
           );
+          //Need to rebuild the widget
+          refresh();
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.green,

@@ -22,18 +22,18 @@ class _GoalState extends State<Goals> {
 
   initState() {
     super.initState();
+    //For the initial state you will wait for the journal list to be updated then generate the UI
     refresh();
-    print(goals.length);
   }
 
   //Function that is called in the dialogBox.dart file to refresh this page and render the goals after submitting a form
-  refresh() {
-    _read();
+  refresh() async {
+    //Had to make read asynchronous to wait on the results of the database retrieval before rendering the UI
+    await _read();
     setState(() {});
   }
 
    Widget build(BuildContext context) {
-     refresh();
      width = MediaQuery.of(context).size.width;
     return Scaffold(
       //Creates bottom navigation and passes the index of the current page in relation to main page
@@ -115,8 +115,10 @@ class _GoalState extends State<Goals> {
                   physics: BouncingScrollPhysics(),
                   itemCount: goals.length,
                   itemBuilder: (BuildContext ctxt, int index) {
+                    print("Creating list " + goals[index].currentProgress.toString());
                     //Need to change below
                     return InkWell(
+                      //This needs to be asynchronous since you have to wait on the results of the update page
                       onTap: () async {
                         //Pass the goal information to the goalDetails.dart page
                         await Navigator.push(
@@ -128,13 +130,11 @@ class _GoalState extends State<Goals> {
                             )
                           ),
                         );
-                        setState(() {
-                          refresh();
-                        });
-                        //Add other logic here
+                        //Then rebuild the widget
+                        refresh();
                       },
                       //Render custom card for each goal
-                      child: CustomCard().createCustomGoalCard(goals[index], width),
+                      child: CustomCard(object: goals[index],width: width, type: "goal"),
                     );  
                   }
                 )
@@ -143,6 +143,7 @@ class _GoalState extends State<Goals> {
           ),
         ),
       floatingActionButton: FloatingActionButton (
+        //Need this to be asynchronous since you have to wait on the results of the new goal page
         onPressed: () async {
           await Navigator.push(
             context,
@@ -153,6 +154,8 @@ class _GoalState extends State<Goals> {
               )
             ),
           );
+          //Rebuild the widget
+          refresh();
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.green,
@@ -165,5 +168,6 @@ class _GoalState extends State<Goals> {
     DatabaseHelper helper = DatabaseHelper.instance;
     //goals now stores the index of each goalInformation in the database
     goals = await helper.getGoals();
+    print("Pulling from database " + goals[0].currentProgress.toString());
   }
 }

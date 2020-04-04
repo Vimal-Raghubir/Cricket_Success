@@ -4,7 +4,18 @@ import 'package:percent_indicator/percent_indicator.dart';
 import 'package:cricket_app/classes/goalInformation.dart';
 import 'package:cricket_app/classes/journalInformation.dart';
 
-class CustomCard {
+class CustomCard extends StatefulWidget {
+
+  final object;
+  final width;
+  final type;
+
+  const CustomCard({Key key, this.object, this.width, this.type}) : super(key: key);
+
+    _MyCustomCardState createState() => new _MyCustomCardState();
+}
+
+class _MyCustomCardState extends State<CustomCard> {
   double width;
   var progress;
   var viewProgress;
@@ -34,7 +45,7 @@ class CustomCard {
   Widget _card({Color primaryColor = Colors.redAccent,String imgPath,Widget backWidget}) {
     return Container(
         height: 190,
-        width: width * .34,
+        width: widget.width * .34,
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
             color: primaryColor,
@@ -111,14 +122,14 @@ class CustomCard {
   }
 
   //Used to create the display for all the goal information itself
-  Widget createCustomGoalCard(GoalInformation goal, double screenWidth) {
+  Widget createCustomGoalCard() {
 
     //Get the progress stored in the object and then multiply by 100 for viewing
-    progress = goal.getProgress();
+    progress = widget.object.getProgress();
     viewProgress = (progress * 100).round();
     viewProgress = viewProgress.toString();
     viewProgress += "%";
-    width = screenWidth;
+    width = widget.width;
     return Container(
         height: 170,
         width: width - 20,
@@ -126,7 +137,7 @@ class CustomCard {
           children: <Widget>[
             AspectRatio(
               aspectRatio: .7,
-              child: _card(primaryColor: backgroundColors[goal.typeIndex], backWidget: getDecoration(goal.typeIndex)),
+              child: _card(primaryColor: backgroundColors[widget.object.typeIndex], backWidget: getDecoration(widget.object.typeIndex)),
             ),
             Expanded(
                 child: Column(
@@ -138,7 +149,7 @@ class CustomCard {
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
                       Expanded(
-                        child: Text(goal.name,
+                        child: Text(widget.object.name,
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
@@ -146,12 +157,12 @@ class CustomCard {
                       ),
                       CircleAvatar(
                         radius: 3,
-                        backgroundColor: backgroundColors[goal.typeIndex],
+                        backgroundColor: backgroundColors[widget.object.typeIndex],
                       ),
                       SizedBox(
                         width: 5,
                       ),
-                      Text(goal.length.toString() + " days",
+                      Text(widget.object.length.toString() + " days",
                           style: TextStyle(
                             color: Colors.grey,
                             fontSize: 14,
@@ -161,7 +172,7 @@ class CustomCard {
                   ),
                 ),
                 SizedBox(height: 15),
-                Text(goal.description,
+                Text(widget.object.description,
                     style: TextStyle(fontSize: 14).copyWith(
                         fontSize: 12, color: Colors.black)),
                 SizedBox(height: 15),
@@ -185,7 +196,7 @@ class CustomCard {
                 SizedBox(height: 15),
                 Row(
                   children: <Widget>[
-                    _chip(goal.type, goalTypeColors[goal.typeIndex], height: 5),
+                    _chip(widget.object.type, goalTypeColors[widget.object.typeIndex], height: 5),
                     SizedBox(
                       width: 10,
                     ),
@@ -198,12 +209,12 @@ class CustomCard {
       }
 
   //Used to create the display for all the journal information itself
-  Widget createCustomJournalCard(JournalInformation journal, double screenWidth) {
-    var journalDate = DateTime.parse(journal.date);
+  Widget createCustomJournalCard() {
+    var journalDate = DateTime.parse(widget.object.date);
     var formatter = new DateFormat('MMMM dd,yyyy');
     String formatted = formatter.format(journalDate);
 
-    width = screenWidth;
+    width = widget.width;
     return Container(
         height: 170,
         width: width - 20,
@@ -223,7 +234,7 @@ class CustomCard {
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
                       Expanded(
-                        child: Text(journal.name,
+                        child: Text(widget.object.name,
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
@@ -246,7 +257,7 @@ class CustomCard {
                   ),
                 ),
                 SizedBox(height: 15),
-                Text(journal.details,
+                Text(widget.object.details,
                     style: TextStyle(fontSize: 14).copyWith(
                         fontSize: 12, color: Colors.black)),
                 SizedBox(height: 15),
@@ -270,5 +281,15 @@ class CustomCard {
         ),
       ],
     );
+  }
+
+  Widget build(BuildContext context) {
+    setState(() {});
+    if (widget.type == "goal") {
+      //print("This is being called in customCard build " + widget.object.currentProgress.toString());
+      return createCustomGoalCard();
+    } else {
+      return createCustomJournalCard();
+    }
   }
 }
