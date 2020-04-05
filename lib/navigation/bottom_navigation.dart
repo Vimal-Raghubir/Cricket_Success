@@ -1,5 +1,6 @@
 import 'package:cricket_app/main.dart';
 import 'package:cricket_app/pages/tutorials.dart';
+import 'package:cricket_app/pages/statistics.dart';
 import 'package:cricket_app/pages/goals.dart';
 import 'package:flutter/material.dart';
 import 'package:cricket_app/pages/journal.dart';
@@ -25,12 +26,17 @@ class Bottom_Navigation {
       } else if (index == 2) {
         Navigator.push(
           temp,
-          MaterialPageRoute(builder: (context) => Tutorials()),
+          MaterialPageRoute(builder: (context) => Journal()),
         );
       } else if (index == 3) {
         Navigator.push(
           temp,
-          MaterialPageRoute(builder: (context) => Journal()),
+          MaterialPageRoute(builder: (context) => Tutorials()),
+        );
+      } else if (index == 4) {
+        Navigator.push(
+          temp,
+          MaterialPageRoute(builder: (context) => Statistics()),
         );
       }
     }
@@ -60,12 +66,16 @@ class Bottom_Navigation {
           title: Text('Goals'),
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.school),
-          title: Text('School'),
-        ),
-        BottomNavigationBarItem(
           icon: Icon(Icons.book),
           title: Text('Journal'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.school),
+          title: Text('Tutorials'),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.format_quote),
+          title: Text('Quotes'),
         ),
       ],
       onTap: _onItemTapped,

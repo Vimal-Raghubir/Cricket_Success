@@ -1,8 +1,8 @@
 import 'package:cricket_app/navigation/bottom_navigation.dart';
 import 'package:cricket_app/header/header.dart';
-import 'package:cricket_app/pages/goals.dart';
-import 'package:cricket_app/pages/journal.dart';
+import 'package:cricket_app/classes/quotes.dart';
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() => runApp(MyApp());
 
@@ -14,11 +14,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Cricket App',
-      routes: {
-      // When navigating to the "/second" route, build the SecondScreen widget.
-      '/goal': (context) => Goals(),
-      '/journal': (context) => Journal(),
-      },
       theme: ThemeData(
         // This is the theme of your application.
         primarySwatch: Colors.lightBlue,
@@ -39,19 +34,23 @@ class MyHomePage extends StatefulWidget {
 
 //This represents the content of the main page
 class _MyHomePageState extends State<MyHomePage> {
+  var index = 0;
+
+  initState() {
+    index = 0 + Random().nextInt(quotes.length - 1);
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: Bottom_Navigation().createBottomNavigation(context, 0),
       body: new Column(
         children: <Widget>[
           Header().createHeader(context, 0),
-          Container(
-            padding: const EdgeInsets.all(32),
-            child: Text(
-              'Please click one of the tabs below to begin!',
-              softWrap: true,
-            ),
-          )
+          SizedBox(height: 15),
+          RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(text: quotes[index], style: TextStyle(fontStyle: FontStyle.italic, color: Colors.black, fontSize: 14)),
+          ),
         ],
       )
     );

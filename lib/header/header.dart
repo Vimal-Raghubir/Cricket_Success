@@ -4,9 +4,9 @@ class Header {
   double width;
 
   //Various page titles
-  var pageTitles = ["Main Page", "My Goals", "New Goal", "Update Goal", "Tutorials", "My Journals", "New Journal", "Update Journal"];
+  var pageTitles = ["Main Page", "My Goals", "New Goal", "Update Goal", "Tutorials", "My Journals", "New Journal", "Update Journal", "My Game Stats"];
   //Colors corresponding to page titles
-  var pageColors = [Colors.amber, Colors.deepOrange, Colors.lime, Colors.cyan, Colors.deepPurple, Colors.lightGreenAccent[700], Colors.greenAccent[700], Colors.pink];
+  var pageColors = [Colors.amber, Colors.deepOrange, Colors.lime, Colors.cyan, Colors.deepPurple, Colors.lightGreenAccent[700], Colors.greenAccent[700], Colors.pink, Colors.blue];
 
 //Widget used to create the styled header for each page
 Widget createHeader(BuildContext context, int pageIndex) {
