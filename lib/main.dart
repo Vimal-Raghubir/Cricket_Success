@@ -1,5 +1,7 @@
 import 'package:cricket_app/navigation/bottom_navigation.dart';
 import 'package:cricket_app/header/header.dart';
+import 'package:cricket_app/pages/goals.dart';
+import 'package:cricket_app/pages/journal.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -12,6 +14,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Cricket App',
+      routes: {
+      // When navigating to the "/second" route, build the SecondScreen widget.
+      '/goal': (context) => Goals(),
+      '/journal': (context) => Journal(),
+      },
       theme: ThemeData(
         // This is the theme of your application.
         primarySwatch: Colors.lightBlue,

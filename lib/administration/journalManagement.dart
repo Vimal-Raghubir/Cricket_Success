@@ -216,8 +216,9 @@ Widget submitButton(String buttonText) {
            },),
            //Will delete the journal and pop back to the journals page
            FlatButton(child: Text("Yes"), onPressed: () {
+             //Removed the reference to confirmDelete preventing this nested navigator pop issue
              _deleteJournal(widget.passedJournal.id);
-             Navigator.push(context, MaterialPageRoute(builder: (context) => Journal()));
+             //Navigator.push(context, MaterialPageRoute(builder: (context) => Journal()));
              Toast.show("Successfully deleted your journal entry!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
            },),
           ],
@@ -234,7 +235,9 @@ Widget deleteButton(BuildContext context) {
     padding: const EdgeInsets.symmetric(vertical: 16.0),
     child: RaisedButton(
       onPressed: () {
-        confirmDelete(context);
+       // confirmDelete(context);
+        _deleteJournal(widget.passedJournal.id);
+        Navigator.pop(context);
       },
       child: Text("Delete")
     )

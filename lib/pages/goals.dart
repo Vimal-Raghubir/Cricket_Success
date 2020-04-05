@@ -30,6 +30,7 @@ class _GoalState extends State<Goals> {
   refresh() async {
     //Had to make read asynchronous to wait on the results of the database retrieval before rendering the UI
     await _read();
+    if (!mounted) return;
     setState(() {});
   }
 
@@ -115,7 +116,7 @@ class _GoalState extends State<Goals> {
                   physics: BouncingScrollPhysics(),
                   itemCount: goals.length,
                   itemBuilder: (BuildContext ctxt, int index) {
-                    print("Creating list " + goals[index].currentProgress.toString());
+                    print("Creating list " + goals.length.toString());
                     //Need to change below
                     return InkWell(
                       //This needs to be asynchronous since you have to wait on the results of the update page
@@ -168,6 +169,6 @@ class _GoalState extends State<Goals> {
     DatabaseHelper helper = DatabaseHelper.instance;
     //goals now stores the index of each goalInformation in the database
     goals = await helper.getGoals();
-    print("Pulling from database " + goals[0].currentProgress.toString());
+    print("Pulling from database " + goals.length.toString());
   }
 }

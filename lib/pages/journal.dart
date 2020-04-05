@@ -28,6 +28,7 @@ class _JournalState extends State<Journal> {
     //Had to make read asynchronous to wait on the results of the database retrieval before rendering the UI
     await _read();
     print("refresh is called");
+    if (!mounted) return;
     setState(() {});
   }
 
@@ -40,13 +41,38 @@ class _JournalState extends State<Journal> {
       body: Column(
         children: <Widget> [
           Header().createHeader(context, 5),
-          Container(
-            padding: const EdgeInsets.all(32),
-            child: Text(
-              'Please see below!',
-              softWrap: true,
-            ),
+          ExpansionTile(
+            title: Text("                              See more Details"),
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  child: Text(
+                    'Journals are a very good way to remind yourself of all the good and bad things that happened over the course of a match or practice session.',
+                    textAlign: TextAlign.justify,
+                    softWrap: true,
+                  ),
+                ),
+                SizedBox(height: 15),
+                RichText(
+                    textAlign: TextAlign.justify,
+                    text: TextSpan(
+                      children: <TextSpan>[
+                        TextSpan(text: 'Try to note down', style: TextStyle(fontStyle: FontStyle.normal, color: Colors.black, fontSize: 14),
+                        ),
+                        TextSpan(text: ' 3 positives  and 1 area of improvement',
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 14),
+                        ),
+                        TextSpan(text: ' for each game or practice session.',
+                          style: TextStyle(fontStyle: FontStyle.normal, color: Colors.black, fontSize: 14),
+                        )
+                      ]
+                    )
+                  ),
+                SizedBox(height: 15),
+              ]
           ),
+
+            
           Expanded (
             //Used to dynamically render the journals in a list format
                 child: new ListView.builder (

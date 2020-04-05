@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cricket_app/pages/goals.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/classes/goalInformation.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:toast/toast.dart';
 
 GlobalKey<_NumberCountDemoState> key = new GlobalKey<_NumberCountDemoState>();
@@ -234,8 +235,8 @@ Widget submitButton(String buttonText) {
 }
 
   //Alert box to confirm deletion of a goal
-  void confirmDelete(BuildContext context) {
-    showDialog(
+  void confirmDelete(BuildContext context) async {
+    await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -247,8 +248,9 @@ Widget submitButton(String buttonText) {
            },),
            //Will delete the goal and pop back to the goals page
            FlatButton(child: Text("Yes"), onPressed: () {
-             _deleteGoal(widget.passedGoal.id);
-             Navigator.push(context, MaterialPageRoute(builder: (context) => Goals()));
+              _deleteGoal(widget.passedGoal.id);
+              //Removed the reference to confirmDelete preventing this nested navigator pop issue
+             //Navigator.push(context, MaterialPageRoute(builder: (context) => Goals()));
              Toast.show("Successfully deleted this goal!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
            },),
           ],
@@ -257,8 +259,6 @@ Widget submitButton(String buttonText) {
           //shape: CircleBorder(),
         );
       }
-
-    
     );
   }
 
@@ -267,7 +267,9 @@ Widget deleteButton(BuildContext context) {
     padding: const EdgeInsets.symmetric(vertical: 16.0),
     child: RaisedButton(
       onPressed: () {
-        confirmDelete(context);
+        //confirmDelete(context);
+        _deleteGoal(widget.passedGoal.id);
+        Navigator.pop(context);
       },
       child: Text("Delete")
     )
