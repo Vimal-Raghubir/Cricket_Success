@@ -20,6 +20,15 @@ class _StatisticsState extends State<Statistics> {
     index = 0 + Random().nextInt(allBarColors.length - 1);
   }
 
+  refresh() async {
+    //Had to make read asynchronous to wait on the results of the database retrieval before rendering the UI
+    await _read();
+    print("refresh is called");
+    if (!mounted) return;
+    setState(() {});
+  }
+
+
   /// Create one series with sample hard coded data.
   static List<charts.Series<Bar_ChartData, String>> _createBarData() {
     final data = [
@@ -126,8 +135,26 @@ class _StatisticsState extends State<Statistics> {
               fieldingPage(),
             ],
           ),
+          floatingActionButton: FloatingActionButton (
+          //Need this to be asynchronous since you have to wait on the results of the new goal page
+          onPressed: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NewGoal(
+                  //Helps to prevent range issues
+                  goal: GoalInformation(),
+                )
+              ),
+            );
+          //Rebuild the widget
+          refresh();
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.green,
+      ),
         ),
-      )
+      ),
     );
   }
 }

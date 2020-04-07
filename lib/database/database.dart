@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:cricket_app/classes/statistics.dart';
+import 'package:cricket_app/pages/statistics.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -55,6 +57,22 @@ import 'package:cricket_app/classes/journalInformation.dart';
                 $column_journal_name TEXT NOT NULL,
                 $column_details TEXT NOT NULL,
                 $column_date TEXT NOT NULL
+              )''');
+
+        await db.execute('''
+              CREATE TABLE $tableStatistics (
+                $column_statistics_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                $column_statistics_name TEXT NOT NULL,
+                $column_statistics_runs INTEGER NOT NULL,
+                $column_statistics_balls_faced INTEGER NOT NULL,
+                $column_statistics_not_out INTEGER NOT NULL,
+                $column_statistics_wickets INTEGER NOT NULL,
+                $column_statistics_overs INTEGER NOT NULL,
+                $column_statistics_runs_conceeded INTEGER NOT NULL,
+                $column_statistics_run_outs INTEGER NOT NULL,
+                $column_statistics_catches INTEGER NOT NULL,
+                $column_statistics_stumpings INTEGER NOT NULL,
+                $column_statistics_rating INTEGER NOT NULL
               )''');
       }
       // Database helper methods for Journals:
@@ -183,4 +201,70 @@ import 'package:cricket_app/classes/journalInformation.dart';
         return await db.delete(tableGoals, where: '$column_goal_id = ?', whereArgs: [id]);
         //return await db.delete(tableGoals, where: '$column_name = ?', whereArgs: [goal.name]);
       }
+
+
+      // Database helper methods for Statistics
+
+      //Handles inserting a goal
+      Future<int> insertStatistic(StatisticInformation statistics) async {
+        Database db = await database;
+        int id = await db.insert(tableStatistics, statistics.toMap());
+        return id;
+      }
+
+      //Function to query only one goal from the list
+      Future<StatisticInformation> queryStatistics(int id) async {
+        Database db = await database;
+        List<Map> maps = await db.query(tableStatistics,
+            columns: [column_statistics_id, column_statistics_name, column_statistics_runs, column_statistics_balls_faced, column_statistics_not_out, column_statistics_wickets, column_statistics_overs, column_statistics_runs_conceeded, column_statistics_run_outs, column_statistics_catches, column_statistics_stumpings, column_statistics_rating],
+            where: '$column_statistics_id = ?',
+            whereArgs: [id]);
+        if (maps.length > 0) {
+          return StatisticInformation.fromMap(maps.first);
+        }
+        return null;
+      }
+
+      //Get all goals in the database
+      Future<List<StatisticInformation>> getStatistics() async {
+        Database db = await database;
+        final List<Map<String, dynamic>> maps = await db.query(tableStatistics);
+        return List.generate(maps.length, (i) {
+          //Returns the column index along with the other fields since the goalinformation class has an id field
+          return StatisticInformation(maps[i][column_statistics_name], maps[i][column_statistics_runs], maps[i][column_statistics_balls_faced], maps[i][column_statistics_not_out], maps[i][column_statistics_wickets], maps[i][column_statistics_overs], maps[i][column_statistics_runs_conceeded], maps[i][column_statistics_run_outs], maps[i][column_statistics_catches], maps[i][column_statistics_stumpings], maps[i][column_statistics_rating]);
+        });
+      }
+
+      //Function to retrieve all statistic names from the database
+      Future<List<String>> getStatisticNames() async {
+        Database db = await database;
+        var maps = await db.query(tableStatistics, columns: [column_statistics_name]);
+        return List.generate(maps.length, (i) {
+          return maps[i][column_statistics_name].toLowerCase();
+        });
+      }
+      
+      //Function to update a specific statistic based on unique id
+      Future<void> updateStatistics(StatisticInformation statistic, int index) async {
+        // Get a reference to the database.
+        final db = await database;
+
+        // Update the given Statistic.
+        await db.update(
+          tableStatistics,
+          statistic.toMap(),
+          // Ensure that the Statistic has a matching id.
+          where: "$column_statistics_id = ?",
+          // Pass the Statistic's id as a whereArg to prevent SQL injection.
+          whereArgs: [index],
+        );
+      }
+
+      //Handles the deletion of a statistic object 
+      Future<int> deleteStatistic(int id) async {
+        final db = await database;
+        return await db.delete(tableStatistics, where: '$column_statistics_id = ?', whereArgs: [id]);
+      }
+
+
 }
