@@ -74,8 +74,8 @@ class Bottom_Navigation {
           title: Text('Tutorials'),
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.format_quote),
-          title: Text('Quotes'),
+          icon: Icon(Icons.equalizer),
+          title: Text('Statistics'),
         ),
       ],
       onTap: _onItemTapped,
