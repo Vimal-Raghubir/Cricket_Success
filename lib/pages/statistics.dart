@@ -5,8 +5,13 @@ import 'package:cricket_app/graphs/bar_chart.dart';
 import 'package:cricket_app/graphs/line_chart.dart';
 import 'package:cricket_app/graphs/donut.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:cricket_app/pages/createStatistic.dart';
+import 'package:cricket_app/classes/statistics.dart';
+import 'package:cricket_app/database/database.dart';
 
 var allBarColors = [Colors.red, Colors.blue, Colors.green, Colors.yellow, Colors.indigo, Colors.cyan, Colors.orange, Colors.teal, Colors.amber];
+
+List<StatisticInformation> statistics = [];
 
 //Used to handle the tutorial page
 class Statistics extends StatefulWidget {
@@ -141,9 +146,9 @@ class _StatisticsState extends State<Statistics> {
             await Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => NewGoal(
+                builder: (context) => NewStatistic(
                   //Helps to prevent range issues
-                  goal: GoalInformation(),
+                  statistic: StatisticInformation(),
                 )
               ),
             );
@@ -156,5 +161,13 @@ class _StatisticsState extends State<Statistics> {
         ),
       ),
     );
+  }
+
+    //Function to read all goals from the database for rendering
+  _read() async {
+    DatabaseHelper helper = DatabaseHelper.instance;
+    //goals now stores the index of each goalInformation in the database
+    statistics = await helper.getStatistics();
+    print("Pulling from database " + statistics.length.toString());
   }
 }

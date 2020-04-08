@@ -4,7 +4,7 @@ class Header {
   double width;
 
   //Various page titles
-  var pageTitles = ["Main Page", "My Goals", "New Goal", "Update Goal", "Tutorials", "My Journals", "New Journal", "Update Journal", "My Game Stats"];
+  var pageTitles = ["Main Page", "My Goals", "New Goal", "Update Goal", "Tutorials", "My Journals", "New Journal", "Update Journal", "Add a Match's Stats", "Update a Match's Stat"];
   //Colors corresponding to page titles
   var pageColors = [Colors.amber, Colors.deepOrange, Colors.lime, Colors.cyan, Colors.deepPurple, Colors.lightGreenAccent[700], Colors.greenAccent[700], Colors.pink, Colors.blue];
 

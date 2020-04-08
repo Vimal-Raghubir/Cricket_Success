@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:cricket_app/classes/statistics.dart';
-import 'package:cricket_app/pages/statistics.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -11,7 +10,7 @@ import 'package:cricket_app/classes/journalInformation.dart';
     class DatabaseHelper {
 
       // This is the actual database filename that is saved in the docs directory.
-      static final _databaseName = "dynamic_database.db";
+      static final _databaseName = "statistic_database.db";
       // Increment this version when you need to change the schema.
       static final _databaseVersion = 1;
 

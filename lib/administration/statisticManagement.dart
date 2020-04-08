@@ -21,15 +21,25 @@ class StatisticManagement extends StatefulWidget {
 
 
 class _MyStatisticManagementState extends State<StatisticManagement> {
-  var selectedStatisticIndex;
-  var selectedStatisticLength;
   var selectedStatisticName;
-  var selectedStatisticDescription;
-  var currentProgress;
+  var selectedStatisticRuns;
+  var selectedStatisticBallsFaced;
+  var selectedStatisticNotOut;
+  var selectedStatisticWickets;
+  var selectedStatisticOvers;
+
+  var selectedStatisticRunsConceeded;
+  var selectedStatisticRunOuts;
+  var selectedStatisticCatches;
+  var selectedStatisticStumpings;
+  var selectedStatisticRating;
   //Stores all Statistic names for the Statistic name field. Used to prevent duplicate Statistic names
   List statisticNames = [];
   int index;
   final List<String> StatisticOptions = ['Batting', 'Bowling', 'Fielding'];
+  bool batting = false;
+  bool bowling = false;
+  bool fielding = false;
 
   //Key used to validate form input
   final _formKey = GlobalKey<FormState>();
@@ -39,26 +49,21 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
   initState() {
     super.initState();
     //Extract passed in Statistic and initializes dynamic variables with their values. Starting point
-    selectedStatistic = widget.passedStatistic.type;
-    selectedStatisticIndex = widget.passedStatistic.typeIndex;
-    selectedStatisticLength = widget.passedStatistic.length;
     selectedStatisticName = widget.passedStatistic.name;
-    selectedStatisticDescription = widget.passedStatistic.description;
-    currentProgress = widget.passedStatistic.currentProgress;
+    selectedStatisticRuns = widget.passedStatistic.runs;
+    selectedStatisticBallsFaced = widget.passedStatistic.balls_faced;
+    selectedStatisticNotOut = widget.passedStatistic.not_out;
+    selectedStatisticWickets = widget.passedStatistic.wickets;
+
+    selectedStatisticOvers = widget.passedStatistic.overs;
+    selectedStatisticRunsConceeded = widget.passedStatistic.runs_conceeded;
+    selectedStatisticRunOuts = widget.passedStatistic.run_outs;
+    selectedStatisticCatches = widget.passedStatistic.catches;
+    selectedStatisticStumpings = widget.passedStatistic.stumpings;
+    selectedStatisticRating = widget.passedStatistic.rating;
     //Retrieves a list of all Statisticnames in the database
     _getStatisticNames();
   }
-
-Widget createDropDownHeader(String dropDownMessage) {
-  //Allows dynamic dropdown header
-  return Container(
-    padding: const EdgeInsets.all(12),
-    child: Text(
-      dropDownMessage,
-      softWrap: true,
-    ),
-  );
-}
 
 Widget createStatisticNameField() {
   return TextFormField(
@@ -95,18 +100,63 @@ Widget createStatisticNameField() {
   );
 }
 
-Widget createDescriptionField() {
+Widget createTextHeader(String message) {
+  //Allows dynamic dropdown header
+  return Container(
+    padding: const EdgeInsets.all(12),
+    child: Text(
+      message,
+      softWrap: true,
+    ),
+  );
+}
+
+Widget battingOption() {
+  return RaisedButton(
+    child: Text("Yes"),
+    onPressed: () {
+      setState(() {
+        batting = true;
+      });
+    },
+  );
+}
+
+Widget bowlingOption() {
+  return RaisedButton(
+    child: Text("Yes"),
+    onPressed: () {
+      setState(() {
+        bowling = true;
+      });
+    },
+  );
+}
+
+Widget fieldingOption() {
+  return RaisedButton(
+    child: Text("Yes"),
+    onPressed: () {
+      setState(() {
+        fielding = true;
+      });
+    },
+  );
+}
+
+
+Widget createNumberField(String message, int startingValue, int finalValue) {
   return TextFormField(
     textCapitalization: TextCapitalization.words,
     //Start with passed in statistic description
-    initialValue: widget.passedStatistic.description,
-    keyboardType: TextInputType.text ,
+    initialValue: startingValue.toString(),   //widget.passedStatistic.runs
+    keyboardType: TextInputType.text,
     decoration: InputDecoration(
-      labelText: "Any additional details?",
+      labelText: message,
     ),
     textInputAction: TextInputAction.next,
     validator: (value) {
-      RegExp regex = new RegExp(r"^[a-zA-Z0-9.\s]*$");
+      RegExp regex = new RegExp(r"^[0-9\s]*$");
       if (value.isEmpty) {
         return 'Please enter a value';
       } else if(!regex.hasMatch(value)) {
@@ -116,42 +166,23 @@ Widget createDescriptionField() {
         return null;
       }
     },
-    onSaved: (value)=> selectedstatisticDescription = value,
+    onSaved: (value)=> finalValue = value as int,    //selectedStatisticRuns
   );
 }
 
-Widget dayPickerHeader() {
-  return Container(
-    padding: const EdgeInsets.symmetric(vertical: 12),
-    child: Text(
-      'How many days do you think before you can achieve this statistic?',
-      softWrap: true,
-    ),
-  );
-}
-Widget dayPicker() {
+Widget sliderInput(int selectedValue, int minimum, int maximum) {
   return Slider(
-    value: selectedStatisticLength,
+    value: selectedValue.toDouble(),
     onChanged: (newRating) {
       setState(() {
-        selectedStatisticLength = newRating;
+        selectedValue = newRating.toInt();
       });
     },
-    min: 1.0,
-    max: 365.0,
+    min: minimum.toDouble(),
+    max: maximum.toDouble(),
     //Divisions help to show a label above the slider
     divisions: 91,
-    label: "$selectedStatisticLength",
-  );
-}
-
-Widget progressHeader() {
-  return Container(
-    padding: const EdgeInsets.symmetric(vertical: 12),
-    child: Text(
-      'How many days have you completed for this statistic so far?',
-      softWrap: true,
-    ),
+    label: "$selectedValue",
   );
 }
 
@@ -164,7 +195,7 @@ Widget submitButton(String buttonText) {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
         //Create a new statistic object with the parameters
-        StatisticInformation newStatistic = new StatisticInformation(selectedStatisticName, selectedStatistic, selectedStatisticIndex, selectedStatisticDescription, selectedStatisticLength, currentProgress);
+        StatisticInformation newStatistic = new StatisticInformation(selectedStatisticName, selectedStatisticRuns, selectedStatisticBallsFaced, selectedStatisticNotOut, selectedStatisticWickets, selectedStatisticOvers, selectedStatisticRunsConceeded, selectedStatisticRunOuts, selectedStatisticCatches, selectedStatisticStumpings, selectedStatisticRating);
         if (buttonText == "Submit") {
             //Insert the newStatistic into the database
           _save(newStatistic);
@@ -173,12 +204,11 @@ Widget submitButton(String buttonText) {
           //Navigates back to the previous page and in this case the Statistics page
           Navigator.pop(context);
           //Toast message to indicate the Statistic was created
-          Toast.show("Successfully created your Match!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+          Toast.show("Successfully created your Match Details!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
         } else if (buttonText == "Update") {
           //Retrieve the index of the passed in Statistic
           index = widget.notifyParent();
 
-          newStatistic.currentProgress = key.currentState.finalProgress;
           //Updates Statistic with newStatistic content and id
           _updateStatistic(newStatistic, index);
           //Goes back to previous page which in this case is Statistics.dart
@@ -192,34 +222,6 @@ Widget submitButton(String buttonText) {
     ),
   );
 }
-
-  //Alert box to confirm deletion of a Statistic
-  void confirmDelete(BuildContext context) async {
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Are you sure you want to delete this Statistic?"),
-          content: Text("This action cannot be undone."),
-          actions: [
-           FlatButton(child: Text("No"), onPressed: () {
-             Navigator.pop(context);
-           },),
-           //Will delete the Statistic and pop back to the Statistics page
-           FlatButton(child: Text("Yes"), onPressed: () {
-              _deleteStatistic(widget.passedStatistic.id);
-              //Removed the reference to confirmDelete preventing this nested navigator pop issue
-             //Navigator.push(context, MaterialPageRoute(builder: (context) => Statistics()));
-             Toast.show("Successfully deleted this Statistic!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-           },),
-          ],
-          elevation: 24.0,
-          backgroundColor: Colors.white,
-          //shape: CircleBorder(),
-        );
-      }
-    );
-  }
 
 Widget deleteButton(BuildContext context) {
   return Padding(
@@ -236,17 +238,52 @@ Widget deleteButton(BuildContext context) {
   );
 }
 
+Widget showBattingDetails() {
+  return Column(
+    children: <Widget>[
+      createNumberField("How many runs did you score?", widget.passedStatistic.runs, selectedStatisticRuns),
+      createNumberField("How much balls did you face?", widget.passedStatistic.balls_faced, selectedStatisticBallsFaced),
+      //Need to include not out section here
+    ],
+  ); 
+}
+
+Widget showBowlingDetails() {
+  return Column(
+    children: <Widget>[
+      createNumberField("How many runs did you score?", widget.passedStatistic.runs, selectedStatisticRuns),
+      createNumberField("How much balls did you face?", widget.passedStatistic.balls_faced, selectedStatisticBallsFaced),
+    ],
+  );
+  
+}
+
+Widget showFieldingDetails() {
+  return Column(
+    children: <Widget>[
+      createNumberField("How many runs did you score?", widget.passedStatistic.runs, selectedStatisticRuns),
+      createNumberField("How much balls did you face?", widget.passedStatistic.balls_faced, selectedStatisticBallsFaced),
+    ],
+  );
+  
+}
+
 //This widget is responsible for creating all the contents of the form
 Widget newPage() {
   return Column(
     children: <Widget>[
-      createDropDownHeader("What kind of Statistic would you like to create?"),
-      createDropdownMenu(),
       createStatisticNameField(),
-      createDescriptionField(),
-      dayPickerHeader(),
-      //This is a slider used to handle the number of days for a Statistic
-      dayPicker(),
+      createTextHeader("Did you bat during this match?"),
+      battingOption(),
+      batting ? showBattingDetails() : SizedBox(),
+
+      createTextHeader("Did you bowl during this match?"),
+      bowlingOption(),
+      bowling ? showBowlingDetails() : SizedBox(),
+
+      createTextHeader("Did you have any fielding dismissals during this match?"),
+      fieldingOption(),
+      fielding ? showFieldingDetails() : SizedBox(),
       submitButton("Submit"),    
     ],
   );
@@ -256,17 +293,11 @@ Widget newPage() {
 Widget updatePage() {
   return Column(
     children: <Widget>[
-      createDropDownHeader("Do you want to change the type of Statistic?"),
-      createDropdownMenu(),
       createStatisticNameField(),
-      createDescriptionField(),
-      dayPickerHeader(),
-      //This is a slider used to handle the number of days for a Statistic
-      dayPicker(),
-      //Header for progress portion
-      progressHeader(),
-      //Progress tracker
-      NumberCountDemo(key: key, progress: currentProgress, dayLimit: selectedStatisticLength),
+      createTextHeader("Did you bat during this match?"),
+      battingOption(),
+      createNumberField("How many runs did you score?", widget.passedStatistic.runs, selectedStatisticRuns),
+      createNumberField("How much balls did you face?", widget.passedStatistic.balls_faced, selectedStatisticBallsFaced), 
       ButtonBar(
         alignment: MainAxisAlignment.center,
         children: <Widget> [
