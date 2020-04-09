@@ -21,7 +21,7 @@ class StatisticInformation {
   String name;
   int runs;
   int balls_faced;
-  bool not_out;
+  int not_out;
   
   int wickets;
   int overs;
@@ -34,7 +34,7 @@ class StatisticInformation {
 
 
     //Constructor initializing the values of the class variables. The constructor has default values in case a default statistic is needed
-  StatisticInformation([String statName = "", int statRuns = 0, int statBalls = 0, bool statNotOut = false, int statWickets = 0, int statOvers = 0, int statRunsConceeded = 0, int statRunOuts = 0, int statCatches = 0, int statStumpings = 0, int statRating = 0, int index = 0]) {
+  StatisticInformation([String statName = "", int statRuns = 0, int statBalls = 0, int statNotOut = 0, int statWickets = 0, int statOvers = 0, int statRunsConceeded = 0, int statRunOuts = 0, int statCatches = 0, int statStumpings = 0, int statRating = 0, int index = 0]) {
     //initialize this by default to 0
     id = index;
     name = statName;

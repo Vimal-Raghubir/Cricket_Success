@@ -36,7 +36,7 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
   //Stores all Statistic names for the Statistic name field. Used to prevent duplicate Statistic names
   List statisticNames = [];
   int index;
-  final List<String> StatisticOptions = ['Batting', 'Bowling', 'Fielding'];
+  final List<String> notOutOptions = ['No', 'Yes'];
   bool batting = false;
   bool bowling = false;
   bool fielding = false;
@@ -111,48 +111,15 @@ Widget createTextHeader(String message) {
   );
 }
 
-Widget battingOption() {
-  return RaisedButton(
-    child: Text("Yes"),
-    onPressed: () {
-      setState(() {
-        batting = true;
-      });
-    },
-  );
-}
 
-Widget bowlingOption() {
-  return RaisedButton(
-    child: Text("Yes"),
-    onPressed: () {
-      setState(() {
-        bowling = true;
-      });
-    },
-  );
-}
-
-Widget fieldingOption() {
-  return RaisedButton(
-    child: Text("Yes"),
-    onPressed: () {
-      setState(() {
-        fielding = true;
-      });
-    },
-  );
-}
-
-
-Widget createNumberField(String message, int startingValue, int finalValue) {
+Widget createRunsField() {
   return TextFormField(
     textCapitalization: TextCapitalization.words,
     //Start with passed in statistic description
-    initialValue: startingValue.toString(),   //widget.passedStatistic.runs
+    initialValue: widget.passedStatistic.runs.toString(),   //widget.passedStatistic.runs
     keyboardType: TextInputType.text,
     decoration: InputDecoration(
-      labelText: message,
+      labelText: "How much runs did you score?",
     ),
     textInputAction: TextInputAction.next,
     validator: (value) {
@@ -166,23 +133,170 @@ Widget createNumberField(String message, int startingValue, int finalValue) {
         return null;
       }
     },
-    onSaved: (value)=> finalValue = value as int,    //selectedStatisticRuns
+    onSaved: (value)=> selectedStatisticRuns = value as int,
   );
 }
 
-Widget sliderInput(int selectedValue, int minimum, int maximum) {
+Widget createBallsFacedField() {
+  return TextFormField(
+    textCapitalization: TextCapitalization.words,
+    //Start with passed in statistic description
+    initialValue: widget.passedStatistic.balls_faced.toString(),
+    keyboardType: TextInputType.text,
+    decoration: InputDecoration(
+      labelText: "How much balls did you face?",
+    ),
+    textInputAction: TextInputAction.next,
+    validator: (value) {
+      RegExp regex = new RegExp(r"^[0-9\s]*$");
+      if (value.isEmpty) {
+        return 'Please enter a value';
+      } else if(!regex.hasMatch(value)) {
+        return 'Invalid characters detected';
+      }
+      else {
+        return null;
+      }
+    },
+    onSaved: (value)=> selectedStatisticBallsFaced = value as int,
+  );
+}
+
+Widget checkNotOut() {
+  //This is used to make the dropdown menu look like a form
+  return InputDecorator(
+    decoration: InputDecoration(
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(5.0))),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          hint: Text("No"),
+          value: notOutOptions[selectedStatisticNotOut],
+          isDense: true,
+          onChanged: (String newValue) {
+            setState(() {
+              
+              if (newValue == 'No') {
+                selectedStatisticNotOut = 0;
+              } else {
+                selectedStatisticNotOut = 1;
+              }
+              print(selectedStatisticNotOut);
+            });
+          },
+          items: notOutOptions.map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+          ),
+        ),
+    );
+}
+
+Widget overSlider(int minimum, int maximum, int divisions) {
   return Slider(
-    value: selectedValue.toDouble(),
+    value: selectedStatisticOvers.toDouble(),
     onChanged: (newRating) {
       setState(() {
-        selectedValue = newRating.toInt();
+        selectedStatisticOvers = newRating.toInt();
       });
     },
     min: minimum.toDouble(),
     max: maximum.toDouble(),
     //Divisions help to show a label above the slider
-    divisions: 91,
-    label: "$selectedValue",
+    divisions: divisions,
+    label: "$selectedStatisticOvers",
+  );
+}
+
+Widget wicketSlider(int minimum, int maximum, int divisions) {
+  return Slider(
+    value: selectedStatisticWickets.toDouble(),
+    onChanged: (newRating) {
+      setState(() {
+        selectedStatisticWickets = newRating.toInt();
+      });
+    },
+    min: minimum.toDouble(),
+    max: maximum.toDouble(),
+    //Divisions help to show a label above the slider
+    divisions: divisions,
+    label: "$selectedStatisticWickets",
+  );
+}
+
+Widget createRunsConceededField() {
+  return TextFormField(
+    textCapitalization: TextCapitalization.words,
+    //Start with passed in statistic description
+    initialValue: widget.passedStatistic.runs_conceeded.toString(),
+    keyboardType: TextInputType.text,
+    decoration: InputDecoration(
+      labelText: "How much runs did you conceed?",
+    ),
+    textInputAction: TextInputAction.next,
+    validator: (value) {
+      RegExp regex = new RegExp(r"^[0-9\s]*$");
+      if (value.isEmpty) {
+        return 'Please enter a value';
+      } else if(!regex.hasMatch(value)) {
+        return 'Invalid characters detected';
+      }
+      else {
+        return null;
+      }
+    },
+    onSaved: (value)=> selectedStatisticRunsConceeded = value as int,
+  );
+}
+
+Widget catchesSlider(int minimum, int maximum, int divisions) {
+  return Slider(
+    value: selectedStatisticCatches.toDouble(),
+    onChanged: (newRating) {
+      setState(() {
+        selectedStatisticCatches = newRating.toInt();
+      });
+    },
+    min: minimum.toDouble(),
+    max: maximum.toDouble(),
+    //Divisions help to show a label above the slider
+    divisions: divisions,
+    label: "$selectedStatisticCatches",
+  );
+}
+
+Widget runOutSlider(int minimum, int maximum, int divisions) {
+  return Slider(
+    value: selectedStatisticRunOuts.toDouble(),
+    onChanged: (newRating) {
+      setState(() {
+        selectedStatisticRunOuts = newRating.toInt();
+      });
+    },
+    min: minimum.toDouble(),
+    max: maximum.toDouble(),
+    //Divisions help to show a label above the slider
+    divisions: divisions,
+    label: "$selectedStatisticRunOuts",
+  );
+}
+
+Widget stumpingSlider(int minimum, int maximum, int divisions) {
+  return Slider(
+    value: selectedStatisticStumpings.toDouble(),
+    onChanged: (newRating) {
+      setState(() {
+        selectedStatisticStumpings = newRating.toInt();
+      });
+    },
+    min: minimum.toDouble(),
+    max: maximum.toDouble(),
+    //Divisions help to show a label above the slider
+    divisions: divisions,
+    label: "$selectedStatisticStumpings",
   );
 }
 
@@ -239,30 +353,41 @@ Widget deleteButton(BuildContext context) {
 }
 
 Widget showBattingDetails() {
-  return Column(
+  return ExpansionTile(
+    title: Text("                 Did you bat during this match?"),
     children: <Widget>[
-      createNumberField("How many runs did you score?", widget.passedStatistic.runs, selectedStatisticRuns),
-      createNumberField("How much balls did you face?", widget.passedStatistic.balls_faced, selectedStatisticBallsFaced),
-      //Need to include not out section here
+      createRunsField(),
+      createBallsFacedField(),
+      createTextHeader("Were you not out in this innings?"),
+      checkNotOut()
     ],
   ); 
 }
 
 Widget showBowlingDetails() {
-  return Column(
+  return ExpansionTile(
+    title: Text("                Did you bowl during this match?"),
     children: <Widget>[
-      createNumberField("How many runs did you score?", widget.passedStatistic.runs, selectedStatisticRuns),
-      createNumberField("How much balls did you face?", widget.passedStatistic.balls_faced, selectedStatisticBallsFaced),
+      createTextHeader("How many overs did you bowl?"),
+      overSlider(0, 50, 50),
+      createTextHeader("How many wickets did you take?"),
+      wicketSlider(0, 10, 10),
+      createRunsConceededField(),
     ],
   );
   
 }
 
 Widget showFieldingDetails() {
-  return Column(
+  return ExpansionTile(
+    title: Text("              Did you get any fielding dismissals?"),
     children: <Widget>[
-      createNumberField("How many runs did you score?", widget.passedStatistic.runs, selectedStatisticRuns),
-      createNumberField("How much balls did you face?", widget.passedStatistic.balls_faced, selectedStatisticBallsFaced),
+      createTextHeader("Did you take any catches? If yes then how many?"),
+      catchesSlider(0, 10, 10),
+      createTextHeader("Did you initiate any run outs? If yes then how many?"),
+      runOutSlider(0, 10, 10),
+      createTextHeader("Did you have any stumpings? If yes then how many?"),
+      stumpingSlider(0, 10, 10),
     ],
   );
   
@@ -273,17 +398,11 @@ Widget newPage() {
   return Column(
     children: <Widget>[
       createStatisticNameField(),
-      createTextHeader("Did you bat during this match?"),
-      battingOption(),
-      batting ? showBattingDetails() : SizedBox(),
+      showBattingDetails(),
 
-      createTextHeader("Did you bowl during this match?"),
-      bowlingOption(),
-      bowling ? showBowlingDetails() : SizedBox(),
+      showBowlingDetails(),
 
-      createTextHeader("Did you have any fielding dismissals during this match?"),
-      fieldingOption(),
-      fielding ? showFieldingDetails() : SizedBox(),
+      showFieldingDetails(),
       submitButton("Submit"),    
     ],
   );
@@ -294,10 +413,9 @@ Widget updatePage() {
   return Column(
     children: <Widget>[
       createStatisticNameField(),
-      createTextHeader("Did you bat during this match?"),
-      battingOption(),
-      createNumberField("How many runs did you score?", widget.passedStatistic.runs, selectedStatisticRuns),
-      createNumberField("How much balls did you face?", widget.passedStatistic.balls_faced, selectedStatisticBallsFaced), 
+      showBattingDetails(),
+      showBowlingDetails(),
+      showFieldingDetails(),
       ButtonBar(
         alignment: MainAxisAlignment.center,
         children: <Widget> [
@@ -311,8 +429,10 @@ Widget updatePage() {
   
   Widget build(BuildContext context) {
     //If the passed in widget type is a new Statistic then the call is being made from Statistics.dart
+    print(selectedStatisticName);
     if (widget.type == "new") {
-      return Column(
+      return Expanded(
+        child: ListView(
         children: <Widget>[
           Form(
             key: _formKey,
@@ -320,16 +440,19 @@ Widget updatePage() {
             child: newPage()
           ),
         ],
-      );
+        ),
+      ); 
     // If the passed in widget type is not a new Statistic then it comes from StatisticDetails.dart
     } else {
-      return Column(
-        children: <Widget>[
-          Form(
-            key: _formKey,
-            child: updatePage()
-          )
-      ],
+      return Expanded(
+        child: ListView(
+          children: <Widget>[
+            Form(
+              key: _formKey,
+              child: updatePage()
+            )
+          ],
+        ),
       );  
     }
   }
