@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/classes/statistics.dart';
+import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
 
 class StatisticManagement extends StatefulWidget {
@@ -111,54 +112,35 @@ Widget createTextHeader(String message) {
   );
 }
 
-
-Widget createRunsField() {
-  return TextFormField(
-    textCapitalization: TextCapitalization.words,
-    //Start with passed in statistic description
-    initialValue: widget.passedStatistic.runs.toString(),   //widget.passedStatistic.runs
-    keyboardType: TextInputType.text,
-    decoration: InputDecoration(
-      labelText: "How much runs did you score?",
-    ),
-    textInputAction: TextInputAction.next,
-    validator: (value) {
-      RegExp regex = new RegExp(r"^[0-9\s]*$");
-      if (value.isEmpty) {
-        return 'Please enter a value';
-      } else if(!regex.hasMatch(value)) {
-        return 'Invalid characters detected';
-      }
-      else {
-        return null;
-      }
+Widget runsSlider(int minimum, int maximum, int divisions) {
+  return Slider(
+    value: selectedStatisticRuns.toDouble(),
+    onChanged: (newRating) {
+      setState(() {
+        selectedStatisticRuns = newRating.toInt();
+      });
     },
-    onSaved: (value)=> selectedStatisticRuns = value as int,
+    min: minimum.toDouble(),
+    max: maximum.toDouble(),
+    //Divisions help to show a label above the slider
+    divisions: divisions,
+    label: "$selectedStatisticRuns",
   );
 }
 
-Widget createBallsFacedField() {
-  return TextFormField(
-    textCapitalization: TextCapitalization.words,
-    //Start with passed in statistic description
-    initialValue: widget.passedStatistic.balls_faced.toString(),
-    keyboardType: TextInputType.text,
-    decoration: InputDecoration(
-      labelText: "How much balls did you face?",
-    ),
-    textInputAction: TextInputAction.next,
-    validator: (value) {
-      RegExp regex = new RegExp(r"^[0-9\s]*$");
-      if (value.isEmpty) {
-        return 'Please enter a value';
-      } else if(!regex.hasMatch(value)) {
-        return 'Invalid characters detected';
-      }
-      else {
-        return null;
-      }
+Widget ballsFacedSlider(int minimum, int maximum, int divisions) {
+  return Slider(
+    value: selectedStatisticBallsFaced.toDouble(),
+    onChanged: (newRating) {
+      setState(() {
+        selectedStatisticBallsFaced = newRating.toInt();
+      });
     },
-    onSaved: (value)=> selectedStatisticBallsFaced = value as int,
+    min: minimum.toDouble(),
+    max: maximum.toDouble(),
+    //Divisions help to show a label above the slider
+    divisions: divisions,
+    label: "$selectedStatisticBallsFaced",
   );
 }
 
@@ -227,28 +209,19 @@ Widget wicketSlider(int minimum, int maximum, int divisions) {
   );
 }
 
-Widget createRunsConceededField() {
-  return TextFormField(
-    textCapitalization: TextCapitalization.words,
-    //Start with passed in statistic description
-    initialValue: widget.passedStatistic.runs_conceeded.toString(),
-    keyboardType: TextInputType.text,
-    decoration: InputDecoration(
-      labelText: "How much runs did you conceed?",
-    ),
-    textInputAction: TextInputAction.next,
-    validator: (value) {
-      RegExp regex = new RegExp(r"^[0-9\s]*$");
-      if (value.isEmpty) {
-        return 'Please enter a value';
-      } else if(!regex.hasMatch(value)) {
-        return 'Invalid characters detected';
-      }
-      else {
-        return null;
-      }
+Widget runsConceededSlider(int minimum, int maximum, int divisions) {
+  return Slider(
+    value: selectedStatisticRunsConceeded.toDouble(),
+    onChanged: (newRating) {
+      setState(() {
+        selectedStatisticRunsConceeded = newRating.toInt();
+      });
     },
-    onSaved: (value)=> selectedStatisticRunsConceeded = value as int,
+    min: minimum.toDouble(),
+    max: maximum.toDouble(),
+    //Divisions help to show a label above the slider
+    divisions: divisions,
+    label: "$selectedStatisticRunsConceeded",
   );
 }
 
@@ -322,6 +295,8 @@ Widget submitButton(String buttonText) {
         } else if (buttonText == "Update") {
           //Retrieve the index of the passed in Statistic
           index = widget.notifyParent();
+          print(index);
+          print(selectedStatisticRuns);
 
           //Updates Statistic with newStatistic content and id
           _updateStatistic(newStatistic, index);
@@ -356,8 +331,12 @@ Widget showBattingDetails() {
   return ExpansionTile(
     title: Text("                 Did you bat during this match?"),
     children: <Widget>[
-      createRunsField(),
-      createBallsFacedField(),
+      createTextHeader("How much runs did you score?"),
+      runsSlider(0, 200, 200),
+
+      createTextHeader("How many balls did you face?"),
+      ballsFacedSlider(0, 300, 300),
+      
       createTextHeader("Were you not out in this innings?"),
       checkNotOut()
     ],
@@ -370,9 +349,12 @@ Widget showBowlingDetails() {
     children: <Widget>[
       createTextHeader("How many overs did you bowl?"),
       overSlider(0, 50, 50),
+      
       createTextHeader("How many wickets did you take?"),
       wicketSlider(0, 10, 10),
-      createRunsConceededField(),
+      
+      createTextHeader("How many runs did you conceed?"),
+      runsConceededSlider(0, 200, 200)
     ],
   );
   

@@ -40,9 +40,6 @@ class DonutPieChart extends StatelessWidget {
 class Pie_ChartData {
   final int xAxis;
   final double yAxis;
-  final charts.Color color;
 
-  Pie_ChartData(this.xAxis, this.yAxis, Color color)
-      : this.color = new charts.Color(
-            r: color.red, g: color.green, b: color.blue, a: color.alpha);
+  Pie_ChartData(this.xAxis, this.yAxis);
 }

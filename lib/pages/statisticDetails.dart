@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:cricket_app/administration/goalManagement.dart';
+import 'package:cricket_app/administration/statisticManagement.dart';
 import 'package:cricket_app/header/header.dart';
 
 //Used to handle the tutorial page
-class GoalDetails extends StatefulWidget {
+class StatisticDetails extends StatefulWidget {
 
   //Stores passed in goal information in goal variable
-  final goal;
+  final statistic;
 
-  const GoalDetails({Key key, this.goal}) : super(key: key);
+  const StatisticDetails({Key key, this.statistic}) : super(key: key);
   
-  _GoalDetailState createState() => _GoalDetailState();
+  _StatisticDetailsState createState() => _StatisticDetailsState();
 }
 
-class _GoalDetailState extends State<GoalDetails> {
+class _StatisticDetailsState extends State<StatisticDetails> {
   //Will return the goal id
   getId() {
     //This stores the passed in goal's id from the goals.dart page
-    return widget.goal.id;
+    return widget.statistic.id;
   }
 
   @override
@@ -27,10 +27,10 @@ class _GoalDetailState extends State<GoalDetails> {
       resizeToAvoidBottomPadding: false,
       body: Column(
         children: <Widget>[
-          Header().createHeader(context, 3),
+          Header().createHeader(context, 9),
           Container(
             //Create a form using dialogBox.dart implementation but not a dialog box.
-            child: GoalManagement(notifyParent: getId, passedGoal: widget.goal, type: "detail"),
+            child: StatisticManagement(notifyParent: getId, passedStatistic: widget.statistic, type: "detail"),
           )
       ],) 
       

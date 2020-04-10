@@ -230,7 +230,7 @@ import 'package:cricket_app/classes/journalInformation.dart';
         final List<Map<String, dynamic>> maps = await db.query(tableStatistics);
         return List.generate(maps.length, (i) {
           //Returns the column index along with the other fields since the goalinformation class has an id field
-          return StatisticInformation(maps[i][column_statistics_name], maps[i][column_statistics_runs], maps[i][column_statistics_balls_faced], maps[i][column_statistics_not_out], maps[i][column_statistics_wickets], maps[i][column_statistics_overs], maps[i][column_statistics_runs_conceeded], maps[i][column_statistics_run_outs], maps[i][column_statistics_catches], maps[i][column_statistics_stumpings], maps[i][column_statistics_rating]);
+          return StatisticInformation(maps[i][column_statistics_name], maps[i][column_statistics_runs], maps[i][column_statistics_balls_faced], maps[i][column_statistics_not_out], maps[i][column_statistics_wickets], maps[i][column_statistics_overs], maps[i][column_statistics_runs_conceeded], maps[i][column_statistics_run_outs], maps[i][column_statistics_catches], maps[i][column_statistics_stumpings], maps[i][column_statistics_rating], maps[i][column_statistics_id]);
         });
       }
 

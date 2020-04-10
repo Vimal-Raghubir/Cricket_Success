@@ -25,7 +25,8 @@ class SimpleBarChart extends StatelessWidget {
               style: Theme.of(context).textTheme.body2,
               ),
               Expanded(
-                child: charts.BarChart(seriesList, animate: animate),
+                child: charts.BarChart(seriesList, animate: animate, 
+                defaultRenderer: new charts.BarRendererConfig(cornerStrategy: const charts.ConstCornerStrategy(30)),),
               ),
             ],
           )
@@ -40,9 +41,11 @@ class SimpleBarChart extends StatelessWidget {
 class Bar_ChartData {
   final String xAxis;
   final int yAxis;
-  final charts.Color color;
+  //final charts.Color color;
 
-  Bar_ChartData(this.xAxis, this.yAxis, Color color)
+  Bar_ChartData(this.xAxis, this.yAxis);
+
+  /*Bar_ChartData(this.xAxis, this.yAxis, Color color)
       : this.color = new charts.Color(
-            r: color.red, g: color.green, b: color.blue, a: color.alpha);
+            r: color.red, g: color.green, b: color.blue, a: color.alpha);*/
 }
