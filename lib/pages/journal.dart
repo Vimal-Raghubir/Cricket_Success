@@ -76,7 +76,7 @@ class _JournalState extends State<Journal> {
           Expanded (
             //Used to dynamically render the journals in a list format
                 child: new ListView.builder (
-                  physics: BouncingScrollPhysics(),
+                  physics: ScrollPhysics(),
                   itemCount: journals.length,
                   itemBuilder: (BuildContext ctxt, int index) {
                     //Need to change below

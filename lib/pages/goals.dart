@@ -113,7 +113,7 @@ class _GoalState extends State<Goals> {
               Expanded(
                 //Used to dynamically render the goals in a list format
                 child: new ListView.builder (
-                  physics: BouncingScrollPhysics(),
+                  physics: ScrollPhysics(),
                   itemCount: goals.length,
                   itemBuilder: (BuildContext ctxt, int index) {
                     print("Creating list " + goals.length.toString());

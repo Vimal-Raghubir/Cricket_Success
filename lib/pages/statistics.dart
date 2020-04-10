@@ -23,6 +23,8 @@ class _StatisticsState extends State<Statistics> {
   var index = 0;
 
   initState() {
+    super.initState();
+    refresh();
     index = 0 + Random().nextInt(allBarColors.length - 1);
   }
 
@@ -36,13 +38,26 @@ class _StatisticsState extends State<Statistics> {
 
 
   /// Create one series with sample hard coded data.
-  static List<charts.Series<Bar_ChartData, String>> _createRunsChart() {
+  static List<charts.Series<Bar_ChartData, String>> _createBarChart(String type) {
 
-    List<Bar_ChartData> list = statistics.map((stat) => Bar_ChartData(stat.name, stat.runs)).toList();
+    List<Bar_ChartData> list;
+    print(type);
+    if (type == "Runs") {
+      list = statistics.map((stat) => Bar_ChartData(stat.name, stat.runs)).toList();
+    } else if (type == "Strike Rate") {
+      list = statistics.map((stat) => Bar_ChartData(stat.name, stat.runs != 0 && stat.balls_faced != 0 ? (stat.runs / stat.balls_faced * 100).toInt(): 0)).toList();
+    } else if (type == "Fielding") {
+      list = statistics.map((stat) => Bar_ChartData(stat.name, (stat.catches + stat.run_outs + stat.stumpings))).toList();
+    } else if (type == "Wickets") {
+      list = statistics.map((stat) => Bar_ChartData(stat.name, stat.wickets)).toList();
+    } else if (type == "Economy Rate") {
+      //Need to fix
+      list = statistics.map((stat) => Bar_ChartData(stat.name, stat.wickets != 0 && stat.runs_conceeded != 0 ? (stat.runs_conceeded / stat.wickets * 100).toInt(): 0)).toList();
+    }
 
     return [
       new charts.Series<Bar_ChartData, String>(
-        id: 'Runs',
+        id: type,
         domainFn: (Bar_ChartData runs, _) => runs.xAxis,
         measureFn: (Bar_ChartData runs, _) => runs.yAxis,
         data: list,
@@ -51,27 +66,19 @@ class _StatisticsState extends State<Statistics> {
   }
 
     /// Create one series with sample hard coded data.
-  static List<charts.Series<Bar_ChartData, String>> _createStrikeRateChart() {
-    List<Bar_ChartData> list = statistics.map((stat) => Bar_ChartData(stat.name, stat.runs != 0 && stat.balls_faced != 0 ? (stat.runs / stat.balls_faced * 100).toInt(): 0)).toList();
+  static List<charts.Series<Line_ChartData, int>> _createLineData(String type) {
+    List<Line_ChartData> list;
 
-    return [
-      new charts.Series<Bar_ChartData, String>(
-        id: 'Strike Rate',
-        domainFn: (Bar_ChartData runs, _) => runs.xAxis,
-        measureFn: (Bar_ChartData runs, _) => runs.yAxis,
-        data: list,
-      )
-    ];
-  }
+    if (type == "Batting Average") {
+      list = statistics.map((stat) => Line_ChartData(stat.id, stat.runs.toDouble())).toList();
+    } else if (type == "Bowling Average") {
+      list = statistics.map((stat) => Line_ChartData(stat.id, stat.runs_conceeded.toDouble())).toList();
+    }
 
-    /// Create one series with sample hard coded data.
-  static List<charts.Series<Line_ChartData, int>> _createLineData() {
-
-    List<Line_ChartData> list = statistics.map((stat) => Line_ChartData(stat.id, stat.runs.toDouble())).toList();
 
     return [
       new charts.Series<Line_ChartData, int>(
-        id: 'Average',
+        id: type,
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
         domainFn: (Line_ChartData sales, _) => sales.xAxis,
         measureFn: (Line_ChartData sales, _) => sales.yAxis,
@@ -81,12 +88,16 @@ class _StatisticsState extends State<Statistics> {
 }
 
     /// Create one series with sample hard coded data.
-  static List<charts.Series<Pie_ChartData, int>> _createDonutData() {
-    List<Pie_ChartData> list = statistics.map((stat) => Pie_ChartData(stat.id, stat.runs.toDouble())).toList();
+  static List<charts.Series<Pie_ChartData, int>> _createDonutData(String type) {
+    List<Pie_ChartData> list;
+    if (type == "Not Out") {
+      list = statistics.map((stat) => Pie_ChartData(stat.id, stat.not_out.toDouble())).toList();
+    }
+     
 
     return [
       new charts.Series<Pie_ChartData, int>(
-        id: 'Sales',
+        id: type,
         domainFn: (Pie_ChartData sales, _) => sales.xAxis,
         measureFn: (Pie_ChartData sales, _) => sales.yAxis,
         data: list,
@@ -94,107 +105,65 @@ class _StatisticsState extends State<Statistics> {
     ];
 }
 
+Widget statList() {
+  return ListView.builder (
+            shrinkWrap: true,
+            physics: ScrollPhysics(),
+            itemCount: statistics.length,
+            itemBuilder: (BuildContext ctxt, int index) {
+              print("Creating list " + statistics.length.toString());
+              return InkWell(
+              //This needs to be asynchronous since you have to wait on the results of the update page
+                onTap: () async {
+                //Pass the statistic information to the statisticDetails.dart page
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => StatisticDetails(
+                      //Helps to prevent range issues
+                        statistic: statistics?.elementAt(index) ?? "",
+                      )
+                    ),
+                  );
+                  //Then rebuild the widget
+                  refresh();
+                },
+                //Render custom card for each goal
+                child: Card(
+                  child: Container(
+                    width: 300,
+                    height: 100,
+                    child: Text(statistics[index].name),
+                  ),
+                ),
+              );  
+            }
+        );
+}
+
   Widget battingPage() {
     return ListView(children: <Widget>[
-      SimpleBarChart(_createRunsChart(), animate: true, title: "Runs per Game"),
-      SimpleLineChart(_createLineData(), animate: true, title: "Batting Average progression"),
-      SimpleBarChart(_createStrikeRateChart(), animate: true, title: "Strike Rate"),
-      //DonutPieChart(_createDonutData(), animate: true, title: "Ways of scoring runs"),
-      ListView.builder (
-        shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  itemCount: statistics.length,
-                  itemBuilder: (BuildContext ctxt, int index) {
-                    print("Creating list " + statistics.length.toString());
-                    //Need to change below
-                    return InkWell(
-                      //This needs to be asynchronous since you have to wait on the results of the update page
-                      onTap: () async {
-                        //Pass the goal information to the goalDetails.dart page
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => StatisticDetails(
-                            //Helps to prevent range issues
-                            statistic: statistics?.elementAt(index) ?? "",
-                            )
-                          ),
-                        );
-                        //Then rebuild the widget
-                        refresh();
-                      },
-                      //Render custom card for each goal
-                      child: Card(
-                        child: Container(
-                            width: 300,
-                            height: 100,
-                            child: Text(statistics[index].name),
-                        ),
-                      ),
-                    );  
-                  }
-                )
+      SimpleBarChart(_createBarChart("Runs"), animate: true, title: "Runs per Game"),
+      SimpleLineChart(_createLineData("Batting Average"), animate: true, title: "Batting Average progression"),
+      SimpleBarChart(_createBarChart("Strike Rate"), animate: true, title: "Strike Rate"),
+      //DonutPieChart(_createDonutData("Not Out"), animate: true, title: "Not Out vs Dismissals"),
+      statList(),
     ]);
-    
-    //return SimpleBarChart(_createSampleData(), animate: true);
   }
 
   Widget bowlingPage() {
-    return Container(alignment: Alignment.center, child: Text("Bowling"));
-  }
-
-
-  /// Create one series with sample hard coded data.
-  static List<charts.Series<Bar_ChartData, String>> _createFieldingChart() {
-
-    List<Bar_ChartData> list = statistics.map((stat) => Bar_ChartData(stat.name, (stat.catches + stat.run_outs + stat.stumpings))).toList();
-
-    return [
-      new charts.Series<Bar_ChartData, String>(
-        id: 'Fielding',
-        domainFn: (Bar_ChartData runs, _) => runs.xAxis,
-        measureFn: (Bar_ChartData runs, _) => runs.yAxis,
-        data: list,
-      )
-    ];
+    return ListView(children: <Widget>[
+      SimpleBarChart(_createBarChart("Wickets"), animate: true, title: "Wickets per Game"),
+      SimpleLineChart(_createLineData("Bowling Average"), animate: true, title: "Bowling Average progression"),
+      SimpleBarChart(_createBarChart("Economy Rate"), animate: true, title: "Economy Rate"),
+      statList(),
+    ]);
   }
 
   Widget fieldingPage() {
     return ListView(children: <Widget>[
-      SimpleBarChart(_createFieldingChart(), animate: true, title: "Fielding dismissals"),
-      ListView.builder (
-        shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  itemCount: statistics.length,
-                  itemBuilder: (BuildContext ctxt, int index) {
-                    //Need to change below
-                    return InkWell(
-                      //This needs to be asynchronous since you have to wait on the results of the update page
-                      onTap: () async {
-                        //Pass the goal information to the goalDetails.dart page
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => StatisticDetails(
-                            //Helps to prevent range issues
-                            statistic: statistics?.elementAt(index) ?? "",
-                            )
-                          ),
-                        );
-                        //Then rebuild the widget
-                        refresh();
-                      },
-                      //Render custom card for each goal
-                      child: Card(
-                        child: Container(
-                            width: 300,
-                            height: 100,
-                            child: Text(statistics[index].name),
-                        ),
-                      ),
-                    );  
-                  }
-                )
+      SimpleBarChart(_createBarChart("Fielding"), animate: true, title: "Fielding dismissals"),
+      statList(),
     ]);
   }
 
