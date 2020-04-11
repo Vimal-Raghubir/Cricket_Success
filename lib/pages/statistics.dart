@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:cricket_app/cardDecoration/customStatisticCard.dart';
 import 'package:flutter/material.dart';
 import 'package:cricket_app/navigation/bottom_navigation.dart';
 import 'package:cricket_app/graphs/bar_chart.dart';
@@ -21,18 +22,17 @@ class Statistics extends StatefulWidget {
 }
 
 class _StatisticsState extends State<Statistics> {
-  var index = 0;
+  var width;
+  final List<Color> barColors = [Colors.amber, Colors.blue, Colors.green, Colors.red, Colors.orange, Colors.purple, Colors.yellow[700], Colors.cyan, Colors.indigo, Colors.lightGreen, Colors.deepOrange, Colors.teal]; 
 
   initState() {
     super.initState();
     refresh();
-    index = 0 + Random().nextInt(allBarColors.length - 1);
   }
 
   refresh() async {
     //Had to make read asynchronous to wait on the results of the database retrieval before rendering the UI
     await _read();
-    print("refresh is called");
     if (this.mounted){
       setState(() {});
     }
@@ -159,9 +159,13 @@ class _StatisticsState extends State<Statistics> {
         }
       }
     }
-
+    int j = 0;
     for (int i = 0; i < economyRates.length; i++) {
-      finalList.add(Bar_ChartData(ranges[i], economyRates[i]));
+      if (j == (barColors.length - 1)) {
+        j = 0;
+      }
+      finalList.add(Bar_ChartData(ranges[i], economyRates[i], barColors[j]));
+      j++;
     }
     
     return finalList;
@@ -194,9 +198,13 @@ class _StatisticsState extends State<Statistics> {
         }
       }
     }
-
+    int j = 0;
     for (int i = 0; i < strikeRates.length; i++) {
-      finalList.add(Bar_ChartData(ranges[i], strikeRates[i]));
+      if (j == (barColors.length - 1)) {
+        j = 0;
+      }
+      finalList.add(Bar_ChartData(ranges[i], strikeRates[i], barColors[j]));
+      j++;
     }
     
     return finalList;
@@ -205,13 +213,27 @@ class _StatisticsState extends State<Statistics> {
 
   /// Create one series with sample hard coded data.
   List<charts.Series<Bar_ChartData, String>> _createBarChart(String type) {
-    List<Bar_ChartData> list;
+    List<Bar_ChartData> list = [];
     if (type == "Runs") {
-      list = statistics.map((stat) => Bar_ChartData(stat.name, stat.runs)).toList();
+      int j = 0;
+      for (int i = 0; i < statistics.length; i++) {
+        if (j == (barColors.length - 1)) {
+          j = 0;
+        }
+        list.add(Bar_ChartData(statistics[i].name, statistics[i].runs, barColors[j]));
+        j++;
+      }
     } else if (type == "Strike Rate") {
       list = generateStrikeRateRate();
     } else if (type == "Wickets") {
-      list = statistics.map((stat) => Bar_ChartData(stat.name, stat.wickets)).toList();
+      int j = 0;
+      for (int i = 0; i < statistics.length; i++) {
+        if (j == (barColors.length - 1)) {
+          j = 0;
+        }
+        list.add(Bar_ChartData(statistics[i].name, statistics[i].wickets, barColors[j]));
+        j++;
+      }
     } else if (type == "Economy Rate") {
       //Need to fix
       list = generateEconomyRate();
@@ -222,6 +244,7 @@ class _StatisticsState extends State<Statistics> {
         id: type,
         domainFn: (Bar_ChartData runs, _) => runs.xAxis,
         measureFn: (Bar_ChartData runs, _) => runs.yAxis,
+        colorFn: (Bar_ChartData runs, _) => runs.color,
         data: list,
       )
     ];
@@ -241,7 +264,7 @@ class _StatisticsState extends State<Statistics> {
     return [
       new charts.Series<Line_ChartData, int>(
         id: type,
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
         domainFn: (Line_ChartData sales, _) => sales.xAxis,
         measureFn: (Line_ChartData sales, _) => sales.yAxis,
         data: list,
@@ -249,10 +272,10 @@ class _StatisticsState extends State<Statistics> {
     ];
 }
 
-  List<Pie_ChartData> createNotOutChart() {
+  List<Donut_ChartData> createNotOutChart() {
     double notOuts = 0;
     double dismissals = 0;
-    List<Pie_ChartData> finalList = [];
+    List<Donut_ChartData> finalList = [];
 
     for (int i = 0; i < statistics.length; i++) {
       if (statistics[i].not_out == 0) {
@@ -261,29 +284,31 @@ class _StatisticsState extends State<Statistics> {
         notOuts += 1;
       }
     }
-    finalList.add(Pie_ChartData(0, dismissals));
-    finalList.add(Pie_ChartData(1, notOuts));
+    finalList.add(Donut_ChartData(0, dismissals, Colors.red));
+    finalList.add(Donut_ChartData(1, notOuts, Colors.green));
     
     return finalList;
   }
 
     /// Create one series with sample hard coded data.
-  List<charts.Series<Pie_ChartData, int>> _createDonutData(String type) {
-    List<Pie_ChartData> list;
+  List<charts.Series<Donut_ChartData, int>> _createDonutData(String type) {
+    List<Donut_ChartData> list;
     if (type == "Not Out") {
       list = createNotOutChart();
     }
     return [
-      new charts.Series<Pie_ChartData, int>(
+      new charts.Series<Donut_ChartData, int>(
         id: type,
-        domainFn: (Pie_ChartData sales, _) => sales.xAxis,
-        measureFn: (Pie_ChartData sales, _) => sales.yAxis,
+        domainFn: (Donut_ChartData not_out, _) => not_out.xAxis,
+        measureFn: (Donut_ChartData not_out, _) => not_out.yAxis,
+        colorFn: (Donut_ChartData not_out, _) => not_out.color,
         data: list,
       )
     ];
 }
 
-Widget statList() {
+Widget statList(int type) {
+  width = MediaQuery.of(context).size.width;
   return ListView.builder (
             shrinkWrap: true,
             physics: ScrollPhysics(),
@@ -306,13 +331,7 @@ Widget statList() {
                   refresh();
                 },
                 //Render custom card for each goal
-                child: Card(
-                  child: Container(
-                    width: 300,
-                    height: 100,
-                    child: Text(statistics[index].name),
-                  ),
-                ),
+                child: CustomStatisticCard(object: statistics[index], width: width,type: type)
               );  
             }
         );
@@ -324,7 +343,7 @@ Widget statList() {
       SimpleLineChart(_createLineData("Batting Average"), animate: true, title: "Batting Average progression"),
       SimpleBarChart(_createBarChart("Strike Rate"), animate: true, title: "Strike Rate"),
       DonutPieChart(_createDonutData("Not Out"), animate: true, title: "Not Out vs Dismissals", subtitle: "0 is Dismissals and 1 is Not Outs",),
-      statList(),
+      statList(0),
     ]);
   }
 
@@ -333,14 +352,14 @@ Widget statList() {
       SimpleBarChart(_createBarChart("Wickets"), animate: true, title: "Wickets per Game"),
       SimpleLineChart(_createLineData("Bowling Average"), animate: true, title: "Bowling Average progression"),
       SimpleBarChart(_createBarChart("Economy Rate"), animate: true, title: "Economy Rate"),
-      statList(),
+      statList(1),
     ]);
   }
 
   Widget fieldingPage() {
     return ListView(children: <Widget>[
       SimpleSeriesLegend(_createFieldingChart(), animate: true, title: "Fielding dismissals"),
-      statList(),
+      statList(2),
     ]);
   }
 
@@ -396,6 +415,5 @@ Widget statList() {
     DatabaseHelper helper = DatabaseHelper.instance;
     //goals now stores the index of each goalInformation in the database
     statistics = await helper.getStatistics();
-    print("Pulling from database " + statistics.length.toString());
   }
 }

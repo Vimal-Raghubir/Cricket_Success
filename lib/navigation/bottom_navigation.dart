@@ -3,7 +3,7 @@ import 'package:cricket_app/pages/tutorials.dart';
 import 'package:cricket_app/pages/statistics.dart';
 import 'package:cricket_app/pages/goals.dart';
 import 'package:flutter/material.dart';
-import 'package:cricket_app/pages/journal.dart';
+import 'package:cricket_app/pages/journals.dart';
 
 //Used to generate the bottom navigation portion
 class Bottom_Navigation {

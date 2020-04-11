@@ -4,7 +4,7 @@ import 'package:cricket_app/navigation/bottom_navigation.dart';
 import 'package:cricket_app/header/header.dart';
 import 'package:cricket_app/classes/journalInformation.dart';
 import 'package:cricket_app/pages/journalDetails.dart';
-import 'package:cricket_app/cardDecoration/customCard.dart';
+import 'package:cricket_app/cardDecoration/customJournalCard.dart';
 import 'package:cricket_app/database/database.dart';
 
 
@@ -27,7 +27,6 @@ class _JournalState extends State<Journal> {
   refresh() async {
     //Had to make read asynchronous to wait on the results of the database retrieval before rendering the UI
     await _read();
-    print("refresh is called");
     if (this.mounted) {
       setState(() {});
     }
@@ -99,7 +98,7 @@ class _JournalState extends State<Journal> {
                         //Add other logic here
                       },
                       //Render custom card for each journal
-                      child: CustomCard(object: journals[index], width: width,type: "journal"),
+                      child: CustomJournalCard(object: journals[index], width: width,type: "journal"),
                     );  
                   }
                 )

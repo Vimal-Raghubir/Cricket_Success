@@ -37,15 +37,13 @@ class SimpleBarChart extends StatelessWidget {
   }
 }
 
-/// Sample ordinal data type.
+/// Used for bar charts
 class Bar_ChartData {
   final String xAxis;
   final int yAxis;
-  //final charts.Color color;
+  final charts.Color color;
 
-  Bar_ChartData(this.xAxis, this.yAxis);
-
-  /*Bar_ChartData(this.xAxis, this.yAxis, Color color)
+  Bar_ChartData(this.xAxis, this.yAxis, Color color)
       : this.color = new charts.Color(
-            r: color.red, g: color.green, b: color.blue, a: color.alpha);*/
+            r: color.red, g: color.green, b: color.blue, a: color.alpha);
 }

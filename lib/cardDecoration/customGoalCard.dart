@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:cricket_app/classes/goalInformation.dart';
-import 'package:cricket_app/classes/journalInformation.dart';
 
-class CustomCard extends StatefulWidget {
+class CustomGoalCard extends StatefulWidget {
 
   final object;
   final width;
   final type;
 
-  const CustomCard({Key key, this.object, this.width, this.type}) : super(key: key);
+  const CustomGoalCard({Key key, this.object, this.width, this.type}) : super(key: key);
 
-    _MyCustomCardState createState() => new _MyCustomCardState();
+    _MyCustomGoalCardState createState() => new _MyCustomGoalCardState();
 }
 
-class _MyCustomCardState extends State<CustomCard> {
+class _MyCustomGoalCardState extends State<CustomGoalCard> {
   double width;
   var progress;
   var viewProgress;
@@ -63,7 +60,23 @@ class _MyCustomCardState extends State<CustomCard> {
   }
 
   //Used to render the Process Goal card
-  Widget _decorationContainerA(Color primaryColor, double top, double left) {
+  Widget _decorationContainer(int index) {
+    String image = 'assets/images/non-colored/process.png';
+    switch(index) {
+      case 0: {
+        image = 'assets/images/non-colored/process.png';
+      }
+      break;
+      case 1: {
+        image = 'assets/images/non-colored/performance.png';
+      }
+      break;
+      case 2: {
+        image = 'assets/images/non-colored/outcome.jpg';
+      }
+      break;
+    }
+
     return Stack(
       children: <Widget>[
         //This is used to render the process.png image instead of previous card decoration
@@ -72,53 +85,10 @@ class _MyCustomCardState extends State<CustomCard> {
           bottom: 0,
           right: 0,
           left: 0,
-          child: Image.asset('assets/images/non-colored/process.png'),
+          child: Image.asset(image),
         ),
       ],
     );
-  }
-
-  //Used to render the Performance goal card
-  Widget _decorationContainerB() {
-    return Stack(
-      children: <Widget>[
-        //This is used to render the performance.png image instead of previous card decoration
-        Positioned(
-          top: 0,
-          bottom: 0,
-          right: 0,
-          left: 0,
-          child: Image.asset('assets/images/non-colored/performance.png'),
-        ),
-      ],
-    );
-  }
-
-    //Used to render the Outcome Goal card
-    Widget _decorationContainerC() {
-    return Stack(
-      children: <Widget>[
-        //This is used to render the outcome.jpg image instead of previous card decoration
-        Positioned(
-          top: 0,
-          bottom: 0,
-          right: 0,
-          left: 0,
-          child: Image.asset('assets/images/non-colored/outcome.jpg'),
-        ),
-      ],
-    );
-  }
-
-  //Used to determine the appropriate card for the specific goal type
-  Widget getDecoration(int index) {
-    switch (index) {
-      case 0: return _decorationContainerA(Colors.redAccent, -110, -85);
-      break;
-      case 1: return _decorationContainerB();
-      break;
-      case 2: return _decorationContainerC();
-    }
   }
 
   //Used to create the display for all the goal information itself
@@ -137,7 +107,7 @@ class _MyCustomCardState extends State<CustomCard> {
           children: <Widget>[
             AspectRatio(
               aspectRatio: .7,
-              child: _card(primaryColor: backgroundColors[widget.object.typeIndex], backWidget: getDecoration(widget.object.typeIndex)),
+              child: _card(primaryColor: backgroundColors[widget.object.typeIndex], backWidget: _decorationContainer(widget.object.typeIndex)),
             ),
             Expanded(
                 child: Column(
@@ -208,90 +178,10 @@ class _MyCustomCardState extends State<CustomCard> {
         ));
       }
 
-  //Used to create the display for all the journal information itself
-  Widget createCustomJournalCard() {
-    var journalDate = DateTime.parse(widget.object.date);
-    var formatter = new DateFormat('MMMM dd,yyyy');
-    String formatted = formatter.format(journalDate);
-
-    width = widget.width;
-    return Container(
-        height: 170,
-        width: width - 20,
-        child: Row(
-          children: <Widget>[
-            AspectRatio(
-              aspectRatio: .7,
-              child: _card(primaryColor: Colors.blue, backWidget: _decorationContainerJournal()),
-            ),
-            Expanded(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(height: 15),
-                Container(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(widget.object.name,
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold)),
-                      ),
-                      CircleAvatar(
-                        radius: 3,
-                        backgroundColor: Colors.blue,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(formatted,
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14,
-                          )),
-                      SizedBox(width: 10)
-                    ],
-                  ),
-                ),
-                SizedBox(height: 15),
-                Text(widget.object.details,
-                    style: TextStyle(fontSize: 14).copyWith(
-                        fontSize: 12, color: Colors.black)),
-                SizedBox(height: 15),
-              ],
-            ))
-          ],
-        ));
-      }
-
-          //Used to render the Outcome Goal card
-    Widget _decorationContainerJournal() {
-    return Stack(
-      children: <Widget>[
-        //This is used to render the outcome.jpg image instead of previous card decoration
-        Positioned(
-          top: 0,
-          bottom: 0,
-          right: 0,
-          left: 0,
-          child: Image.asset('assets/images/non-colored/outcome.jpg'),
-        ),
-      ],
-    );
-  }
-
   Widget build(BuildContext context) {
     if (this.mounted) {
       setState(() {});
     }
-    if (widget.type == "goal") {
-      //print("This is being called in customCard build " + widget.object.currentProgress.toString());
-      return createCustomGoalCard();
-    } else {
-      return createCustomJournalCard();
-    }
+    return createCustomGoalCard();
   }
 }

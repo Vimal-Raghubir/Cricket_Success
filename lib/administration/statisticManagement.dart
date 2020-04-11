@@ -88,7 +88,6 @@ Widget createStatisticNameField() {
       
       //Checks if the database Statistic names contain the passed in value to prevent duplicates and you are trying to create a new Statistic
       } else if(statisticNames.contains(value.toLowerCase()) && widget.type == "new") {
-        print("CHECK IS WORKING");
         return 'A match with the same name already exists';
       //Checks if the statistic name already exists in the database and the initial statistic name has been modified. This guards against changing an existing statistic name to another existing statistic name
       } else if (statisticNames.contains(value.toLowerCase()) && widget.passedStatistic.name != value) {
@@ -168,7 +167,6 @@ Widget checkNotOut() {
                 } else {
                   selectedStatisticNotOut = 1;
                 }
-                print(selectedStatisticNotOut);
               });
             }
           },
@@ -313,15 +311,13 @@ Widget submitButton(String buttonText) {
         } else if (buttonText == "Update") {
           //Retrieve the index of the passed in Statistic
           index = widget.notifyParent();
-          print(index);
-          print(selectedStatisticRuns);
 
           //Updates Statistic with newStatistic content and id
           _updateStatistic(newStatistic, index);
           //Goes back to previous page which in this case is Statistics.dart
           Navigator.pop(context);
           //Toast message to indicate the Statistic was updated
-          Toast.show("Successfully updated your Statistic!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+          Toast.show("Successfully updated your Match Details!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
         } 
       }                     
     },
@@ -338,6 +334,7 @@ Widget deleteButton(BuildContext context) {
         //confirmDelete(context);
         _deleteStatistic(widget.passedStatistic.id);
         Navigator.pop(context);
+        Toast.show("Successfully deleted your Match Details!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
       },
       child: Text("Delete")
     )
@@ -429,7 +426,6 @@ Widget updatePage() {
   
   Widget build(BuildContext context) {
     //If the passed in widget type is a new Statistic then the call is being made from Statistics.dart
-    print(selectedStatisticName);
     if (widget.type == "new") {
       return Expanded(
         child: ListView(

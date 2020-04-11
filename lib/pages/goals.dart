@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cricket_app/navigation/bottom_navigation.dart';
 import 'package:cricket_app/header/header.dart';
-import 'package:cricket_app/cardDecoration/customCard.dart';
+import 'package:cricket_app/cardDecoration/customGoalCard.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/classes/goalInformation.dart';
 
@@ -117,7 +117,6 @@ class _GoalState extends State<Goals> {
                   physics: ScrollPhysics(),
                   itemCount: goals.length,
                   itemBuilder: (BuildContext ctxt, int index) {
-                    print("Creating list " + goals.length.toString());
                     //Need to change below
                     return InkWell(
                       //This needs to be asynchronous since you have to wait on the results of the update page
@@ -136,7 +135,7 @@ class _GoalState extends State<Goals> {
                         refresh();
                       },
                       //Render custom card for each goal
-                      child: CustomCard(object: goals[index],width: width, type: "goal"),
+                      child: CustomGoalCard(object: goals[index],width: width, type: "goal"),
                     );  
                   }
                 )
@@ -170,6 +169,5 @@ class _GoalState extends State<Goals> {
     DatabaseHelper helper = DatabaseHelper.instance;
     //goals now stores the index of each goalInformation in the database
     goals = await helper.getGoals();
-    print("Pulling from database " + goals.length.toString());
   }
 }

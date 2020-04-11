@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/classes/journalInformation.dart';
-import 'package:cricket_app/pages/journal.dart';
+import 'package:cricket_app/pages/journals.dart';
 import 'package:intl/intl.dart';
 import 'package:toast/toast.dart';
 
@@ -94,7 +94,6 @@ Widget createJournalNameField() {
       
       //Checks if the database journal names contain the passed in value to prevent duplicates and you are trying to create a new journal
       } else if(journalNames.contains(value.toLowerCase()) && widget.type == "new") {
-        print("CHECK IS WORKING");
         return 'A journal with the same name already exists';
       //Checks if the journal name already exists in the database and the initial journal name has been modified. This guards against changing an existing journal name to another existing journal name
       } else if (journalNames.contains(value.toLowerCase()) && widget.passedJournal.name != value) {
