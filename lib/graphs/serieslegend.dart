@@ -1,14 +1,13 @@
-/// Line chart example
+/// Bar chart example
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 
-class DonutPieChart extends StatelessWidget {
+class SimpleSeriesLegend extends StatelessWidget {
   final List<charts.Series> seriesList;
   final bool animate;
   final String title;
-  final String subtitle;
 
-  DonutPieChart(this.seriesList, {this.animate, this.title, this.subtitle});
+  SimpleSeriesLegend(this.seriesList, {this.animate, this.title});
 
 
 
@@ -25,11 +24,9 @@ class DonutPieChart extends StatelessWidget {
               Text(title,
               style: Theme.of(context).textTheme.body2,
               ),
-              Text(subtitle,
-              style: Theme.of(context).textTheme.caption,
-              ),
               Expanded(
-                child: charts.PieChart(seriesList, animate: animate, behaviors: [new charts.DatumLegend()]),
+                child: charts.BarChart(seriesList, animate: animate, 
+                barGroupingType: charts.BarGroupingType.grouped, behaviors: [new charts.SeriesLegend()]),
               ),
             ],
           )
@@ -41,9 +38,14 @@ class DonutPieChart extends StatelessWidget {
 }
 
 /// Sample ordinal data type.
-class Pie_ChartData {
-  final int xAxis;
-  final double yAxis;
+class Series_ChartData {
+  final String xAxis;
+  final int yAxis;
+  //final charts.Color color;
 
-  Pie_ChartData(this.xAxis, this.yAxis);
+  Series_ChartData(this.xAxis, this.yAxis);
+
+  /*Bar_ChartData(this.xAxis, this.yAxis, Color color)
+      : this.color = new charts.Color(
+            r: color.red, g: color.green, b: color.blue, a: color.alpha);*/
 }
