@@ -16,7 +16,9 @@ class NewStatistic extends StatefulWidget {
 class _NewStatisticState extends State<NewStatistic> {
 
   refresh() {
-    setState(() {});
+    if (this.mounted) {
+      setState(() {});
+    }
   }
 
   @override

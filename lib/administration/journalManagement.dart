@@ -149,11 +149,11 @@ Widget dayPickerHeader() {
         firstDate: DateTime(2019, 1),
         lastDate: latestDate);
     if (picked != null && picked != selectedJournalDate) {
-      setState(() {
-        selectedJournalDate = picked;
-      });
-    } else {
-
+      if (this.mounted) {
+        setState(() {
+          selectedJournalDate = picked;
+        });
+      }
     }
   }
 

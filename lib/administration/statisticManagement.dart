@@ -116,9 +116,11 @@ Widget runsSlider(int minimum, int maximum, int divisions) {
   return Slider(
     value: selectedStatisticRuns.toDouble(),
     onChanged: (newRating) {
-      setState(() {
-        selectedStatisticRuns = newRating.toInt();
-      });
+      if (this.mounted) {
+        setState(() {
+          selectedStatisticRuns = newRating.toInt();
+        });
+      }
     },
     min: minimum.toDouble(),
     max: maximum.toDouble(),
@@ -132,9 +134,11 @@ Widget ballsFacedSlider(int minimum, int maximum, int divisions) {
   return Slider(
     value: selectedStatisticBallsFaced.toDouble(),
     onChanged: (newRating) {
-      setState(() {
-        selectedStatisticBallsFaced = newRating.toInt();
-      });
+      if (this.mounted) {
+        setState(() {
+          selectedStatisticBallsFaced = newRating.toInt();
+        });
+      }
     },
     min: minimum.toDouble(),
     max: maximum.toDouble(),
@@ -156,15 +160,17 @@ Widget checkNotOut() {
           value: notOutOptions[selectedStatisticNotOut],
           isDense: true,
           onChanged: (String newValue) {
-            setState(() {
+            if (this.mounted) {
+              setState(() {
               
-              if (newValue == 'No') {
-                selectedStatisticNotOut = 0;
-              } else {
-                selectedStatisticNotOut = 1;
-              }
-              print(selectedStatisticNotOut);
-            });
+                if (newValue == 'No') {
+                  selectedStatisticNotOut = 0;
+                } else {
+                  selectedStatisticNotOut = 1;
+                }
+                print(selectedStatisticNotOut);
+              });
+            }
           },
           items: notOutOptions.map((String value) {
             return DropdownMenuItem<String>(
@@ -181,9 +187,11 @@ Widget overSlider(int minimum, int maximum, int divisions) {
   return Slider(
     value: selectedStatisticOvers.toDouble(),
     onChanged: (newRating) {
+    if (this.mounted) {
       setState(() {
         selectedStatisticOvers = newRating.toInt();
       });
+    }
     },
     min: minimum.toDouble(),
     max: maximum.toDouble(),
@@ -197,9 +205,11 @@ Widget wicketSlider(int minimum, int maximum, int divisions) {
   return Slider(
     value: selectedStatisticWickets.toDouble(),
     onChanged: (newRating) {
+    if (this.mounted) {
       setState(() {
         selectedStatisticWickets = newRating.toInt();
       });
+    }
     },
     min: minimum.toDouble(),
     max: maximum.toDouble(),
@@ -213,9 +223,11 @@ Widget runsConceededSlider(int minimum, int maximum, int divisions) {
   return Slider(
     value: selectedStatisticRunsConceeded.toDouble(),
     onChanged: (newRating) {
+    if (this.mounted) {
       setState(() {
         selectedStatisticRunsConceeded = newRating.toInt();
       });
+    }
     },
     min: minimum.toDouble(),
     max: maximum.toDouble(),
@@ -229,9 +241,11 @@ Widget catchesSlider(int minimum, int maximum, int divisions) {
   return Slider(
     value: selectedStatisticCatches.toDouble(),
     onChanged: (newRating) {
+    if (this.mounted) {
       setState(() {
         selectedStatisticCatches = newRating.toInt();
       });
+    }
     },
     min: minimum.toDouble(),
     max: maximum.toDouble(),
@@ -245,9 +259,11 @@ Widget runOutSlider(int minimum, int maximum, int divisions) {
   return Slider(
     value: selectedStatisticRunOuts.toDouble(),
     onChanged: (newRating) {
+    if (this.mounted) {
       setState(() {
         selectedStatisticRunOuts = newRating.toInt();
       });
+    }
     },
     min: minimum.toDouble(),
     max: maximum.toDouble(),
@@ -261,9 +277,11 @@ Widget stumpingSlider(int minimum, int maximum, int divisions) {
   return Slider(
     value: selectedStatisticStumpings.toDouble(),
     onChanged: (newRating) {
+    if (this.mounted) {
       setState(() {
         selectedStatisticStumpings = newRating.toInt();
       });
+    }
     },
     min: minimum.toDouble(),
     max: maximum.toDouble(),

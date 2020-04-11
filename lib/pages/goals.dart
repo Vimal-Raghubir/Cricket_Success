@@ -30,8 +30,9 @@ class _GoalState extends State<Goals> {
   refresh() async {
     //Had to make read asynchronous to wait on the results of the database retrieval before rendering the UI
     await _read();
-    if (!mounted) return;
-    setState(() {});
+    if (this.mounted) {
+      setState(() {});
+    }
   }
 
    Widget build(BuildContext context) {

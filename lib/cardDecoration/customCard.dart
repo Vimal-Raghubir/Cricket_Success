@@ -284,7 +284,9 @@ class _MyCustomCardState extends State<CustomCard> {
   }
 
   Widget build(BuildContext context) {
-    setState(() {});
+    if (this.mounted) {
+      setState(() {});
+    }
     if (widget.type == "goal") {
       //print("This is being called in customCard build " + widget.object.currentProgress.toString());
       return createCustomGoalCard();

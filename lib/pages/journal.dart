@@ -28,8 +28,9 @@ class _JournalState extends State<Journal> {
     //Had to make read asynchronous to wait on the results of the database retrieval before rendering the UI
     await _read();
     print("refresh is called");
-    if (!mounted) return;
-    setState(() {});
+    if (this.mounted) {
+      setState(() {});
+    }
   }
 
 

@@ -16,7 +16,9 @@ class NewGoal extends StatefulWidget {
 class _NewGoalState extends State<NewGoal> {
 
   refresh() {
-    setState(() {});
+    if (this.mounted) {
+      setState(() {});
+    }
   }
 
   @override

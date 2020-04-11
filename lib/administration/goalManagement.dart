@@ -77,18 +77,20 @@ Widget createDropdownMenu() {
           value: selectedGoal,
           isDense: true,
           onChanged: (String newValue) {
-            setState(() {
-              selectedGoal = newValue;
-              if (selectedGoal == 'Process Goal') {
-                //selectedGoalIndex is the index of the dropdown menu item selected and is used in the card creation
-                selectedGoalIndex = 0;
-              } else if (selectedGoal == 'Performance Goal') {
-                selectedGoalIndex = 1;
-              } else if (selectedGoal == 'Outcome Goal') {
-                selectedGoalIndex = 2;
-              }
-              print(selectedGoal);
-            });
+            if (this.mounted) {
+              setState(() {
+                selectedGoal = newValue;
+                if (selectedGoal == 'Process Goal') {
+                  //selectedGoalIndex is the index of the dropdown menu item selected and is used in the card creation
+                  selectedGoalIndex = 0;
+                } else if (selectedGoal == 'Performance Goal') {
+                  selectedGoalIndex = 1;
+                } else if (selectedGoal == 'Outcome Goal') {
+                  selectedGoalIndex = 2;
+                }
+                print(selectedGoal);
+              });
+            }
           },
           items: goalOptions.map((String value) {
             return DropdownMenuItem<String>(
@@ -174,9 +176,11 @@ Widget dayPicker() {
   return Slider(
     value: selectedGoalLength,
     onChanged: (newRating) {
-      setState(() {
-        selectedGoalLength = newRating;
-      });
+      if (this.mounted) {
+        setState(() {
+          selectedGoalLength = newRating;
+        });
+      }
     },
     min: 1.0,
     max: 365.0,
@@ -222,10 +226,18 @@ Widget submitButton(String buttonText) {
           newGoal.currentProgress = key.currentState.finalProgress;
           //Updates goal with newGoal content and id
           _updateGoal(newGoal, index);
-          //Goes back to previous page which in this case is goals.dart
-          Navigator.pop(context);
-          //Toast message to indicate the goal was updated
-          Toast.show("Successfully updated your goal!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+
+          //If the current progress equals length then delete the goal and print completion message
+          if (newGoal.currentProgress == newGoal.length) {
+            _deleteGoal(widget.passedGoal.id);
+            Navigator.pop(context);
+            Toast.show("Congratulations on completing your goal named " + newGoal.name + "!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
+          } else {
+            //Goes back to previous page which in this case is goals.dart
+            Navigator.pop(context);
+            //Toast message to indicate the goal was updated
+            Toast.show("Successfully updated your goal!", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
+          }
         } 
       }                     
     },
@@ -398,20 +410,24 @@ class NumberCountDemo extends StatefulWidget {
   }
 
     void add() {
-      setState(() {
-        //Prevent progress from exceeding day limit
-        if (_n < widget.dayLimit) {
-          _n++;
-        }
-      });
+      if (this.mounted) {
+        setState(() {
+          //Prevent progress from exceeding day limit
+          if (_n < widget.dayLimit) {
+            _n++;
+          }
+        });
+      }
     }
 
     void minus() {
-      setState(() {
+      if (this.mounted) {
+        setState(() {
         //Prevent negative values
-      if (_n != 0)
-        _n--;
-      });
+        if (_n != 0)
+          _n--;
+        });
+      }
     }
 
   @override

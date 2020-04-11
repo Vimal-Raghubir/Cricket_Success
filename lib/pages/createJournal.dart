@@ -16,7 +16,9 @@ class NewJournal extends StatefulWidget {
 class _NewJournalState extends State<NewJournal> {
 
   refresh() {
-    setState(() {});
+    if (this.mounted) {
+      setState(() {});
+    }
   }
 
   @override
