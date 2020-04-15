@@ -237,6 +237,7 @@ Widget deleteButton(BuildContext context) {
        // confirmDelete(context);
         _deleteJournal(widget.passedJournal.id);
         Navigator.pop(context);
+        Toast.show("Successfully deleted your journal entry!", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
       },
       child: Text("Delete")
     )

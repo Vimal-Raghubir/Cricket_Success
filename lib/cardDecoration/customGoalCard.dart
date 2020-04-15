@@ -155,7 +155,7 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
 
                 //Progress bar
                 LinearPercentIndicator(
-                  width: 250.0,
+                  width: width - 120,
                   lineHeight: 15.0,
                   progressColor: Colors.blue,
                   percent: progress,

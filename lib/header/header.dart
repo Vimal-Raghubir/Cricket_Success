@@ -45,8 +45,8 @@ Widget createHeader(BuildContext context, int pageIndex) {
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       child: Stack(
                         children: <Widget>[
-                          Align(
-                              alignment: Alignment.center,
+                          Center(
+                              //alignment: Alignment.center,
                               child: Text(
                                 //Here is where the title is placed
                                 pageTitles[pageIndex],

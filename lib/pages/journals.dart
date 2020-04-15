@@ -42,7 +42,7 @@ class _JournalState extends State<Journal> {
         children: <Widget> [
           Header().createHeader(context, 5),
           ExpansionTile(
-            title: Text("                              See more Details"),
+            title: Center(child:Text("        See more Details")),
               children: <Widget>[
                 Container(
                   padding: const EdgeInsets.all(5),

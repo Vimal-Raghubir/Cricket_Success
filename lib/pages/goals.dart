@@ -48,7 +48,7 @@ class _GoalState extends State<Goals> {
 
               //Expansion tile is the dropdown menu for more information
               ExpansionTile(
-                title: Text("                              See more Details"),
+                title: Center(child:Text("        See more Details")),
                 children: <Widget>[
                   Container(
                     padding: const EdgeInsets.all(16),

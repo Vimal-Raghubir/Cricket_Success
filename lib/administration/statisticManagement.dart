@@ -344,7 +344,7 @@ Widget deleteButton(BuildContext context) {
 
 Widget showBattingDetails() {
   return ExpansionTile(
-    title: Text("                 Did you bat during this match?"),
+    title: Center(child: Text("Did you bat during this match?")),
     children: <Widget>[
       createTextHeader("How much runs did you score?"),
       runsSlider(0, 200, 200),
@@ -360,7 +360,7 @@ Widget showBattingDetails() {
 
 Widget showBowlingDetails() {
   return ExpansionTile(
-    title: Text("                Did you bowl during this match?"),
+    title: Center(child:Text("Did you bowl during this match?")),
     children: <Widget>[
       createTextHeader("How many overs did you bowl?"),
       overSlider(0, 50, 50),
@@ -377,7 +377,7 @@ Widget showBowlingDetails() {
 
 Widget showFieldingDetails() {
   return ExpansionTile(
-    title: Text("              Did you get any fielding dismissals?"),
+    title: Center(child:Text("Did you get any fielding dismissals?")),
     children: <Widget>[
       createTextHeader("Did you take any catches? If yes then how many?"),
       catchesSlider(0, 10, 10),
