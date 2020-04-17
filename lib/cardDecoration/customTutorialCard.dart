@@ -1,20 +1,23 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class CustomJournalCard extends StatefulWidget {
+class CustomTutorialCard extends StatefulWidget {
+
   final object;
   final width;
-  final type;
 
-  const CustomJournalCard({Key key, this.object, this.width, this.type}) : super(key: key);
+  const CustomTutorialCard({Key key, this.object, this.width}) : super(key: key);
 
-    _MyCustomJournalCardState createState() => new _MyCustomJournalCardState();
+    _MyCustomTutorialCardState createState() => new _MyCustomTutorialCardState();
 }
 
-class _MyCustomJournalCardState extends State<CustomJournalCard> {
+class _MyCustomTutorialCardState extends State<CustomTutorialCard> {
   double width;
+  //background color
+  var backgroundColor = Colors.cyan[100];
 
-  //Card is the colorful display next to the journal information
+  //Card is the colorful display next to the tutorial information
   Widget _card({Color primaryColor = Colors.redAccent,String imgPath,Widget backWidget}) {
     return Container(
         height: 190,
@@ -35,12 +38,25 @@ class _MyCustomJournalCardState extends State<CustomJournalCard> {
         ));
   }
 
-  //Used to create the display for all the journal information itself
-  Widget createCustomJournalCard() {
-    var journalDate = DateTime.parse(widget.object.date);
-    var formatter = new DateFormat('MMMM dd,yyyy');
-    String formatted = formatter.format(journalDate);
+  //Used to render the tutorial card card
+  Widget _decorationContainer() {
 
+    return Stack(
+      children: <Widget>[
+        //This is used to render the process.png image instead of previous card decoration
+        Positioned(
+          top: 0,
+          bottom: 0,
+          right: 0,
+          left: 0,
+          child: Image.asset('assets/images/tutorial/tutorial.png'),
+        ),
+      ],
+    );
+  }
+
+  //Used to create the display for all the tutorial information itself
+  Widget createCustomTutorialCard() {
     width = widget.width;
     return Container(
         height: 170,
@@ -49,7 +65,7 @@ class _MyCustomJournalCardState extends State<CustomJournalCard> {
           children: <Widget>[
             AspectRatio(
               aspectRatio: .7,
-              child: _card(primaryColor: Colors.blue, backWidget: _decorationContainerJournal()),
+              child: _card(primaryColor: backgroundColor, backWidget: _decorationContainer()),
             ),
             Expanded(
                 child: Column(
@@ -67,53 +83,40 @@ class _MyCustomJournalCardState extends State<CustomJournalCard> {
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold)),
                       ),
-                      CircleAvatar(
-                        radius: 3,
-                        backgroundColor: Colors.blue,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(formatted,
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 14,
-                          )),
                       SizedBox(width: 10)
                     ],
                   ),
                 ),
                 SizedBox(height: 15),
-                Text(widget.object.details,
+                Text(widget.object.summary,
                     style: TextStyle(fontSize: 14).copyWith(
                         fontSize: 12, color: Colors.black)),
                 SizedBox(height: 15),
+
+                RichText(
+                  text: new TextSpan(
+                    text: widget.object.url,
+                    style: new TextStyle(color: Colors.blue),
+                    recognizer: new TapGestureRecognizer()
+                        ..onTap = () { launch(widget.object.url);
+                        }
+                  )
+                ),
+                SizedBox(height: 15),
+                
+                Text(widget.object.credits,
+                  style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic).copyWith(
+                  fontSize: 12, color: Colors.black)),
               ],
             ))
           ],
         ));
       }
 
-          //Used to render the journal card
-    Widget _decorationContainerJournal() {
-    return Stack(
-      children: <Widget>[
-        //This is used to render the outcome.jpg image instead of previous card decoration
-        Positioned(
-          top: 0,
-          bottom: 0,
-          right: 0,
-          left: 0,
-          child: Image.asset('assets/images/journal/diary.png'),
-        ),
-      ],
-    );
-  }
-
   Widget build(BuildContext context) {
     if (this.mounted) {
       setState(() {});
     }
-    return createCustomJournalCard();
+    return createCustomTutorialCard();
   }
 }
