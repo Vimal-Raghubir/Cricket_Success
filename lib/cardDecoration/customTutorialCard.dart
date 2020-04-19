@@ -20,7 +20,7 @@ class _MyCustomTutorialCardState extends State<CustomTutorialCard> {
   //Card is the colorful display next to the tutorial information
   Widget _card({Color primaryColor = Colors.redAccent,String imgPath,Widget backWidget}) {
     return Container(
-        height: 190,
+        height: 100,
         width: widget.width * .34,
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
@@ -59,12 +59,12 @@ class _MyCustomTutorialCardState extends State<CustomTutorialCard> {
   Widget createCustomTutorialCard() {
     width = widget.width;
     return Container(
-        height: 200,
+        height: 250,
         width: width - 100,
         child: Row(
           children: <Widget>[
             AspectRatio(
-              aspectRatio: .7,
+              aspectRatio: .6,
               child: _card(primaryColor: backgroundColor, backWidget: _decorationContainer()),
             ),
             Expanded(
@@ -80,17 +80,17 @@ class _MyCustomTutorialCardState extends State<CustomTutorialCard> {
                         child: Text(widget.object.name,
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 16,
+                                fontSize: 18,
                                 fontWeight: FontWeight.bold)),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 5),
+                SizedBox(height: 15),
                 Text(widget.object.summary,
                     style: TextStyle(fontSize: 14).copyWith(
-                        fontSize: 12, color: Colors.black)),
-                SizedBox(height: 5),
+                        fontSize: 14, color: Colors.black)),
+                SizedBox(height: 15),
 
                 RichText(
                   text: new TextSpan(
@@ -101,13 +101,14 @@ class _MyCustomTutorialCardState extends State<CustomTutorialCard> {
                         }
                   )
                 ),
-                SizedBox(height: 5),
-                ExpansionTile(title: Text("Show Caption"), children: <Widget>[
-                                  Text(widget.object.credits,
-                  style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic).copyWith(
-                  fontSize: 12, color: Colors.black)),
+                SizedBox(height: 15),
+                Text(widget.object.credits,
+                  style: TextStyle(fontSize: 10, fontStyle: FontStyle.italic).copyWith(
+                  fontSize: 10, color: Colors.black))
+               // ExpansionTile(title: Text("Show Caption"), children: <Widget>[
+                                  ,
 
-                ],)
+               // ],)
               ],
             ))
           ],

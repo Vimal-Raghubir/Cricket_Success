@@ -22,6 +22,7 @@ class TutorialDetails extends StatelessWidget {
       body: Column(
         children: <Widget>[
           setHeader(context),
+          
           Container(
             //Create a form using dialogBox.dart implementation but not a dialog box.
             child: createList(),
