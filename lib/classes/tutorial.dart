@@ -23,11 +23,11 @@ var bowling5 = new Tutorial("bowling5", "description here", "https://www.google.
 
 List<Tutorial> bowlingList = [bowling1, bowling2, bowling3, bowling4, bowling5];
 
-var batting1 = new Tutorial("batting1", "description here", "https://www.example.com", "my author", 2);
-var batting2 = new Tutorial("batting2", "description here", "https://www.example.com", "my author", 2);
-var batting3 = new Tutorial("batting3", "description here", "https://www.example.com", "my author", 2);
-var batting4 = new Tutorial("batting4", "description here", "https://www.example.com", "my author", 2);
-var batting5 = new Tutorial("batting5", "description here", "https://www.example.com", "my author", 2);
+var batting1 = new Tutorial("The key to facing good fast bowling", "Tom Scollay, a cricket coach, provides tips on positioning and playing off the back foot against pace bowling.", "https://www.youtube.com/watch?v=eIg117MWUQs", "'THE KEY TO FACING GOOD FAST BOWLING | Net session with Scolls.' Youtube, uploaded by Cricket Mentoring- Online coaching, tips & advice, 17 January 2020, https://www.youtube.com/watch?v=eIg117MWUQs", 2);
+var batting2 = new Tutorial("Batting for Beginners - Cricket Batting Tips", "Ben Williams, a cricket coach, teaches batting basics including hand position on the bat and feet positioning.", "https://www.youtube.com/watch?v=8oOj2x4_OMs", "'Batting for Beginners - Cricket Batting Tips.' Youtube, uploaded by Ben Williams - My Cricket Coach, 28 August 2017, https://www.youtube.com/watch?v=8oOj2x4_OMs", 2);
+var batting3 = new Tutorial("A handy drill to improve against fast bowling", "In this video, a drill using tennis balls and a tennis racket is used to develop reflexes against quicker bowlers.", "https://www.youtube.com/watch?v=f_D-Ki_4WY8", "'How to Destroy Fast Bowling - Batting Drill.' Youtube, uploaded by weCricket, 30 March 2018, https://www.youtube.com/watch?v=f_D-Ki_4WY8", 2);
+var batting4 = new Tutorial("3 of the best drills to improve your batting", "In this article, 3 drills are used to help focus on your hand grip, the length of the ball, and practice aggressive strokes.", "https://australiancricketinstitute.com/3-best-drills-improve-batting/", "Fitzpatrick, Nick. '3 OF THE BEST DRILLS TO IMPROVE YOUR BATTING.' Australian Cricket Institute, https://australiancricketinstitute.com/3-best-drills-improve-batting/. Accessed 19 April 2020.", 2);
+var batting5 = new Tutorial("Batting Placement Drills", "A simple drill used to develop the habit of picking gaps while batting.", "https://cricket.co.za/category/15/Coach-Education/2374/Batting-Placement-drills/", "'Batting - Placement drills.' Cricket South Africa, 30 Nov 2014, https://cricket.co.za/category/15/Coach-Education/2374/Batting-Placement-drills/", 2);
 
 List<Tutorial> battingList = [batting1, batting2, batting3, batting4, batting5];
 
