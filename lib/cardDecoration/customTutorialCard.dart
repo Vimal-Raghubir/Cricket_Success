@@ -59,7 +59,7 @@ class _MyCustomTutorialCardState extends State<CustomTutorialCard> {
   Widget createCustomTutorialCard() {
     width = widget.width;
     return Container(
-        height: 250,
+        height: 200,
         width: width - 100,
         child: Row(
           children: <Widget>[
@@ -86,7 +86,7 @@ class _MyCustomTutorialCardState extends State<CustomTutorialCard> {
                     ],
                   ),
                 ),
-                SizedBox(height: 15),
+                SizedBox(height: 25),
                 Text(widget.object.summary,
                     style: TextStyle(fontSize: 14).copyWith(
                         fontSize: 14, color: Colors.black)),
@@ -101,14 +101,6 @@ class _MyCustomTutorialCardState extends State<CustomTutorialCard> {
                         }
                   )
                 ),
-                SizedBox(height: 15),
-                Text(widget.object.credits,
-                  style: TextStyle(fontSize: 10, fontStyle: FontStyle.italic).copyWith(
-                  fontSize: 10, color: Colors.black))
-               // ExpansionTile(title: Text("Show Caption"), children: <Widget>[
-                                  ,
-
-               // ],)
               ],
             ))
           ],
