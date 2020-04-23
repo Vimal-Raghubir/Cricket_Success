@@ -3,6 +3,7 @@ import 'package:cricket_app/header/header.dart';
 import 'package:cricket_app/classes/quotes.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:cricket_app/layout/gridTile.dart';
 
 void main() => runApp(MyApp());
 
@@ -37,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
   var index = 0;
 
   initState() {
+    super.initState();
     index = 0 + Random().nextInt(quotes.length - 1);
   }
 
@@ -47,10 +49,23 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           Header().createHeader(context, 0),
           SizedBox(height: 15),
+          Text('Welcome to the Cricket Success App!\n',
+            style: TextStyle(fontStyle: FontStyle.normal, color: Colors.black, fontSize: 20),
+            textAlign: TextAlign.center,
+          ),
           RichText(
             textAlign: TextAlign.center,
             text: TextSpan(text: quotes[index], style: TextStyle(fontStyle: FontStyle.italic, color: Colors.black, fontSize: 14)),
           ),
+          SizedBox(height: 25),
+          Text('Please select a page below that you would like to navigate to!\n',
+            style: TextStyle(fontStyle: FontStyle.normal, color: Colors.black, fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+          Expanded(
+            child:
+              Center(child: gridTile().buildGrid(context, 1)),
+          )
         ],
       )
     );
