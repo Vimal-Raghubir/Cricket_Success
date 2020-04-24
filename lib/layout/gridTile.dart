@@ -1,4 +1,8 @@
+import 'package:cricket_app/pages/goals.dart';
+import 'package:cricket_app/pages/journals.dart';
+import 'package:cricket_app/pages/statistics.dart';
 import 'package:cricket_app/pages/tutorialDetails.dart';
+import 'package:cricket_app/pages/tutorials.dart';
 import 'package:flutter/material.dart';
 
 class gridTile {
@@ -92,8 +96,28 @@ class gridTile {
 
   Widget createMainPageTile(MapEntry entry, BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        print(entry.key);
+      onTap: () async {
+        if (entry.key == "Goals") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Goals()),
+          );
+        } else if (entry.key == "Journal") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Journal()),
+          );
+        } else if (entry.key == "Tutorials") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Tutorials()),
+          );
+        } else if (entry.key == "Statistics") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Statistics()),
+          );
+        }
       },
       child:  Container(
         height: 300,
