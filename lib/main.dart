@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Cricket App',
       theme: ThemeData(
         // This is the theme of your application.
@@ -49,10 +50,10 @@ class _MyHomePageState extends State<MyHomePage> {
         children: <Widget>[
           Header().createHeader(context, 0),
           SizedBox(height: 15),
-          Text('Welcome to the Cricket Success App!\n',
-            style: TextStyle(fontStyle: FontStyle.normal, color: Colors.black, fontSize: 22),
-            textAlign: TextAlign.center,
-          ),
+          //Text('Welcome to the MyCricket App!\n',
+          //  style: TextStyle(fontStyle: FontStyle.normal, color: Colors.black, fontSize: 22),
+          //  textAlign: TextAlign.center,
+          //),
           RichText(
             textAlign: TextAlign.center,
             text: TextSpan(text: quotes[index], style: TextStyle(fontStyle: FontStyle.italic, color: Colors.black, fontSize: 15)),
