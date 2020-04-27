@@ -74,7 +74,6 @@ Widget createDropDownHeader(String dropDownMessage) {
 
 Widget createJournalNameField() {
   return TextFormField(
-    textCapitalization: TextCapitalization.words,
     //Starts with the passed in journal as initial value
     initialValue: widget.passedJournal.name,
     keyboardType: TextInputType.text ,
@@ -108,7 +107,6 @@ Widget createJournalNameField() {
 
 Widget createDetailField() {
   return TextFormField(
-    textCapitalization: TextCapitalization.words,
     //Start with passed in journal details
     initialValue: widget.passedJournal.details,
     keyboardType: TextInputType.text ,

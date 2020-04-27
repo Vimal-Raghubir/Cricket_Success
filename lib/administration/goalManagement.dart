@@ -104,7 +104,6 @@ Widget createDropdownMenu() {
 
 Widget createGoalNameField() {
   return TextFormField(
-    textCapitalization: TextCapitalization.words,
     //Starts with the passed in goal as initial value
     initialValue: widget.passedGoal.name,
     keyboardType: TextInputType.text ,
@@ -138,7 +137,6 @@ Widget createGoalNameField() {
 
 Widget createDescriptionField() {
   return TextFormField(
-    textCapitalization: TextCapitalization.words,
     //Start with passed in goal description
     initialValue: widget.passedGoal.description,
     keyboardType: TextInputType.text ,

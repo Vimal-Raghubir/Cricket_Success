@@ -68,7 +68,6 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
 
 Widget createStatisticNameField() {
   return TextFormField(
-    textCapitalization: TextCapitalization.words,
     //Starts with the passed in Statistic as initial value
     initialValue: widget.passedStatistic.name,
     keyboardType: TextInputType.text ,
