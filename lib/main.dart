@@ -15,12 +15,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Cricket App',
+      title: 'MyCricketCompanion',
       theme: ThemeData(
         // This is the theme of your application.
         primarySwatch: Colors.lightBlue,
       ),
-      home: MyHomePage(title: 'Cricket Success'),
+      home: MyHomePage(title: 'MyCricketCompanion'),
     );
   }
 }
