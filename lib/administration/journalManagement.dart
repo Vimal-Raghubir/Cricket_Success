@@ -282,24 +282,28 @@ Widget updatePage(BuildContext context) {
     dateDisplay = formatter.format(selectedJournalDate);
     //If the passed in widget type is a new journal then the call is being made from journals.dart
     if (widget.type == "new") {
-      return Column(
-        children: <Widget>[
-          Form(
-            key: _formKey,
-            //Pass in correct variables for assignment
-            child: newPage()
-          ),
-        ],
+      return Expanded(
+        child: Column(
+          children: <Widget>[
+            Form(
+              key: _formKey,
+              //Pass in correct variables for assignment
+              child: newPage()
+            ),
+          ],
+        )
       );
     // If the passed in widget type is not a new journal then it comes from journalDetails.dart
     } else {
-      return Column(
-        children: <Widget>[
-          Form(
-            key: _formKey,
-            child: updatePage(context)
-          )
-      ],
+      return Expanded(
+        child: Column(
+          children: <Widget>[
+            Form(
+              key: _formKey,
+              child: updatePage(context)
+            )
+          ],
+        )
       );  
     }
   }

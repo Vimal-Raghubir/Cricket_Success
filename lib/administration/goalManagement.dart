@@ -61,6 +61,7 @@ Widget createDropDownHeader(String dropDownMessage) {
     child: Text(
       dropDownMessage,
       softWrap: true,
+      textDirection: TextDirection.ltr,
     ),
   );
 }
@@ -73,7 +74,7 @@ Widget createDropdownMenu() {
       borderRadius: BorderRadius.circular(5.0))),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          hint: Text(selectedGoal),
+          hint: Text(selectedGoal, textDirection: TextDirection.ltr),
           value: selectedGoal,
           isDense: true,
           onChanged: (String newValue) {
@@ -94,7 +95,7 @@ Widget createDropdownMenu() {
           items: goalOptions.map((String value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(value),
+              child: Text(value, textDirection: TextDirection.ltr),
             );
           }).toList(),
           ),
@@ -103,7 +104,8 @@ Widget createDropdownMenu() {
 }
 
 Widget createGoalNameField() {
-  return TextFormField(
+  return Scaffold(
+    body: TextFormField(
     //Starts with the passed in goal as initial value
     initialValue: widget.passedGoal.name,
     keyboardType: TextInputType.text ,
@@ -132,11 +134,13 @@ Widget createGoalNameField() {
       }
     },
     onSaved: (value)=> selectedGoalName = value,
+  )
   );
 }
 
 Widget createDescriptionField() {
-  return TextFormField(
+  return Scaffold(
+    body: TextFormField(
     //Start with passed in goal description
     initialValue: widget.passedGoal.description,
     keyboardType: TextInputType.text ,
@@ -156,6 +160,7 @@ Widget createDescriptionField() {
       }
     },
     onSaved: (value)=> selectedGoalDescription = value,
+  )
   );
 }
 
@@ -169,7 +174,8 @@ Widget dayPickerHeader() {
   );
 }
 Widget dayPicker() {
-  return Slider(
+  return Scaffold(
+    body: Slider(
     value: selectedGoalLength,
     onChanged: (newRating) {
       if (this.mounted) {
@@ -183,6 +189,7 @@ Widget dayPicker() {
     //Divisions help to show a label above the slider
     divisions: 91,
     label: "$selectedGoalLength",
+  )
   );
 }
 
@@ -192,6 +199,7 @@ Widget progressHeader() {
     child: Text(
       'How many days have you completed for this goal so far?',
       softWrap: true,
+      textDirection: TextDirection.ltr
     ),
   );
 }
@@ -330,7 +338,8 @@ Widget updatePage() {
   Widget build(BuildContext context) {
     //If the passed in widget type is a new goal then the call is being made from goals.dart
     if (widget.type == "new") {
-      return Column(
+      return Expanded(
+        child: Column(
         children: <Widget>[
           Form(
             key: _formKey,
@@ -338,16 +347,19 @@ Widget updatePage() {
             child: newPage()
           ),
         ],
-      );
+      )
+    );
     // If the passed in widget type is not a new goal then it comes from goalDetails.dart
     } else {
-      return Column(
+      return Expanded(
+        child: Column(
         children: <Widget>[
           Form(
             key: _formKey,
             child: updatePage()
           )
       ],
+      )
       );  
     }
   }
