@@ -101,6 +101,9 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
     viewProgress += "%";
     width = widget.width;
     return Container(
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: Colors.black))
+        ),
         height: 170,
         width: width - 20,
         child: Row(
@@ -171,7 +174,7 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
                       width: 10,
                     ),
                   ],
-                )
+                ),
               ],
             ))
           ],

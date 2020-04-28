@@ -45,6 +45,9 @@ class _MyCustomJournalCardState extends State<CustomJournalCard> {
     return Container(
         height: 170,
         width: width - 20,
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: Colors.black))
+        ),
         child: Row(
           children: <Widget>[
             AspectRatio(

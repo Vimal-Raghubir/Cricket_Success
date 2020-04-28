@@ -17,8 +17,11 @@ class _MyCustomWorksCitedCardState extends State<CustomWorksCitedCard> {
   Widget createCustomWorksCitedCard() {
     width = widget.width;
     return Container(
-        height: 150,
+        height: 125,
         width: width - 10,
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: Colors.black))
+        ),
         child: Row(
           children: <Widget>[
             Expanded(
@@ -41,9 +44,12 @@ class _MyCustomWorksCitedCardState extends State<CustomWorksCitedCard> {
                   ),
                 ),
                 SizedBox(height: 15),
-                Text(widget.object.credits,
-                  style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic).copyWith(
-                  fontSize: 14, color: Colors.black))
+                Expanded(child: 
+                  Text(widget.object.credits,
+                    style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic).copyWith(
+                    fontSize: 14, color: Colors.black)
+                  )
+                ),
               ],
             ))
           ],

@@ -358,7 +358,7 @@ Widget statList(int type) {
 
   Widget fieldingPage() {
     return ListView(children: <Widget>[
-      SimpleSeriesLegend(_createFieldingChart(), animate: true, title: "Fielding dismissals"),
+      SimpleSeriesLegend(_createFieldingChart(), animate: true, title: "Fielding Dismissals"),
       statList(2),
     ]);
   }

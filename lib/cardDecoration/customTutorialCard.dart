@@ -61,6 +61,9 @@ class _MyCustomTutorialCardState extends State<CustomTutorialCard> {
     return Container(
         height: 200,
         width: width - 100,
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: Colors.black))
+        ),
         child: Row(
           children: <Widget>[
             AspectRatio(
