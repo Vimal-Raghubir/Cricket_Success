@@ -38,12 +38,12 @@ class SimpleBarChart extends StatelessWidget {
 }
 
 /// Used for bar charts
-class Bar_ChartData {
+class BarChartData {
   final String xAxis;
   final int yAxis;
   final charts.Color color;
 
-  Bar_ChartData(this.xAxis, this.yAxis, Color color)
+  BarChartData(this.xAxis, this.yAxis, Color color)
       : this.color = new charts.Color(
             r: color.red, g: color.green, b: color.blue, a: color.alpha);
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/classes/journalInformation.dart';
-import 'package:cricket_app/pages/journals.dart';
 import 'package:intl/intl.dart';
 import 'package:toast/toast.dart';
 

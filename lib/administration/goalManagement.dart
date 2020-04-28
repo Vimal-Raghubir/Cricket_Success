@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cricket_app/pages/goals.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/classes/goalInformation.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:toast/toast.dart';
 
 GlobalKey<_NumberCountDemoState> key = new GlobalKey<_NumberCountDemoState>();
@@ -28,6 +26,7 @@ class _MyGoalManagementState extends State<GoalManagement> {
   var selectedGoal;
   var selectedGoalIndex;
   var selectedGoalLength;
+  var goalLengthLabel = 1;
   var selectedGoalName;
   var selectedGoalDescription;
   var currentProgress;
@@ -50,6 +49,7 @@ class _MyGoalManagementState extends State<GoalManagement> {
     selectedGoalName = widget.passedGoal.name;
     selectedGoalDescription = widget.passedGoal.description;
     currentProgress = widget.passedGoal.currentProgress;
+    print(currentProgress.toDouble());
     //Retrieves a list of all goalnames in the database
     _getGoalNames();
   }
@@ -102,10 +102,9 @@ Widget createDropdownMenu() {
         ),
     );
 }
-
+//This is causing setState() called after dispose(): BaseChartState<dynamic>#685de(lifecycle state: defunct, not mounted, tickers: tracking 0 tickers) errors
 Widget createGoalNameField() {
-  return Scaffold(
-    body: TextFormField(
+  return TextFormField(
     //Starts with the passed in goal as initial value
     initialValue: widget.passedGoal.name,
     keyboardType: TextInputType.text ,
@@ -134,13 +133,11 @@ Widget createGoalNameField() {
       }
     },
     onSaved: (value)=> selectedGoalName = value,
-  )
   );
 }
-
+//This is causing setState() called after dispose(): BaseChartState<dynamic>#685de(lifecycle state: defunct, not mounted, tickers: tracking 0 tickers) errors
 Widget createDescriptionField() {
-  return Scaffold(
-    body: TextFormField(
+  return TextFormField(
     //Start with passed in goal description
     initialValue: widget.passedGoal.description,
     keyboardType: TextInputType.text ,
@@ -160,7 +157,6 @@ Widget createDescriptionField() {
       }
     },
     onSaved: (value)=> selectedGoalDescription = value,
-  )
   );
 }
 
@@ -174,22 +170,21 @@ Widget dayPickerHeader() {
   );
 }
 Widget dayPicker() {
-  return Scaffold(
-    body: Slider(
+  return Slider(
     value: selectedGoalLength,
     onChanged: (newRating) {
       if (this.mounted) {
         setState(() {
           selectedGoalLength = newRating;
+          goalLengthLabel = selectedGoalLength.round();
         });
       }
     },
-    min: 1.0,
+    min: currentProgress == 0 ? 1.0: currentProgress.toDouble(),
     max: 365.0,
     //Divisions help to show a label above the slider
-    divisions: 91,
-    label: "$selectedGoalLength",
-  )
+    divisions: 364,
+    label: "$goalLengthLabel",
   );
 }
 
@@ -338,8 +333,7 @@ Widget updatePage() {
   Widget build(BuildContext context) {
     //If the passed in widget type is a new goal then the call is being made from goals.dart
     if (widget.type == "new") {
-      return Expanded(
-        child: Column(
+      return Column(
         children: <Widget>[
           Form(
             key: _formKey,
@@ -347,19 +341,16 @@ Widget updatePage() {
             child: newPage()
           ),
         ],
-      )
     );
     // If the passed in widget type is not a new goal then it comes from goalDetails.dart
     } else {
-      return Expanded(
-        child: Column(
+      return Column(
         children: <Widget>[
           Form(
             key: _formKey,
             child: updatePage()
           )
       ],
-      )
       );  
     }
   }
@@ -431,7 +422,7 @@ class NumberCountDemo extends StatefulWidget {
       if (this.mounted) {
         setState(() {
         //Prevent negative values
-        if (_n != 0)
+        if (_n > 0)
           _n--;
         });
       }

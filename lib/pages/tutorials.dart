@@ -16,13 +16,13 @@ class Tutorials extends StatelessWidget {
     height = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      bottomNavigationBar: Bottom_Navigation().createBottomNavigation(context, 3),
+      bottomNavigationBar: BottomNavigation().createBottomNavigation(context, 3),
       body: Column(
         children: <Widget>[
           Header().createHeader(context, 4),
           Expanded(
             child:
-              Center(child: gridTile().buildGrid(context, 0)),
+              Center(child: CustomGridTile().buildGrid(context, 0)),
           )
         ],
       )

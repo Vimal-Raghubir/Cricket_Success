@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:cricket_app/cardDecoration/customStatisticCard.dart';
 import 'package:flutter/material.dart';
 import 'package:cricket_app/navigation/bottom_navigation.dart';
@@ -38,23 +37,23 @@ class _StatisticsState extends State<Statistics> {
     }
   }
 
-  List<Line_ChartData> generateBattingAverage() {
+  List<LineChartData> generateBattingAverage() {
     List<int> dismissals = [];
     List<int> totalRuns = [];
 
-    List<Line_ChartData> finalList = [];
+    List<LineChartData> finalList = [];
 
     for (int i = 0; i < statistics.length; i++) {
       if (i == 0) {
         totalRuns.add(statistics[i].runs);
-        if (statistics[i].not_out != 0) {
+        if (statistics[i].notOut != 0) {
           dismissals.add(0);
         } else {
           dismissals.add(1);
         }
       } else {
         totalRuns.add(totalRuns[i-1] + statistics[i].runs);
-        if (statistics[i].not_out != 0) {
+        if (statistics[i].notOut != 0) {
           dismissals.add(dismissals[i-1]);
         } else {
           dismissals.add(dismissals[i-1] + 1);
@@ -69,23 +68,23 @@ class _StatisticsState extends State<Statistics> {
       } else {
         average = totalRuns[i] / dismissals[i];
       }
-      finalList.add(Line_ChartData(i, average));
+      finalList.add(LineChartData(i, average));
     } 
     return finalList;
   }
 
-  List<Line_ChartData> generateBowlingAverage() {
+  List<LineChartData> generateBowlingAverage() {
     List<int> dismissals = [];
     List<int> totalRunsConceeded = [];
 
-    List<Line_ChartData> finalList = [];
+    List<LineChartData> finalList = [];
 
     for (int i = 0; i < statistics.length; i++) {
       if (i == 0) {
-        totalRunsConceeded.add(statistics[i].runs_conceeded);
+        totalRunsConceeded.add(statistics[i].runsConceeded);
         dismissals.add(statistics[i].wickets);
       } else {
-        totalRunsConceeded.add(totalRunsConceeded[i-1] + statistics[i].runs_conceeded);
+        totalRunsConceeded.add(totalRunsConceeded[i-1] + statistics[i].runsConceeded);
         dismissals.add(dismissals[i-1] + statistics[i].wickets);
       }
     }
@@ -97,54 +96,54 @@ class _StatisticsState extends State<Statistics> {
       } else {
         average = totalRunsConceeded[i] / dismissals[i];
       }
-      finalList.add(Line_ChartData(i, average));
+      finalList.add(LineChartData(i, average));
     } 
     return finalList;
   }
 
-  static List<charts.Series<Series_ChartData, String>> _createFieldingChart() {
-    List<Series_ChartData> catchesList;
-    List<Series_ChartData> runOutsList;
-    List<Series_ChartData> stumpingsList;
+  static List<charts.Series<SeriesChartData, String>> _createFieldingChart() {
+    List<SeriesChartData> catchesList;
+    List<SeriesChartData> runOutsList;
+    List<SeriesChartData> stumpingsList;
 
-    catchesList = statistics.map((stat) => Series_ChartData(stat.name, stat.catches)).toList();
-    runOutsList = statistics.map((stat) => Series_ChartData(stat.name, stat.run_outs)).toList();
-    stumpingsList = statistics.map((stat) => Series_ChartData(stat.name, stat.stumpings)).toList();
+    catchesList = statistics.map((stat) => SeriesChartData(stat.name, stat.catches)).toList();
+    runOutsList = statistics.map((stat) => SeriesChartData(stat.name, stat.runOuts)).toList();
+    stumpingsList = statistics.map((stat) => SeriesChartData(stat.name, stat.stumpings)).toList();
 
 
     return [
-      new charts.Series<Series_ChartData, String>(
+      new charts.Series<SeriesChartData, String>(
         id: 'Catches',
-        domainFn: (Series_ChartData runs, _) => runs.xAxis,
-        measureFn: (Series_ChartData runs, _) => runs.yAxis,
+        domainFn: (SeriesChartData runs, _) => runs.xAxis,
+        measureFn: (SeriesChartData runs, _) => runs.yAxis,
         data: catchesList,
       ),
-      new charts.Series<Series_ChartData, String>(
+      new charts.Series<SeriesChartData, String>(
         id: 'Run Outs',
-        domainFn: (Series_ChartData runs, _) => runs.xAxis,
-        measureFn: (Series_ChartData runs, _) => runs.yAxis,
+        domainFn: (SeriesChartData runs, _) => runs.xAxis,
+        measureFn: (SeriesChartData runs, _) => runs.yAxis,
         data: runOutsList,
       ),
-      new charts.Series<Series_ChartData, String>(
+      new charts.Series<SeriesChartData, String>(
         id: 'Stumpings',
-        domainFn: (Series_ChartData runs, _) => runs.xAxis,
-        measureFn: (Series_ChartData runs, _) => runs.yAxis,
+        domainFn: (SeriesChartData runs, _) => runs.xAxis,
+        measureFn: (SeriesChartData runs, _) => runs.yAxis,
         data: stumpingsList,
       ),
     ];
   }
 
-   List<Bar_ChartData> generateEconomyRate() {
+   List<BarChartData> generateEconomyRate() {
     var economyRates = [0, 0, 0, 0, 0];
     var ranges = ["0-4", "4-6", "6-8", "8-10", "10+"];
 
-    List<Bar_ChartData> finalList = [];
+    List<BarChartData> finalList = [];
 
     for (int i = 0; i < statistics.length; i++) {
-      if (statistics[i].overs == 0 || statistics[i].runs_conceeded == 0) {
+      if (statistics[i].overs == 0 || statistics[i].runsConceeded == 0) {
         economyRates[0] += 1;
       } else {
-        double economy = statistics[i].runs_conceeded / statistics[i].overs;
+        double economy = statistics[i].runsConceeded / statistics[i].overs;
 
         if (economy >= 0 && economy < 4) {
           economyRates[0] += 1;
@@ -164,24 +163,24 @@ class _StatisticsState extends State<Statistics> {
       if (j == (barColors.length - 1)) {
         j = 0;
       }
-      finalList.add(Bar_ChartData(ranges[i], economyRates[i], barColors[j]));
+      finalList.add(BarChartData(ranges[i], economyRates[i], barColors[j]));
       j++;
     }
     
     return finalList;
   }
 
-     List<Bar_ChartData> generateStrikeRateRate() {
+     List<BarChartData> generateStrikeRateRate() {
     var strikeRates = [0, 0, 0, 0, 0, 0];
     var ranges = ["0-60", "60-80", "80-100", "100-120", "120-140", "140+"];
 
-    List<Bar_ChartData> finalList = [];
+    List<BarChartData> finalList = [];
 
     for (int i = 0; i < statistics.length; i++) {
-      if (statistics[i].balls_faced == 0 || statistics[i].runs == 0) {
+      if (statistics[i].ballsFaced == 0 || statistics[i].runs == 0) {
         strikeRates[0] += 1;
       } else {
-        double economy = (statistics[i].runs / statistics[i].balls_faced) * 100;
+        double economy = (statistics[i].runs / statistics[i].ballsFaced) * 100;
 
         if (economy >= 0 && economy < 60) {
           strikeRates[0] += 1;
@@ -203,7 +202,7 @@ class _StatisticsState extends State<Statistics> {
       if (j == (barColors.length - 1)) {
         j = 0;
       }
-      finalList.add(Bar_ChartData(ranges[i], strikeRates[i], barColors[j]));
+      finalList.add(BarChartData(ranges[i], strikeRates[i], barColors[j]));
       j++;
     }
     
@@ -212,15 +211,15 @@ class _StatisticsState extends State<Statistics> {
 
 
   /// Create one series with sample hard coded data.
-  List<charts.Series<Bar_ChartData, String>> _createBarChart(String type) {
-    List<Bar_ChartData> list = [];
+  List<charts.Series<BarChartData, String>> _createBarChart(String type) {
+    List<BarChartData> list = [];
     if (type == "Runs") {
       int j = 0;
       for (int i = 0; i < statistics.length; i++) {
         if (j == (barColors.length - 1)) {
           j = 0;
         }
-        list.add(Bar_ChartData(statistics[i].name, statistics[i].runs, barColors[j]));
+        list.add(BarChartData(statistics[i].name, statistics[i].runs, barColors[j]));
         j++;
       }
     } else if (type == "Strike Rate") {
@@ -231,7 +230,7 @@ class _StatisticsState extends State<Statistics> {
         if (j == (barColors.length - 1)) {
           j = 0;
         }
-        list.add(Bar_ChartData(statistics[i].name, statistics[i].wickets, barColors[j]));
+        list.add(BarChartData(statistics[i].name, statistics[i].wickets, barColors[j]));
         j++;
       }
     } else if (type == "Economy Rate") {
@@ -240,19 +239,19 @@ class _StatisticsState extends State<Statistics> {
     }
 
     return [
-      new charts.Series<Bar_ChartData, String>(
+      new charts.Series<BarChartData, String>(
         id: type,
-        domainFn: (Bar_ChartData runs, _) => runs.xAxis,
-        measureFn: (Bar_ChartData runs, _) => runs.yAxis,
-        colorFn: (Bar_ChartData runs, _) => runs.color,
+        domainFn: (BarChartData runs, _) => runs.xAxis,
+        measureFn: (BarChartData runs, _) => runs.yAxis,
+        colorFn: (BarChartData runs, _) => runs.color,
         data: list,
       )
     ];
   }
 
     /// Create one series with sample hard coded data.
-  List<charts.Series<Line_ChartData, int>> _createLineData(String type) {
-    List<Line_ChartData> list;
+  List<charts.Series<LineChartData, int>> _createLineData(String type) {
+    List<LineChartData> list;
 
     if (type == "Batting Average") {
       list = generateBattingAverage();
@@ -262,46 +261,46 @@ class _StatisticsState extends State<Statistics> {
 
 
     return [
-      new charts.Series<Line_ChartData, int>(
+      new charts.Series<LineChartData, int>(
         id: type,
         colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-        domainFn: (Line_ChartData sales, _) => sales.xAxis,
-        measureFn: (Line_ChartData sales, _) => sales.yAxis,
+        domainFn: (LineChartData sales, _) => sales.xAxis,
+        measureFn: (LineChartData sales, _) => sales.yAxis,
         data: list,
       )
     ];
 }
 
-  List<Donut_ChartData> createNotOutChart() {
+  List<DonutChartData> createNotOutChart() {
     double notOuts = 0;
     double dismissals = 0;
-    List<Donut_ChartData> finalList = [];
+    List<DonutChartData> finalList = [];
 
     for (int i = 0; i < statistics.length; i++) {
-      if (statistics[i].not_out == 0) {
+      if (statistics[i].notOut == 0) {
         dismissals += 1;
       } else {
         notOuts += 1;
       }
     }
-    finalList.add(Donut_ChartData(0, dismissals, Colors.red));
-    finalList.add(Donut_ChartData(1, notOuts, Colors.green));
+    finalList.add(DonutChartData(0, dismissals, Colors.red));
+    finalList.add(DonutChartData(1, notOuts, Colors.green));
     
     return finalList;
   }
 
     /// Create one series with sample hard coded data.
-  List<charts.Series<Donut_ChartData, int>> _createDonutData(String type) {
-    List<Donut_ChartData> list;
+  List<charts.Series<DonutChartData, int>> _createDonutData(String type) {
+    List<DonutChartData> list;
     if (type == "Not Out") {
       list = createNotOutChart();
     }
     return [
-      new charts.Series<Donut_ChartData, int>(
+      new charts.Series<DonutChartData, int>(
         id: type,
-        domainFn: (Donut_ChartData not_out, _) => not_out.xAxis,
-        measureFn: (Donut_ChartData not_out, _) => not_out.yAxis,
-        colorFn: (Donut_ChartData not_out, _) => not_out.color,
+        domainFn: (DonutChartData notOut, _) => notOut.xAxis,
+        measureFn: (DonutChartData notOut, _) => notOut.yAxis,
+        colorFn: (DonutChartData notOut, _) => notOut.color,
         data: list,
       )
     ];
@@ -370,7 +369,7 @@ Widget statList(int type) {
       home: DefaultTabController(
         length: 3,
         child: Scaffold(
-          bottomNavigationBar: Bottom_Navigation().createBottomNavigation(context, 4),
+          bottomNavigationBar: BottomNavigation().createBottomNavigation(context, 4),
           appBar: AppBar(
             bottom: TabBar(
               tabs: [

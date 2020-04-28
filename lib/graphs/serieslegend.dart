@@ -38,12 +38,12 @@ class SimpleSeriesLegend extends StatelessWidget {
 }
 
 /// Sample ordinal data type.
-class Series_ChartData {
+class SeriesChartData {
   final String xAxis;
   final int yAxis;
   //final charts.Color color;
 
-  Series_ChartData(this.xAxis, this.yAxis);
+  SeriesChartData(this.xAxis, this.yAxis);
 
   /*Bar_ChartData(this.xAxis, this.yAxis, Color color)
       : this.color = new charts.Color(

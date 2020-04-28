@@ -1,33 +1,33 @@
 final String tableStatistics = 'Statistics';
-final String column_statistics_id = 'ID';
-final String column_statistics_name = 'Name';
-final String column_statistics_runs = 'Runs';
-final String column_statistics_balls_faced = 'Balls_Faced';
-final String column_statistics_not_out = 'Not_Out';
+final String columnStatisticsId = 'ID';
+final String columnStatisticsName = 'Name';
+final String columnStatisticsRuns = 'Runs';
+final String columnStatisticsBallsFaced = 'Balls_Faced';
+final String columnStatisticsNotOut = 'Not_Out';
 
-final String column_statistics_wickets = 'Wickets';
-final String column_statistics_overs = 'Overs_Bowled';
-final String column_statistics_runs_conceeded = 'Runs_Conceeded';
+final String columnStatisticsWickets = 'Wickets';
+final String columnStatisticsOvers = 'Overs_Bowled';
+final String columnStatisticsRunsConceeded = 'Runs_Conceeded';
 
 
-final String column_statistics_run_outs = 'Run_Outs';
-final String column_statistics_catches = 'Catches';
-final String column_statistics_stumpings = 'Stumpings';
+final String columnStatisticsRunOuts = 'Run_Outs';
+final String columnStatisticsCatches = 'Catches';
+final String columnStatisticsStumpings = 'Stumpings';
 
-final String column_statistics_rating = 'Rating';
+final String columnStatisticsRating = 'Rating';
 
 class StatisticInformation {
   int id;
   String name;
   int runs;
-  int balls_faced;
-  int not_out;
+  int ballsFaced;
+  int notOut;
   
   int wickets;
   int overs;
-  int runs_conceeded;
+  int runsConceeded;
 
-  int run_outs;
+  int runOuts;
   int catches;
   int stumpings;
   int rating;
@@ -39,12 +39,12 @@ class StatisticInformation {
     id = index;
     name = statName;
     runs = statRuns;
-    balls_faced = statBalls;
-    not_out = statNotOut;
+    ballsFaced = statBalls;
+    notOut = statNotOut;
     wickets = statWickets;
     overs = statOvers;
-    runs_conceeded = statRunsConceeded;
-    run_outs = statRunOuts;
+    runsConceeded = statRunsConceeded;
+    runOuts = statRunOuts;
     catches = statCatches;
     stumpings = statStumpings;
     rating = statRating;
@@ -52,33 +52,33 @@ class StatisticInformation {
 
   // convenience constructor to create a Statistics object
   StatisticInformation.fromMap(Map<String, dynamic> map) {
-    name = map[column_statistics_name];
-    runs = map[column_statistics_runs];
-    balls_faced = map[column_statistics_balls_faced];
-    not_out = map[column_statistics_not_out];
-    wickets = map[column_statistics_wickets];
-    overs = map[column_statistics_overs];
-    runs_conceeded = map[column_statistics_runs_conceeded];
-    run_outs = map[column_statistics_run_outs];
-    catches = map[column_statistics_catches];
-    stumpings = map[column_statistics_stumpings];
-    rating = map[column_statistics_rating];
+    name = map[columnStatisticsName];
+    runs = map[columnStatisticsRuns];
+    ballsFaced = map[columnStatisticsBallsFaced];
+    notOut = map[columnStatisticsNotOut];
+    wickets = map[columnStatisticsWickets];
+    overs = map[columnStatisticsOvers];
+    runsConceeded = map[columnStatisticsRunsConceeded];
+    runOuts = map[columnStatisticsRunOuts];
+    catches = map[columnStatisticsCatches];
+    stumpings = map[columnStatisticsStumpings];
+    rating = map[columnStatisticsRating];
   }
 
     // convenience method to create a Map from this Statistics object
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
-      column_statistics_name: name,
-      column_statistics_runs: runs,
-      column_statistics_balls_faced: balls_faced,
-      column_statistics_not_out: not_out,
-      column_statistics_wickets: wickets,
-      column_statistics_overs: overs,
-      column_statistics_runs_conceeded: runs_conceeded,
-      column_statistics_run_outs: run_outs,
-      column_statistics_catches: catches,
-      column_statistics_stumpings: stumpings,
-      column_statistics_rating: rating
+      columnStatisticsName: name,
+      columnStatisticsRuns: runs,
+      columnStatisticsBallsFaced: ballsFaced,
+      columnStatisticsNotOut: notOut,
+      columnStatisticsWickets: wickets,
+      columnStatisticsOvers: overs,
+      columnStatisticsRunsConceeded: runsConceeded,
+      columnStatisticsRunOuts: runOuts,
+      columnStatisticsCatches: catches,
+      columnStatisticsStumpings: stumpings,
+      columnStatisticsRating: rating
     };
     
       return map;

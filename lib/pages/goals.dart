@@ -39,7 +39,7 @@ class _GoalState extends State<Goals> {
      width = MediaQuery.of(context).size.width;
     return Scaffold(
       //Creates bottom navigation and passes the index of the current page in relation to main page
-      bottomNavigationBar: Bottom_Navigation().createBottomNavigation(context, 1),
+      bottomNavigationBar: BottomNavigation().createBottomNavigation(context, 1),
       body: Container(
           child: Column(
             children: <Widget>[

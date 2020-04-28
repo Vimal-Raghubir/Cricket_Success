@@ -5,7 +5,7 @@ import 'package:cricket_app/pages/tutorialDetails.dart';
 import 'package:cricket_app/pages/tutorials.dart';
 import 'package:flutter/material.dart';
 
-class gridTile {
+class CustomGridTile {
     var tutorialList = { "Bowling Skills": "assets/images/tutorial/bowling_steyn.jpg", "Batting Skills": "assets/images/tutorial/brian_batting.jpg", "Fielding Skills": "assets/images/tutorial/fielding.jpg", "Mental Training": "assets/images/tutorial/mental_training.jpg", "Physical Training": "assets/images/tutorial/cardio.jpeg"};
     var mainPageList = { "Goals": "assets/images/homepage/goal.png", "Journal": "assets/images/homepage/journal.png", "Tutorials": "assets/images/homepage/tutorial.png", "Statistics": "assets/images/homepage/statistic.png"};
     var height = 0.0;

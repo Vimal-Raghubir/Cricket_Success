@@ -52,13 +52,13 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
     //Extract passed in Statistic and initializes dynamic variables with their values. Starting point
     selectedStatisticName = widget.passedStatistic.name;
     selectedStatisticRuns = widget.passedStatistic.runs;
-    selectedStatisticBallsFaced = widget.passedStatistic.balls_faced;
-    selectedStatisticNotOut = widget.passedStatistic.not_out;
+    selectedStatisticBallsFaced = widget.passedStatistic.ballsFaced;
+    selectedStatisticNotOut = widget.passedStatistic.notOut;
     selectedStatisticWickets = widget.passedStatistic.wickets;
 
     selectedStatisticOvers = widget.passedStatistic.overs;
-    selectedStatisticRunsConceeded = widget.passedStatistic.runs_conceeded;
-    selectedStatisticRunOuts = widget.passedStatistic.run_outs;
+    selectedStatisticRunsConceeded = widget.passedStatistic.runsConceeded;
+    selectedStatisticRunOuts = widget.passedStatistic.runOuts;
     selectedStatisticCatches = widget.passedStatistic.catches;
     selectedStatisticStumpings = widget.passedStatistic.stumpings;
     selectedStatisticRating = widget.passedStatistic.rating;

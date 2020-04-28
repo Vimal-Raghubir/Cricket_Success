@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:cricket_app/pages/journals.dart';
 
 //Used to generate the bottom navigation portion
-class Bottom_Navigation {
+class BottomNavigation {
   int _selectedIndex;
   BuildContext temp;
 

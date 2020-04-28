@@ -37,9 +37,9 @@ class SimpleLineChart extends StatelessWidget {
 }
 
 /// Sample ordinal data type.
-class Line_ChartData {
+class LineChartData {
   final int xAxis;
   final double yAxis;
 
-  Line_ChartData(this.xAxis, this.yAxis);
+  LineChartData(this.xAxis, this.yAxis);
 }

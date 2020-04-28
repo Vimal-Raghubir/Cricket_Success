@@ -22,11 +22,10 @@ class _GoalDetailState extends State<GoalDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return Scaffold(
       //This helps to avoid page overflow issues
-      //resizeToAvoidBottomPadding: false,
-      //body
-      home: Column(
+      resizeToAvoidBottomPadding: false,
+      body: Column(
         children: <Widget>[
           Header().createHeader(context, 3),
           Container(

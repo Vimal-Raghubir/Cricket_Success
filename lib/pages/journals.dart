@@ -37,7 +37,7 @@ class _JournalState extends State<Journal> {
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     return Scaffold(
-      bottomNavigationBar: Bottom_Navigation().createBottomNavigation(context, 2),
+      bottomNavigationBar: BottomNavigation().createBottomNavigation(context, 2),
       body: Column(
         children: <Widget> [
           Header().createHeader(context, 5),

@@ -41,37 +41,37 @@ import 'package:cricket_app/classes/journalInformation.dart';
       Future _onCreate(Database db, int version) async {
         await db.execute('''
               CREATE TABLE $tableGoals (
-                $column_goal_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                $column_goal_name TEXT NOT NULL,
-                $column_type TEXT NOT NULL,
-                $column_type_index INTEGER NOT NULL,
-                $column_description TEXT NOT NULL,
-                $column_length INTEGER NOT NULL,
-                $column_progress INTEGER NOT NULL
+                $columnGoalId INTEGER PRIMARY KEY AUTOINCREMENT,
+                $columnGoalName TEXT NOT NULL,
+                $columnType TEXT NOT NULL,
+                $columnTypeIndex INTEGER NOT NULL,
+                $columnDescription TEXT NOT NULL,
+                $columnLength INTEGER NOT NULL,
+                $columnProgress INTEGER NOT NULL
               )''');
 
         await db.execute('''
               CREATE TABLE $tableJournals (
-                $column_journal_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                $column_journal_name TEXT NOT NULL,
-                $column_details TEXT NOT NULL,
-                $column_date TEXT NOT NULL
+                $columnJournalId INTEGER PRIMARY KEY AUTOINCREMENT,
+                $columnJournalName TEXT NOT NULL,
+                $columnDetails TEXT NOT NULL,
+                $columnDate TEXT NOT NULL
               )''');
 
         await db.execute('''
               CREATE TABLE $tableStatistics (
-                $column_statistics_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                $column_statistics_name TEXT NOT NULL,
-                $column_statistics_runs INTEGER NOT NULL,
-                $column_statistics_balls_faced INTEGER NOT NULL,
-                $column_statistics_not_out INTEGER NOT NULL,
-                $column_statistics_wickets INTEGER NOT NULL,
-                $column_statistics_overs INTEGER NOT NULL,
-                $column_statistics_runs_conceeded INTEGER NOT NULL,
-                $column_statistics_run_outs INTEGER NOT NULL,
-                $column_statistics_catches INTEGER NOT NULL,
-                $column_statistics_stumpings INTEGER NOT NULL,
-                $column_statistics_rating INTEGER NOT NULL
+                $columnStatisticsId INTEGER PRIMARY KEY AUTOINCREMENT,
+                $columnStatisticsName TEXT NOT NULL,
+                $columnStatisticsRuns INTEGER NOT NULL,
+                $columnStatisticsBallsFaced INTEGER NOT NULL,
+                $columnStatisticsNotOut INTEGER NOT NULL,
+                $columnStatisticsWickets INTEGER NOT NULL,
+                $columnStatisticsOvers INTEGER NOT NULL,
+                $columnStatisticsRunsConceeded INTEGER NOT NULL,
+                $columnStatisticsRunOuts INTEGER NOT NULL,
+                $columnStatisticsCatches INTEGER NOT NULL,
+                $columnStatisticsStumpings INTEGER NOT NULL,
+                $columnStatisticsRating INTEGER NOT NULL
               )''');
       }
       // Database helper methods for Journals:
@@ -87,8 +87,8 @@ import 'package:cricket_app/classes/journalInformation.dart';
       Future<JournalInformation> queryJournal(int id) async {
         Database db = await database;
         List<Map> maps = await db.query(tableJournals,
-            columns: [column_journal_id, column_journal_name, column_details, column_date],
-            where: '$column_journal_id = ?',
+            columns: [columnJournalId, columnJournalName, columnDetails, columnDate],
+            where: '$columnJournalId = ?',
             whereArgs: [id]);
         if (maps.length > 0) {
           return JournalInformation.fromMap(maps.first);
@@ -102,16 +102,16 @@ import 'package:cricket_app/classes/journalInformation.dart';
         final List<Map<String, dynamic>> maps = await db.query(tableJournals);
         return List.generate(maps.length, (i) {
           //Returns the column index along with the other fields since the journalinformation class has an id field
-          return JournalInformation(maps[i][column_journal_name], maps[i][column_details], maps[i][column_date], maps[i][column_journal_id]);
+          return JournalInformation(maps[i][columnJournalName], maps[i][columnDetails], maps[i][columnDate], maps[i][columnJournalId]);
         });
       }
 
       //Function to retrieve all journal names from the database
       Future<List> getJournalNames() async {
         Database db = await database;
-        var maps = await db.query(tableJournals, columns: [column_journal_name]);
+        var maps = await db.query(tableJournals, columns: [columnJournalName]);
         return List.generate(maps.length, (i) {
-          return maps[i][column_journal_name].toLowerCase();
+          return maps[i][columnJournalName].toLowerCase();
         });
       }
 
@@ -125,7 +125,7 @@ import 'package:cricket_app/classes/journalInformation.dart';
           tableJournals,
           journal.toMap(),
           // Ensure that the Journal has a matching id.
-          where: "$column_journal_id = ?",
+          where: "$columnJournalId = ?",
           // Pass the Journal's id as a whereArg to prevent SQL injection.
           whereArgs: [index],
         );
@@ -134,7 +134,7 @@ import 'package:cricket_app/classes/journalInformation.dart';
       //Handles the deletion of a journal object 
       Future<int> deleteJournal(int id) async {
         final db = await database;
-        return await db.delete(tableJournals, where: '$column_journal_id = ?', whereArgs: [id]);
+        return await db.delete(tableJournals, where: '$columnJournalId = ?', whereArgs: [id]);
       }
       
       // Database helper methods for Goals:
@@ -150,8 +150,8 @@ import 'package:cricket_app/classes/journalInformation.dart';
       Future<GoalInformation> queryGoal(int id) async {
         Database db = await database;
         List<Map> maps = await db.query(tableGoals,
-            columns: [column_goal_id, column_goal_name, column_type, column_type_index, column_description, column_length, column_progress],
-            where: '$column_goal_id = ?',
+            columns: [columnGoalId, columnGoalName, columnType, columnTypeIndex, columnDescription, columnLength, columnProgress],
+            where: '$columnGoalId = ?',
             whereArgs: [id]);
         if (maps.length > 0) {
           return GoalInformation.fromMap(maps.first);
@@ -165,16 +165,16 @@ import 'package:cricket_app/classes/journalInformation.dart';
         final List<Map<String, dynamic>> maps = await db.query(tableGoals);
         return List.generate(maps.length, (i) {
           //Returns the column index along with the other fields since the goalinformation class has an id field
-          return GoalInformation(maps[i][column_goal_name], maps[i][column_type], maps[i][column_type_index], maps[i][column_description], maps[i][column_length].toDouble(), maps[i][column_progress], maps[i][column_goal_id]);
+          return GoalInformation(maps[i][columnGoalName], maps[i][columnType], maps[i][columnTypeIndex], maps[i][columnDescription], maps[i][columnLength].toDouble(), maps[i][columnProgress], maps[i][columnGoalId]);
         });
       }
 
       //Function to retrieve all goal names from the database
       Future<List<String>> getGoalNames() async {
         Database db = await database;
-        var maps = await db.query(tableGoals, columns: [column_goal_name]);
+        var maps = await db.query(tableGoals, columns: [columnGoalName]);
         return List.generate(maps.length, (i) {
-          return maps[i][column_goal_name].toLowerCase();
+          return maps[i][columnGoalName].toLowerCase();
         });
       }
       
@@ -188,7 +188,7 @@ import 'package:cricket_app/classes/journalInformation.dart';
           tableGoals,
           goal.toMap(),
           // Ensure that the Goal has a matching id.
-          where: "$column_goal_id = ?",
+          where: "$columnGoalId = ?",
           // Pass the Goal's id as a whereArg to prevent SQL injection.
           whereArgs: [index],
         );
@@ -197,7 +197,7 @@ import 'package:cricket_app/classes/journalInformation.dart';
       //Handles the deletion of a goal object 
       Future<int> deleteGoal(int id) async {
         final db = await database;
-        return await db.delete(tableGoals, where: '$column_goal_id = ?', whereArgs: [id]);
+        return await db.delete(tableGoals, where: '$columnGoalId = ?', whereArgs: [id]);
         //return await db.delete(tableGoals, where: '$column_name = ?', whereArgs: [goal.name]);
       }
 
@@ -215,8 +215,8 @@ import 'package:cricket_app/classes/journalInformation.dart';
       Future<StatisticInformation> queryStatistics(int id) async {
         Database db = await database;
         List<Map> maps = await db.query(tableStatistics,
-            columns: [column_statistics_id, column_statistics_name, column_statistics_runs, column_statistics_balls_faced, column_statistics_not_out, column_statistics_wickets, column_statistics_overs, column_statistics_runs_conceeded, column_statistics_run_outs, column_statistics_catches, column_statistics_stumpings, column_statistics_rating],
-            where: '$column_statistics_id = ?',
+            columns: [columnStatisticsId, columnStatisticsName, columnStatisticsRuns, columnStatisticsBallsFaced, columnStatisticsNotOut, columnStatisticsWickets, columnStatisticsOvers, columnStatisticsRunsConceeded, columnStatisticsRunOuts, columnStatisticsCatches, columnStatisticsStumpings, columnStatisticsRating],
+            where: '$columnStatisticsId = ?',
             whereArgs: [id]);
         if (maps.length > 0) {
           return StatisticInformation.fromMap(maps.first);
@@ -230,16 +230,16 @@ import 'package:cricket_app/classes/journalInformation.dart';
         final List<Map<String, dynamic>> maps = await db.query(tableStatistics);
         return List.generate(maps.length, (i) {
           //Returns the column index along with the other fields since the goalinformation class has an id field
-          return StatisticInformation(maps[i][column_statistics_name], maps[i][column_statistics_runs], maps[i][column_statistics_balls_faced], maps[i][column_statistics_not_out], maps[i][column_statistics_wickets], maps[i][column_statistics_overs], maps[i][column_statistics_runs_conceeded], maps[i][column_statistics_run_outs], maps[i][column_statistics_catches], maps[i][column_statistics_stumpings], maps[i][column_statistics_rating], maps[i][column_statistics_id]);
+          return StatisticInformation(maps[i][columnStatisticsName], maps[i][columnStatisticsRuns], maps[i][columnStatisticsBallsFaced], maps[i][columnStatisticsNotOut], maps[i][columnStatisticsWickets], maps[i][columnStatisticsOvers], maps[i][columnStatisticsRunsConceeded], maps[i][columnStatisticsRunOuts], maps[i][columnStatisticsCatches], maps[i][columnStatisticsStumpings], maps[i][columnStatisticsRating], maps[i][columnStatisticsId]);
         });
       }
 
       //Function to retrieve all statistic names from the database
       Future<List<String>> getStatisticNames() async {
         Database db = await database;
-        var maps = await db.query(tableStatistics, columns: [column_statistics_name]);
+        var maps = await db.query(tableStatistics, columns: [columnStatisticsName]);
         return List.generate(maps.length, (i) {
-          return maps[i][column_statistics_name].toLowerCase();
+          return maps[i][columnStatisticsName].toLowerCase();
         });
       }
       
@@ -253,7 +253,7 @@ import 'package:cricket_app/classes/journalInformation.dart';
           tableStatistics,
           statistic.toMap(),
           // Ensure that the Statistic has a matching id.
-          where: "$column_statistics_id = ?",
+          where: "$columnStatisticsId = ?",
           // Pass the Statistic's id as a whereArg to prevent SQL injection.
           whereArgs: [index],
         );
@@ -262,7 +262,7 @@ import 'package:cricket_app/classes/journalInformation.dart';
       //Handles the deletion of a statistic object 
       Future<int> deleteStatistic(int id) async {
         final db = await database;
-        return await db.delete(tableStatistics, where: '$column_statistics_id = ?', whereArgs: [id]);
+        return await db.delete(tableStatistics, where: '$columnStatisticsId = ?', whereArgs: [id]);
       }
 
 

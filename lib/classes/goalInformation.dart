@@ -1,12 +1,12 @@
 // database table and column names
 final String tableGoals = 'Goals';
-final String column_goal_id = 'ID';
-final String column_goal_name = 'Name';
-final String column_type = 'Type';
-final String column_type_index = 'Type_Index';
-final String column_description = 'Description';
-final String column_length = 'Length';
-final String column_progress = 'Progress';
+final String columnGoalId = 'ID';
+final String columnGoalName = 'Name';
+final String columnType = 'Type';
+final String columnTypeIndex = 'Type_Index';
+final String columnDescription = 'Description';
+final String columnLength = 'Length';
+final String columnProgress = 'Progress';
 
 //Custom class defining the structure of a goal
 class GoalInformation {
@@ -33,11 +33,11 @@ class GoalInformation {
 
   // convenience constructor to create a Goal object
   GoalInformation.fromMap(Map<String, dynamic> map) {
-    name = map[column_goal_name];
-    type = map[column_type];
-    typeIndex = map[column_type_index];
-    description = map[column_description];
-    length = map[column_length];
+    name = map[columnGoalName];
+    type = map[columnType];
+    typeIndex = map[columnTypeIndex];
+    description = map[columnDescription];
+    length = map[columnLength];
     currentProgress = map[currentProgress];
   }
 
@@ -66,12 +66,12 @@ class GoalInformation {
   // convenience method to create a Map from this Goal object
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
-      column_goal_name: name,
-      column_type: type,
-      column_type_index: typeIndex,
-      column_description: description,
-      column_length: length,
-      column_progress: currentProgress
+      columnGoalName: name,
+      columnType: type,
+      columnTypeIndex: typeIndex,
+      columnDescription: description,
+      columnLength: length,
+      columnProgress: currentProgress
     };
     
       return map;

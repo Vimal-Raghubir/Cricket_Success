@@ -1,8 +1,8 @@
 final String tableJournals = 'Journals';
-final String column_journal_id = 'ID';
-final String column_journal_name = 'Name';
-final String column_details = 'Details';
-final String column_date = 'Date';
+final String columnJournalId = 'ID';
+final String columnJournalName = 'Name';
+final String columnDetails = 'Details';
+final String columnDate = 'Date';
 
 class JournalInformation {
   int id;
@@ -22,17 +22,17 @@ class JournalInformation {
 
   // convenience constructor to create a Journal object
   JournalInformation.fromMap(Map<String, dynamic> map) {
-    name = map[column_journal_name];
-    details = map[column_details];
-    date = map[column_date];
+    name = map[columnJournalName];
+    details = map[columnDetails];
+    date = map[columnDate];
   }
 
     // convenience method to create a Map from this Goal object
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
-      column_journal_name: name,
-      column_details: details,
-      column_date: date
+      columnJournalName: name,
+      columnDetails: details,
+      columnDate: date
     };
     
       return map;

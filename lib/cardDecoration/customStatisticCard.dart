@@ -40,23 +40,23 @@ class _MyCustomStatisticCardState extends State<CustomStatisticCard> {
   String generateCardMessage() {
     String cardText = "";
     if (widget.type == 0) {
-      if (widget.object.balls_faced == 0) {
+      if (widget.object.ballsFaced == 0) {
         cardText = "You did not bat in this game.";
       } else {
-        cardText = "Runs: " + widget.object.runs.toString() + "\n\nBalls Faced: " + widget.object.balls_faced.toString() + "\n\nNot out: ";
-        cardText += widget.object.not_out == 0 ? "no" : "yes";
+        cardText = "Runs: " + widget.object.runs.toString() + "\n\nBalls Faced: " + widget.object.ballsFaced.toString() + "\n\nNot out: ";
+        cardText += widget.object.notOut == 0 ? "no" : "yes";
       }
     } else if (widget.type == 1) {
       if (widget.object.overs == 0) {
         cardText = "You did not bowl in this game.";
       } else {
-        cardText = "Overs bowled: " + widget.object.overs.toString() + "\n\nRuns Conceeded: " + widget.object.runs_conceeded.toString() + "\n\nWickets: " + widget.object.wickets.toString();
+        cardText = "Overs bowled: " + widget.object.overs.toString() + "\n\nRuns Conceeded: " + widget.object.runsConceeded.toString() + "\n\nWickets: " + widget.object.wickets.toString();
       }
     } else if (widget.type == 2) {
-      if (widget.object.catches == 0 && widget.object.run_outs == 0 && widget.object.stumpings == 0) {
+      if (widget.object.catches == 0 && widget.object.runOuts == 0 && widget.object.stumpings == 0) {
         cardText = "You did not get any fielding dismissals in this game.";
       } else {
-        cardText = "Catches: " + widget.object.catches.toString() + "\n\nRun Outs: " + widget.object.run_outs.toString() + "\n\nStumpings: " + widget.object.stumpings.toString();
+        cardText = "Catches: " + widget.object.catches.toString() + "\n\nRun Outs: " + widget.object.runOuts.toString() + "\n\nStumpings: " + widget.object.stumpings.toString();
       }
     }
     return cardText;

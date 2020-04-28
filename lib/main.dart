@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: Bottom_Navigation().createBottomNavigation(context, 0),
+      bottomNavigationBar: BottomNavigation().createBottomNavigation(context, 0),
       body: new Column(
         children: <Widget>[
           Header().createHeader(context, 0),
@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Expanded(
             child:
-              Center(child: gridTile().buildGrid(context, 1)),
+              Center(child: CustomGridTile().buildGrid(context, 1)),
           )
         ],
       )
