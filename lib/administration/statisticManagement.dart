@@ -34,6 +34,7 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
   var selectedStatisticCatches;
   var selectedStatisticStumpings;
   var selectedStatisticRating;
+  TextEditingController statisticController;
   //Stores all Statistic names for the Statistic name field. Used to prevent duplicate Statistic names
   List statisticNames = [];
   int index;
@@ -43,7 +44,7 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
   bool fielding = false;
 
   //Key used to validate form input
-  final _formKey = GlobalKey<FormState>();
+  final _statisticFormKey = GlobalKey<FormState>();
 
   @protected
   @mustCallSuper
@@ -62,6 +63,7 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
     selectedStatisticCatches = widget.passedStatistic.catches;
     selectedStatisticStumpings = widget.passedStatistic.stumpings;
     selectedStatisticRating = widget.passedStatistic.rating;
+    statisticController = new TextEditingController(text: selectedStatisticName);
     //Retrieves a list of all Statisticnames in the database
     _getStatisticNames();
   }
@@ -69,7 +71,7 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
 Widget createStatisticNameField() {
   return TextFormField(
     //Starts with the passed in Statistic as initial value
-    initialValue: widget.passedStatistic.name,
+    controller: statisticController,
     keyboardType: TextInputType.text ,
     decoration: InputDecoration(
       labelText: "What would you like to name this match?",
@@ -294,15 +296,15 @@ Widget submitButton(String buttonText) {
     child: RaisedButton(
       onPressed: () {
       // Validate returns true if the form is valid
-      if (_formKey.currentState.validate()) {
-        _formKey.currentState.save();
+      if (_statisticFormKey.currentState.validate()) {
+        _statisticFormKey.currentState.save();
         //Create a new statistic object with the parameters
         StatisticInformation newStatistic = new StatisticInformation(selectedStatisticName, selectedStatisticRuns, selectedStatisticBallsFaced, selectedStatisticNotOut, selectedStatisticWickets, selectedStatisticOvers, selectedStatisticRunsConceeded, selectedStatisticRunOuts, selectedStatisticCatches, selectedStatisticStumpings, selectedStatisticRating);
         if (buttonText == "Submit") {
             //Insert the newStatistic into the database
           _save(newStatistic);
           //Calls the function in the Statistics.dart class to refresh the Statistics page with setState. This is used to fix cards not appearing on the Statistics page after submitting this form
-          widget.notifyParent();
+          //widget.notifyParent();
           //Navigates back to the previous page and in this case the Statistics page
           Navigator.pop(context);
           //Toast message to indicate the Statistic was created
@@ -430,7 +432,7 @@ Widget updatePage() {
         child: ListView(
         children: <Widget>[
           Form(
-            key: _formKey,
+            key: _statisticFormKey,
             //Pass in correct variables for assignment
             child: newPage()
           ),
@@ -443,7 +445,7 @@ Widget updatePage() {
         child: ListView(
           children: <Widget>[
             Form(
-              key: _formKey,
+              key: _statisticFormKey,
               child: updatePage()
             )
           ],
@@ -454,6 +456,7 @@ Widget updatePage() {
   
   void dispose() {
     super.dispose();
+    statisticController.dispose();
   }
   //Function to insert a Statistic into the database
   _save(StatisticInformation statistic) async {

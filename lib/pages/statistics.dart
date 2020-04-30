@@ -338,26 +338,26 @@ Widget statList(int type) {
 
   Widget battingPage() {
     return ListView(children: <Widget>[
-      SimpleBarChart(_createBarChart("Runs"), animate: true, title: "Runs per Game"),
-      SimpleLineChart(_createLineData("Batting Average"), animate: true, title: "Batting Average Progression"),
-      SimpleBarChart(_createBarChart("Strike Rate"), animate: true, title: "Strike Rate Frequency"),
-      DonutPieChart(_createDonutData("Not Out"), animate: true, title: "Not Out vs Dismissals", subtitle: "0 is Dismissals and 1 is Not Outs",),
+      SimpleBarChart(_createBarChart("Runs"), animate: false, title: "Runs per Game"),
+      SimpleLineChart(_createLineData("Batting Average"), animate: false, title: "Batting Average Progression"),
+      SimpleBarChart(_createBarChart("Strike Rate"), animate: false, title: "Strike Rate Frequency"),
+      DonutPieChart(_createDonutData("Not Out"), animate: false, title: "Not Out vs Dismissals", subtitle: "0 is Dismissals and 1 is Not Outs",),
       statList(0),
     ]);
   }
 
   Widget bowlingPage() {
     return ListView(children: <Widget>[
-      SimpleBarChart(_createBarChart("Wickets"), animate: true, title: "Wickets per Game"),
-      SimpleLineChart(_createLineData("Bowling Average"), animate: true, title: "Bowling Average Progression"),
-      SimpleBarChart(_createBarChart("Economy Rate"), animate: true, title: "Economy Rate Frequency"),
+      SimpleBarChart(_createBarChart("Wickets"), animate: false, title: "Wickets per Game"),
+      SimpleLineChart(_createLineData("Bowling Average"), animate: false, title: "Bowling Average Progression"),
+      SimpleBarChart(_createBarChart("Economy Rate"), animate: false, title: "Economy Rate Frequency"),
       statList(1),
     ]);
   }
 
   Widget fieldingPage() {
     return ListView(children: <Widget>[
-      SimpleSeriesLegend(_createFieldingChart(), animate: true, title: "Fielding Dismissals"),
+      SimpleSeriesLegend(_createFieldingChart(), animate: false, title: "Fielding Dismissals"),
       statList(2),
     ]);
   }

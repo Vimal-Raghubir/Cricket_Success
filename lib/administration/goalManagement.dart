@@ -23,6 +23,8 @@ class GoalManagement extends StatefulWidget {
 
 
 class _MyGoalManagementState extends State<GoalManagement> {
+  TextEditingController goalController;
+  TextEditingController descriptionController;
   var selectedGoal;
   var selectedGoalIndex;
   var selectedGoalLength;
@@ -36,7 +38,7 @@ class _MyGoalManagementState extends State<GoalManagement> {
   final List<String> goalOptions = ['Process Goal', 'Performance Goal', 'Outcome Goal'];
 
   //Key used to validate form input
-  final _formKey = GlobalKey<FormState>();
+  final _goalFormKey = GlobalKey<FormState>();
 
   @protected
   @mustCallSuper
@@ -49,7 +51,8 @@ class _MyGoalManagementState extends State<GoalManagement> {
     selectedGoalName = widget.passedGoal.name;
     selectedGoalDescription = widget.passedGoal.description;
     currentProgress = widget.passedGoal.currentProgress;
-    print(currentProgress.toDouble());
+    goalController = new TextEditingController(text: selectedGoalName);
+    descriptionController = new TextEditingController(text: selectedGoalDescription);
     //Retrieves a list of all goalnames in the database
     _getGoalNames();
   }
@@ -106,7 +109,7 @@ Widget createDropdownMenu() {
 Widget createGoalNameField() {
   return TextFormField(
     //Starts with the passed in goal as initial value
-    initialValue: widget.passedGoal.name,
+    controller: goalController,
     keyboardType: TextInputType.text ,
     decoration: InputDecoration(
       labelText: "What is your goal?",
@@ -139,7 +142,7 @@ Widget createGoalNameField() {
 Widget createDescriptionField() {
   return TextFormField(
     //Start with passed in goal description
-    initialValue: widget.passedGoal.description,
+    controller: descriptionController,
     keyboardType: TextInputType.text ,
     decoration: InputDecoration(
       labelText: "Any additional details?",
@@ -205,8 +208,8 @@ Widget submitButton(String buttonText) {
     child: RaisedButton(
       onPressed: () {
       // Validate returns true if the form is valid
-      if (_formKey.currentState.validate()) {
-        _formKey.currentState.save();
+      if (_goalFormKey.currentState.validate()) {
+        _goalFormKey.currentState.save();
         //Create a new goal object with the parameters
         GoalInformation newGoal = new GoalInformation(selectedGoalName, selectedGoal, selectedGoalIndex, selectedGoalDescription, selectedGoalLength, currentProgress);
         if (buttonText == "Submit") {
@@ -336,7 +339,7 @@ Widget updatePage() {
       return Column(
         children: <Widget>[
           Form(
-            key: _formKey,
+            key: _goalFormKey,
             //Pass in correct variables for assignment
             child: newPage()
           ),
@@ -347,7 +350,7 @@ Widget updatePage() {
       return Column(
         children: <Widget>[
           Form(
-            key: _formKey,
+            key: _goalFormKey,
             child: updatePage()
           )
       ],
@@ -357,6 +360,9 @@ Widget updatePage() {
   
   void dispose() {
     super.dispose();
+    print("dispose was called");
+    goalController.dispose();
+    descriptionController.dispose();
   }
   //Function to insert a goal into the database
   _save(GoalInformation goal) async {

@@ -1,3 +1,4 @@
+import 'package:cricket_app/pages/journals.dart';
 import 'package:flutter/material.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/classes/journalInformation.dart';
@@ -26,6 +27,8 @@ class _MyJournalManagementState extends State<JournalManagement> {
   var selectedJournalDetails;
   String parsedDate;
   String dateDisplay;
+  TextEditingController nameController;
+  TextEditingController detailsController;
 
   Map<String, bool> values;
 
@@ -37,7 +40,7 @@ class _MyJournalManagementState extends State<JournalManagement> {
   int index;
 
   //Key used to validate form input
-  final _formKey = GlobalKey<FormState>();
+  final _journalFormKey = GlobalKey<FormState>();
 
   @protected
   @mustCallSuper
@@ -55,6 +58,8 @@ class _MyJournalManagementState extends State<JournalManagement> {
     }
     //Allows the date to be a day after the current day
     latestDate = DateTime(currentDate.year, currentDate.month, currentDate.day + 1);
+    nameController = new TextEditingController(text: selectedJournalName);
+    detailsController = new TextEditingController(text: selectedJournalDetails);
     //Retrieves a list of all journal names in the database
     _getJournalNames();
   }
@@ -74,7 +79,7 @@ Widget createDropDownHeader(String dropDownMessage) {
 Widget createJournalNameField() {
   return TextFormField(
     //Starts with the passed in journal as initial value
-    initialValue: widget.passedJournal.name,
+    controller: nameController,
     keyboardType: TextInputType.text ,
     decoration: InputDecoration(
       labelText: "What would you like to name this journal entry?",
@@ -107,7 +112,7 @@ Widget createJournalNameField() {
 Widget createDetailField() {
   return TextFormField(
     //Start with passed in journal details
-    initialValue: widget.passedJournal.details,
+    controller: detailsController,
     keyboardType: TextInputType.text ,
     decoration: InputDecoration(
       labelText: "How was your session? How did you feel?",
@@ -166,8 +171,8 @@ Widget submitButton(String buttonText) {
     child: RaisedButton(
       onPressed: () {
       // Validate returns true if the form is valid
-      if (_formKey.currentState.validate()) {
-        _formKey.currentState.save();
+      if (_journalFormKey.currentState.validate()) {
+        _journalFormKey.currentState.save();
         //Have to parse the datetime object to ISO string to be saved in the database
         parsedDate = selectedJournalDate.toIso8601String();
         //Create a new journal object with the parameters
@@ -188,6 +193,7 @@ Widget submitButton(String buttonText) {
           _updateJournal(newJournal, index);
           //Goes back to previous page which in this case is journals.dart
           Navigator.pop(context);
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => Journal()));
           //Toast message to indicate successful creation of journal
           Toast.show("Successfully updated your journal entry!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
         } 
@@ -285,7 +291,7 @@ Widget updatePage(BuildContext context) {
         child: Column(
           children: <Widget>[
             Form(
-              key: _formKey,
+              key: _journalFormKey,
               //Pass in correct variables for assignment
               child: newPage()
             ),
@@ -298,13 +304,19 @@ Widget updatePage(BuildContext context) {
         child: Column(
           children: <Widget>[
             Form(
-              key: _formKey,
+              key: _journalFormKey,
               child: updatePage(context)
             )
           ],
         )
       );  
     }
+  }
+
+  void dispose() {
+    super.dispose();
+    nameController.dispose();
+    detailsController.dispose();
   }
   //Function to insert a  journal into the database
   _save(JournalInformation journal) async {

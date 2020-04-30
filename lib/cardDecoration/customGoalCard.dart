@@ -157,14 +157,14 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
                 SizedBox(height: 5),
 
                 //Progress bar
-               /* LinearPercentIndicator(
+                LinearPercentIndicator(
                   width: width - 120,
                   lineHeight: 15.0,
                   progressColor: Colors.blue,
                   percent: progress,
                   center: Text("$viewProgress"),
                   animation: true,
-                ),*/
+                ),
                 
                 SizedBox(height: 15),
                 Row(
