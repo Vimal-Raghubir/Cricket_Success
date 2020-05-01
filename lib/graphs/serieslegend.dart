@@ -37,6 +37,8 @@ class SimpleSeriesLegend extends StatelessWidget {
   }
 }
 
+
+
 /// Sample ordinal data type.
 class SeriesChartData {
   final String xAxis;
