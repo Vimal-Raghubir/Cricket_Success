@@ -1,4 +1,5 @@
 import 'package:cricket_app/cardDecoration/customStatisticCard.dart';
+import 'package:cricket_app/statisticsTabs/battingTab.dart';
 import 'package:flutter/material.dart';
 import 'package:cricket_app/navigation/bottom_navigation.dart';
 import 'package:cricket_app/graphs/bar_chart.dart';
@@ -35,42 +36,6 @@ class _StatisticsState extends State<Statistics> {
     if (this.mounted){
       setState(() {});
     }
-  }
-
-  List<LineChartData> generateBattingAverage() {
-    List<int> dismissals = [];
-    List<int> totalRuns = [];
-
-    List<LineChartData> finalList = [];
-
-    for (int i = 0; i < statistics.length; i++) {
-      if (i == 0) {
-        totalRuns.add(statistics[i].runs);
-        if (statistics[i].notOut != 0) {
-          dismissals.add(0);
-        } else {
-          dismissals.add(1);
-        }
-      } else {
-        totalRuns.add(totalRuns[i-1] + statistics[i].runs);
-        if (statistics[i].notOut != 0) {
-          dismissals.add(dismissals[i-1]);
-        } else {
-          dismissals.add(dismissals[i-1] + 1);
-        }
-      }
-    }
-
-    for (int i = 0; i < statistics.length; i++) {
-      double average = 0;
-      if (dismissals[i] == 0 || totalRuns[i] == 0) {
-        average = totalRuns[i].toDouble();
-      } else {
-        average = totalRuns[i] / dismissals[i];
-      }
-      finalList.add(LineChartData(i, average));
-    } 
-    return finalList;
   }
 
   List<LineChartData> generateBowlingAverage() {
@@ -173,45 +138,6 @@ class _StatisticsState extends State<Statistics> {
     return finalList;
   }
 
-     List<BarChartData> generateStrikeRateRate() {
-    var strikeRates = [0, 0, 0, 0, 0, 0];
-    var ranges = ["0-60", "60-80", "80-100", "100-120", "120-140", "140+"];
-
-    List<BarChartData> finalList = [];
-
-    for (int i = 0; i < statistics.length; i++) {
-      if (statistics[i].ballsFaced == 0 || statistics[i].runs == 0) {
-        strikeRates[0] += 1;
-      } else {
-        double economy = (statistics[i].runs / statistics[i].ballsFaced) * 100;
-
-        if (economy >= 0 && economy < 60) {
-          strikeRates[0] += 1;
-        } else if (economy >= 60 && economy < 80) {
-          strikeRates[1] += 1;
-        } else if (economy >= 80 && economy < 100) {
-          strikeRates[2] += 1;
-        } else if (economy >= 100 && economy < 120) {
-          strikeRates[3] += 1;
-        } else if (economy >= 120 && economy < 140) {
-          strikeRates[4] += 1;
-        } else if (economy >= 140) {
-          strikeRates[5] += 1;
-        }
-      }
-    }
-    int j = 0;
-    for (int i = 0; i < strikeRates.length; i++) {
-      if (j == (barColors.length - 1)) {
-        j = 0;
-      }
-      finalList.add(BarChartData(ranges[i], strikeRates[i], barColors[j]));
-      j++;
-    }
-    
-    return finalList;
-  }
-
 
   /// Create one series with sample hard coded data.
   List<charts.Series<BarChartData, String>> _createBarChart(String type) {
@@ -225,8 +151,6 @@ class _StatisticsState extends State<Statistics> {
         list.add(BarChartData(statistics[i].name, statistics[i].runs, barColors[j]));
         j++;
       }
-    } else if (type == "Strike Rate") {
-      list = generateStrikeRateRate();
     } else if (type == "Wickets") {
       int j = 0;
       for (int i = 0; i < statistics.length; i++) {
@@ -255,10 +179,8 @@ class _StatisticsState extends State<Statistics> {
     /// Create one series with sample hard coded data.
   List<charts.Series<LineChartData, int>> _createLineData(String type) {
     List<LineChartData> list;
-
-    if (type == "Batting Average") {
-      list = generateBattingAverage();
-    } else if (type == "Bowling Average") {
+    
+    if (type == "Bowling Average") {
       list = generateBowlingAverage();
     }
 
@@ -269,41 +191,6 @@ class _StatisticsState extends State<Statistics> {
         colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
         domainFn: (LineChartData sales, _) => sales.xAxis,
         measureFn: (LineChartData sales, _) => sales.yAxis,
-        data: list,
-      )
-    ];
-}
-
-  List<DonutChartData> createNotOutChart() {
-    double notOuts = 0;
-    double dismissals = 0;
-    List<DonutChartData> finalList = [];
-
-    for (int i = 0; i < statistics.length; i++) {
-      if (statistics[i].notOut == 0) {
-        dismissals += 1;
-      } else {
-        notOuts += 1;
-      }
-    }
-    finalList.add(DonutChartData(0, dismissals, Colors.red));
-    finalList.add(DonutChartData(1, notOuts, Colors.green));
-    
-    return finalList;
-  }
-
-    /// Create one series with sample hard coded data.
-  List<charts.Series<DonutChartData, int>> _createDonutData(String type) {
-    List<DonutChartData> list;
-    if (type == "Not Out") {
-      list = createNotOutChart();
-    }
-    return [
-      new charts.Series<DonutChartData, int>(
-        id: type,
-        domainFn: (DonutChartData notOut, _) => notOut.xAxis,
-        measureFn: (DonutChartData notOut, _) => notOut.yAxis,
-        colorFn: (DonutChartData notOut, _) => notOut.color,
         data: list,
       )
     ];
@@ -338,16 +225,6 @@ Widget statList(int type) {
             }
         );
 }
-
-  Widget battingPage() {
-    return ListView(children: <Widget>[
-      SimpleBarChart(_createBarChart("Runs"), animate: true, title: "Runs per Game"),
-      SimpleLineChart(_createLineData("Batting Average"), animate: true, title: "Batting Average Progression"),
-      SimpleBarChart(_createBarChart("Strike Rate"), animate: true, title: "Strike Rate Frequency"),
-      DonutPieChart(_createDonutData("Not Out"), animate: true, title: "Not Out vs Dismissals", subtitle: "0 is Dismissals and 1 is Not Outs",),
-      statList(0),
-    ]);
-  }
 
   Widget bowlingPage() {
     return ListView(children: <Widget>[
@@ -385,7 +262,7 @@ Widget statList(int type) {
           ),
           body: TabBarView(
             children: [
-              battingPage(),
+              BattingTab().battingPage(statistics),
               bowlingPage(),
               fieldingPage(),
             ],
