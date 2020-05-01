@@ -89,16 +89,7 @@ class BattingTab {
       }
     } else if (type == "Strike Rate") {
       list = generateStrikeRate();
-    } else if (type == "Wickets") {
-      int j = 0;
-      for (int i = 0; i < statistics.length; i++) {
-        if (j == (barColors.length - 1)) {
-          j = 0;
-        }
-        list.add(BarChartData(statistics[i].name, statistics[i].wickets, barColors[j]));
-        j++;
-      }
-    }
+    } 
 
     return [
       new charts.Series<BarChartData, String>(
