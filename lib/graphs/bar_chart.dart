@@ -14,7 +14,7 @@ class SimpleBarChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 250,
+      height: 300,
       padding: EdgeInsets.all(20),
       child: Card(
         child: Padding(
@@ -25,7 +25,8 @@ class SimpleBarChart extends StatelessWidget {
               style: Theme.of(context).textTheme.body2,
               ),
               Expanded(
-                child: charts.BarChart(seriesList, animate: animate, 
+                child: charts.BarChart(seriesList, animate: animate,
+                vertical: false,
                 defaultRenderer: new charts.BarRendererConfig(cornerStrategy: const charts.ConstCornerStrategy(30)),),
               ),
             ],

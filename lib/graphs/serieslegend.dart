@@ -14,7 +14,7 @@ class SimpleSeriesLegend extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 250,
+      height: 450,
       padding: EdgeInsets.all(20),
       child: Card(
         child: Padding(
@@ -26,6 +26,7 @@ class SimpleSeriesLegend extends StatelessWidget {
               ),
               Expanded(
                 child: charts.BarChart(seriesList, animate: animate, 
+                vertical: false,
                 barGroupingType: charts.BarGroupingType.grouped, behaviors: [new charts.SeriesLegend()]),
               ),
             ],
@@ -46,8 +47,4 @@ class SeriesChartData {
   //final charts.Color color;
 
   SeriesChartData(this.xAxis, this.yAxis);
-
-  /*Bar_ChartData(this.xAxis, this.yAxis, Color color)
-      : this.color = new charts.Color(
-            r: color.red, g: color.green, b: color.blue, a: color.alpha);*/
 }

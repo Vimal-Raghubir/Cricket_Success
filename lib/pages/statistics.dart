@@ -116,18 +116,21 @@ class _StatisticsState extends State<Statistics> {
         id: 'Catches',
         domainFn: (SeriesChartData runs, _) => runs.xAxis,
         measureFn: (SeriesChartData runs, _) => runs.yAxis,
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
         data: catchesList,
       ),
       new charts.Series<SeriesChartData, String>(
         id: 'Run Outs',
         domainFn: (SeriesChartData runs, _) => runs.xAxis,
         measureFn: (SeriesChartData runs, _) => runs.yAxis,
+        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
         data: runOutsList,
       ),
       new charts.Series<SeriesChartData, String>(
         id: 'Stumpings',
         domainFn: (SeriesChartData runs, _) => runs.xAxis,
         measureFn: (SeriesChartData runs, _) => runs.yAxis,
+        colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
         data: stumpingsList,
       ),
     ];
