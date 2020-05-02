@@ -3,6 +3,7 @@ import 'package:cricket_app/classes/statistics.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/graphs/bar_chart.dart';
 import 'package:cricket_app/graphs/line_chart.dart';
+import 'package:cricket_app/pages/createStatistic.dart';
 import 'package:cricket_app/pages/statisticDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -46,22 +47,39 @@ class _MyBowlingTabState extends State<BowlingTab> {
 
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
-    return ListView(children: <Widget>[
-      createStatsTable(),
-      SimpleBarChart(_createBarChart("Wickets"), animate: true, title: "Wickets per Game"),
-      SimpleLineChart(_createLineData("Bowling Average"), animate: true, title: "Bowling Average Progression"),
-      SimpleBarChart(_createBarChart("Economy Rate"), animate: true, title: "Economy Rate Frequency"),
-      //Put Datatable here
-      statList(),
-    ]);
+    return Scaffold(
+      body: ListView(children: <Widget>[
+        createStatsTable(),
+        SimpleBarChart(_createBarChart("Wickets"), animate: true, title: "Wickets per Game"),
+        SimpleLineChart(_createLineData("Bowling Average"), animate: true, title: "Bowling Average Progression"),
+        SimpleBarChart(_createBarChart("Economy Rate"), animate: true, title: "Economy Rate Frequency"),
+        //Put Datatable here
+        statList(),
+      ]),
+      floatingActionButton: FloatingActionButton (
+          //Need this to be asynchronous since you have to wait on the results of the new goal page
+          onPressed: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NewStatistic(
+                  //Helps to prevent range issues
+                  statistic: StatisticInformation(),
+                )
+              ),
+            );
+            refresh();
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.green,
+      ),
+    );
   }
 
   //Used to render the datatable for the stats
   DataTable createStatsTable() {
     //Need to call this to set the bowling average
     generateBowlingAverage();
-    //Need to call this to set the economy rate
-    generateEconomyRate();
     //Might need to change the horizontalMargin if issues with space
     return DataTable( horizontalMargin: 30, columnSpacing: 0, columns: [
       //DataColumn(label: Text('Matches Played')),
@@ -75,10 +93,29 @@ class _MyBowlingTabState extends State<BowlingTab> {
         DataCell(Text(calculateWickets())),
         //ToStringAsFixed is used to set the precision of the double
         DataCell(Text(bowlingAverage.toStringAsFixed(2))),
-        DataCell(Text(economyRate.toStringAsFixed(2))),
+        //Generating economy rate in a seperate function
+        DataCell(Text(generateEconomyRateTotal())),
       ])
     ]);
   }
+
+  //Used to generate economy rate by dividing total runs conceeded by number of overs
+  String generateEconomyRateTotal() {
+    var totalRuns = 0;
+    var totalOvers = 0;
+    for (int i = 0; i < statistics.length; i++) {
+      totalRuns += statistics[i].runsConceeded;
+      totalOvers += statistics[i].overs;
+    }
+
+    if (totalRuns != 0 && totalOvers != 0) {
+      economyRate = totalRuns / totalOvers;
+    } else {
+      economyRate = 0.0;
+    }
+    return economyRate.toStringAsFixed(2);
+  }
+
   //Used to add up all the wickets and store in totalWickets
   String calculateWickets() {
     totalWickets = 0;
@@ -124,7 +161,6 @@ class _MyBowlingTabState extends State<BowlingTab> {
     var ranges = ["0-4", "4-6", "6-8", "8-10", "10+"];
 
     List<BarChartData> finalList = [];
-    double totalEconomyRate = 0.0;
 
     for (int i = 0; i < statistics.length; i++) {
       //If the person did not conceed runs or did not set their bowling overs then add 1 to the first bucket
@@ -133,8 +169,6 @@ class _MyBowlingTabState extends State<BowlingTab> {
       } else {
         //Calculates their economy rate for that inning
         double economy = statistics[i].runsConceeded / statistics[i].overs;
-        //Adds it to the totalEconomyRate for header stats table
-        totalEconomyRate += economy;
 
         //Setting the array element relevant to the bucket which the economy rate falls within
         if (economy >= 0 && economy < 4) {
@@ -158,10 +192,6 @@ class _MyBowlingTabState extends State<BowlingTab> {
       }
       finalList.add(BarChartData(ranges[i], economyRates[i], barColors[j]));
       j++;
-    }
-    //If economy rate and their is matches then calculate the average economy rate for stats header table
-    if (totalEconomyRate > 0.0 && statistics.length != 0) {
-      economyRate = totalEconomyRate / statistics.length;
     }
     
     return finalList;
@@ -192,6 +222,7 @@ class _MyBowlingTabState extends State<BowlingTab> {
     List<int> totalRunsConceeded = [];
 
     List<LineChartData> finalList = [];
+    bowlingAverage = 0.0;
 
     for (int i = 0; i < statistics.length; i++) {
       if (i == 0) {

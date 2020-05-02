@@ -6,6 +6,7 @@ import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/graphs/bar_chart.dart';
 import 'package:cricket_app/graphs/donut.dart';
 import 'package:cricket_app/graphs/line_chart.dart';
+import 'package:cricket_app/pages/createStatistic.dart';
 import 'package:cricket_app/pages/statisticDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -49,15 +50,34 @@ class _MyBattingTabState extends State<BattingTab> {
 
     Widget build(BuildContext context) {
       width = MediaQuery.of(context).size.width;
-      return ListView(shrinkWrap: true, children: <Widget>[
-        createStatsTable(),
-        SimpleBarChart(_createBarChart("Runs"), animate: true, title: "Runs per Game"),
-        SimpleLineChart(_createLineData("Batting Average"), animate: true, title: "Batting Average Progression"),
-        SimpleBarChart(_createBarChart("Strike Rate"), animate: true, title: "Strike Rate Frequency"),
-        DonutPieChart(_createDonutData("Not Out"), animate: true, title: "Not Out vs Dismissals", subtitle: "0 is Dismissals and 1 is Not Outs",),
-        //call datatable code here
-        statList(),
-      ]);
+      return Scaffold(
+        body: ListView(shrinkWrap: true, children: <Widget>[
+          createStatsTable(),
+          SimpleBarChart(_createBarChart("Runs"), animate: true, title: "Runs per Game"),
+          SimpleLineChart(_createLineData("Batting Average"), animate: true, title: "Batting Average Progression"),
+          SimpleBarChart(_createBarChart("Strike Rate"), animate: true, title: "Strike Rate Frequency"),
+          DonutPieChart(_createDonutData("Not Out"), animate: true, title: "Not Out vs Dismissals", subtitle: "0 is Dismissals and 1 is Not Outs",),
+          //call datatable code here
+          statList(),
+        ]),
+        floatingActionButton: FloatingActionButton (
+          //Need this to be asynchronous since you have to wait on the results of the new goal page
+          onPressed: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NewStatistic(
+                  //Helps to prevent range issues
+                  statistic: StatisticInformation(),
+                )
+              ),
+            );
+            refresh();
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.green,
+      ),
+      );
     }
 
   //Used to render the datatable for the stats
@@ -82,6 +102,21 @@ class _MyBattingTabState extends State<BattingTab> {
         DataCell(Text(strikeRate.toStringAsFixed(2))),
       ])
     ]);
+  }
+
+  //Used to generate strike rate by dividing total runs by number of balls faced
+  String generateStrikeRateTotal() {
+    var totalBalls = 0;
+    for (int i = 0; i < statistics.length; i++) {
+      totalBalls += statistics[i].ballsFaced;
+    }
+
+    if (totalRuns != 0 && totalBalls != 0) {
+      strikeRate = totalRuns / totalBalls;
+    } else {
+      strikeRate = 0.0;
+    }
+    return strikeRate.toStringAsFixed(2);
   }
 
   //Used to add up all the runs and store in totalRuns

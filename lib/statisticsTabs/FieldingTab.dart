@@ -3,6 +3,7 @@ import 'package:cricket_app/cardDecoration/customStatisticCard.dart';
 import 'package:cricket_app/classes/statistics.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/graphs/serieslegend.dart';
+import 'package:cricket_app/pages/createStatistic.dart';
 import 'package:cricket_app/pages/statisticDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -35,6 +36,7 @@ class _MyFieldingTabState extends State<FieldingTab> {
     //Had to make read asynchronous to wait on the results of the database retrieval before rendering the UI
     await _read();
     if (this.mounted){
+      print("Refresh was called");
       setState(() {
       });
     }
@@ -42,12 +44,31 @@ class _MyFieldingTabState extends State<FieldingTab> {
 
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
-    return ListView(children: <Widget>[
+    return Scaffold(
+      body: ListView(children: <Widget>[
       createStatsTable(),
       SimpleSeriesLegend(_createFieldingChart(), animate: true, title: "Fielding Dismissals"),
       //Add datatable here
       statList(),
-    ]);
+    ]),
+    floatingActionButton: FloatingActionButton (
+          //Need this to be asynchronous since you have to wait on the results of the new goal page
+          onPressed: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => NewStatistic(
+                  //Helps to prevent range issues
+                  statistic: StatisticInformation(),
+                )
+              ),
+            );
+            refresh();
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.green,
+      ),
+    );
   }
 
   //Used to render the datatable for the stats
