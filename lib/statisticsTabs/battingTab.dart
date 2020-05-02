@@ -1,28 +1,54 @@
 
 
+import 'package:cricket_app/cardDecoration/customStatisticCard.dart';
 import 'package:cricket_app/classes/statistics.dart';
+import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/graphs/bar_chart.dart';
 import 'package:cricket_app/graphs/donut.dart';
 import 'package:cricket_app/graphs/line_chart.dart';
+import 'package:cricket_app/pages/statisticDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
+//Stores all the statistics in the database
+List<StatisticInformation> statistics = [];
+
 //Class to handle the creation of the batting statistic tab
-class BattingTab {
-  final List<Color> barColors = [Colors.amber, Colors.blue, Colors.green, Colors.red, Colors.orange, Colors.purple, Colors.yellow[700], Colors.cyan, Colors.indigo, Colors.lightGreen, Colors.deepOrange, Colors.teal]; 
-  //Stores all the statistics in the database
-  List<StatisticInformation> statistics = [];
+class BattingTab extends StatefulWidget {
+  @override
+  _MyBattingTabState createState() => new _MyBattingTabState();
+
+}
+
+class _MyBattingTabState extends State<BattingTab> {
 
   //All of the variables below are used for the header stats table 
   var totalRuns = 0;
   var totalMatches = 0;
   var battingAverage = 0.0;
   var strikeRate = 0.0;
+  var width;
+  final List<Color> barColors = [Colors.amber, Colors.blue, Colors.green, Colors.red, Colors.orange, Colors.purple, Colors.yellow[700], Colors.cyan, Colors.indigo, Colors.lightGreen, Colors.deepOrange, Colors.teal]; 
 
-    //Responsible for the overall batting page
-    Widget battingPage(List<StatisticInformation> allStatistics) {
-      //Set the statistics list passed from the statistics.dart
-      statistics = allStatistics;
+    @protected
+  @mustCallSuper
+  initState() {
+    super.initState();
+    //Extract passed in goal and initializes dynamic variables with their values. Starting point
+    refresh();
+  }
+
+  refresh() async {
+    //Had to make read asynchronous to wait on the results of the database retrieval before rendering the UI
+    await _read();
+    if (this.mounted){
+      setState(() {
+      });
+    }
+  }
+
+    Widget build(BuildContext context) {
+      width = MediaQuery.of(context).size.width;
       return ListView(shrinkWrap: true, children: <Widget>[
         createStatsTable(),
         SimpleBarChart(_createBarChart("Runs"), animate: true, title: "Runs per Game"),
@@ -30,8 +56,10 @@ class BattingTab {
         SimpleBarChart(_createBarChart("Strike Rate"), animate: true, title: "Strike Rate Frequency"),
         DonutPieChart(_createDonutData("Not Out"), animate: true, title: "Not Out vs Dismissals", subtitle: "0 is Dismissals and 1 is Not Outs",),
         //call datatable code here
+        statList(),
       ]);
     }
+
   //Used to render the datatable for the stats
   DataTable createStatsTable() {
     //Need to call this to set the batting average
@@ -58,6 +86,7 @@ class BattingTab {
 
   //Used to add up all the runs and store in totalRuns
   String calculateRuns() {
+    totalRuns = 0;
     for (int i = 0; i < statistics.length; i++) {
       totalRuns += statistics[i].runs;
     }
@@ -243,5 +272,41 @@ class BattingTab {
         data: list,
       )
     ];
+  }
+
+  Widget statList() {
+    return ListView.builder (
+      shrinkWrap: true,
+      physics: ScrollPhysics(),
+      itemCount: statistics.length,
+      itemBuilder: (BuildContext ctxt, int index) {
+        return InkWell(
+        //This needs to be asynchronous since you have to wait on the results of the update page
+          onTap: () async {
+            //Pass the statistic information to the statisticDetails.dart page
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => StatisticDetails(
+                  //Helps to prevent range issues
+                  statistic: statistics?.elementAt(index) ?? "",
+                )
+              ),
+            );
+            //Then rebuild the widget
+            refresh();
+          },
+            //Render custom card for each goal
+            child: CustomStatisticCard(object: statistics[index], width: width,type: 0)
+          );  
+      }
+    );
+  }
+
+      //Function to read all goals from the database for rendering
+  _read() async {
+    DatabaseHelper helper = DatabaseHelper.instance;
+    //goals now stores the index of each goalInformation in the database
+    statistics = await helper.getStatistics();
   }
 }
