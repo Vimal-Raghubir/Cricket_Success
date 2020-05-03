@@ -56,7 +56,7 @@ class _MyCustomStatisticCardState extends State<CustomStatisticCard> {
       if (widget.object.catches == 0 && widget.object.runOuts == 0 && widget.object.stumpings == 0) {
         cardText = "You did not get any fielding dismissals in this game.";
       } else {
-        cardText = "Catches: " + widget.object.catches.toString() + "\n\nRun Outs: " + widget.object.runOuts.toString() + "\n\nStumpings: " + widget.object.stumpings.toString();
+        cardText = "Catches: " + widget.object.catches.toString() + "\t\t\t\t\t\t\tDropped Catches: " + widget.object.catchesMissed.toString() + "\n\nRun Outs: " + widget.object.runOuts.toString() + "\t\t\t\t\tMissed Run Outs: " + widget.object.runOutsMissed.toString() + "\n\nStumpings: " + widget.object.stumpings.toString() + "\t\tMissed Stumpings: " + widget.object.stumpingsMissed.toString();
       }
     }
     return cardText;
@@ -104,9 +104,9 @@ class _MyCustomStatisticCardState extends State<CustomStatisticCard> {
                   ),
                 ),
                 SizedBox(height: 15),
-                Text(generateCardMessage(),
-                    style: TextStyle(fontSize: 14).copyWith(
-                        fontSize: 14, color: Colors.black)),
+                Expanded(
+                  child: Text(generateCardMessage(),style: TextStyle(fontSize: 14).copyWith(fontSize: 14, color: Colors.black)),
+                ),
                 SizedBox(height: 15),
               ],
             ))

@@ -10,7 +10,7 @@ import 'package:cricket_app/classes/journalInformation.dart';
     class DatabaseHelper {
 
       // This is the actual database filename that is saved in the docs directory.
-      static final _databaseName = "statistic_database.db";
+      static final _databaseName = "my_statistic_database.db";
       // Increment this version when you need to change the schema.
       static final _databaseVersion = 1;
 
@@ -71,7 +71,9 @@ import 'package:cricket_app/classes/journalInformation.dart';
                 $columnStatisticsRunOuts INTEGER NOT NULL,
                 $columnStatisticsCatches INTEGER NOT NULL,
                 $columnStatisticsStumpings INTEGER NOT NULL,
-                $columnStatisticsRating INTEGER NOT NULL
+                $columnStatisticsRunOutsMissed INTEGER NOT NULL,
+                $columnStatisticsCatchesMissed INTEGER NOT NULL,
+                $columnStatisticsStumpingsMissed INTEGER NOT NULL
               )''');
       }
       // Database helper methods for Journals:
@@ -215,7 +217,7 @@ import 'package:cricket_app/classes/journalInformation.dart';
       Future<StatisticInformation> queryStatistics(int id) async {
         Database db = await database;
         List<Map> maps = await db.query(tableStatistics,
-            columns: [columnStatisticsId, columnStatisticsName, columnStatisticsRuns, columnStatisticsBallsFaced, columnStatisticsNotOut, columnStatisticsWickets, columnStatisticsOvers, columnStatisticsRunsConceeded, columnStatisticsRunOuts, columnStatisticsCatches, columnStatisticsStumpings, columnStatisticsRating],
+            columns: [columnStatisticsId, columnStatisticsName, columnStatisticsRuns, columnStatisticsBallsFaced, columnStatisticsNotOut, columnStatisticsWickets, columnStatisticsOvers, columnStatisticsRunsConceeded, columnStatisticsRunOuts, columnStatisticsCatches, columnStatisticsStumpings, columnStatisticsRunOutsMissed, columnStatisticsCatchesMissed, columnStatisticsStumpingsMissed],
             where: '$columnStatisticsId = ?',
             whereArgs: [id]);
         if (maps.length > 0) {
@@ -230,7 +232,7 @@ import 'package:cricket_app/classes/journalInformation.dart';
         final List<Map<String, dynamic>> maps = await db.query(tableStatistics);
         return List.generate(maps.length, (i) {
           //Returns the column index along with the other fields since the goalinformation class has an id field
-          return StatisticInformation(maps[i][columnStatisticsName], maps[i][columnStatisticsRuns], maps[i][columnStatisticsBallsFaced], maps[i][columnStatisticsNotOut], maps[i][columnStatisticsWickets], maps[i][columnStatisticsOvers], maps[i][columnStatisticsRunsConceeded], maps[i][columnStatisticsRunOuts], maps[i][columnStatisticsCatches], maps[i][columnStatisticsStumpings], maps[i][columnStatisticsRating], maps[i][columnStatisticsId]);
+          return StatisticInformation(maps[i][columnStatisticsName], maps[i][columnStatisticsRuns], maps[i][columnStatisticsBallsFaced], maps[i][columnStatisticsNotOut], maps[i][columnStatisticsWickets], maps[i][columnStatisticsOvers], maps[i][columnStatisticsRunsConceeded], maps[i][columnStatisticsRunOuts], maps[i][columnStatisticsCatches], maps[i][columnStatisticsStumpings], maps[i][columnStatisticsRunOutsMissed], maps[i][columnStatisticsCatchesMissed], maps[i][columnStatisticsStumpingsMissed], maps[i][columnStatisticsId]);
         });
       }
 

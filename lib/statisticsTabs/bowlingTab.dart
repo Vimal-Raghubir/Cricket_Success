@@ -163,8 +163,8 @@ class _MyBowlingTabState extends State<BowlingTab> {
     List<BarChartData> finalList = [];
 
     for (int i = 0; i < statistics.length; i++) {
-      //If the person did not conceed runs or did not set their bowling overs then add 1 to the first bucket
-      if (statistics[i].overs == 0 || statistics[i].runsConceeded == 0) {
+      //If the person did not conceed runs or actually bowled in this innings (overs != 0) then add 1 to the first bucket
+      if (statistics[i].overs != 0 && statistics[i].runsConceeded == 0) {
         economyRates[0] += 1;
       } else {
         //Calculates their economy rate for that inning

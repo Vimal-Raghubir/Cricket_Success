@@ -84,8 +84,6 @@ class _MyBattingTabState extends State<BattingTab> {
   DataTable createStatsTable() {
     //Need to call this to set the batting average
     generateBattingAverage();
-    //Need to call this to set the strike rate
-    generateStrikeRate();
     //Might need to change the horizontalMargin if issues with space
     return DataTable( horizontalMargin: 30, columnSpacing: 0, columns: [
       //DataColumn(label: Text('Matches Played')),
@@ -99,7 +97,7 @@ class _MyBattingTabState extends State<BattingTab> {
         DataCell(Text(calculateRuns())),
         //ToStringAsFixed is used to set the precision of the double
         DataCell(Text(battingAverage.toStringAsFixed(2))),
-        DataCell(Text(strikeRate.toStringAsFixed(2))),
+        DataCell(Text(generateStrikeRateTotal())),
       ])
     ]);
   }
@@ -112,7 +110,7 @@ class _MyBattingTabState extends State<BattingTab> {
     }
 
     if (totalRuns != 0 && totalBalls != 0) {
-      strikeRate = totalRuns / totalBalls;
+      strikeRate = (totalRuns / totalBalls) * 100;
     } else {
       strikeRate = 0.0;
     }
@@ -156,19 +154,29 @@ class _MyBattingTabState extends State<BattingTab> {
     for (int i = 0; i < statistics.length; i++) {
       if (i == 0) {
         totalRuns.add(statistics[i].runs);
-        //Checks if the person was not out in their first inning and set the first index value
-        if (statistics[i].notOut != 0) { 
-          dismissals.add(0);
+        //Checks if the person actually batted in this inning. If they did not (balls faced = 0) then set their dismissals to 0.
+        if (statistics[i].ballsFaced != 0) {
+          //This handles the first index of the dismissals array since you cannot add to previous element
+          if (statistics[i].notOut != 0) { 
+            dismissals.add(0);
+          } else {
+            dismissals.add(1);
+          }
         } else {
-          dismissals.add(1);
+          dismissals.add(0);
         }
       } else {
         //Need to add the current runs scored to previous total Runs
         totalRuns.add(totalRuns[i-1] + statistics[i].runs);
-        if (statistics[i].notOut != 0) {
-          dismissals.add(dismissals[i-1]);    //Copies the previous total dismissals to this index
+        //Checks if the person actually batted in this inning. If they did not (balls faced = 0) then set their dismissals to the previous dismissal count.
+        if (statistics[i].ballsFaced != 0) {
+          if (statistics[i].notOut != 0) {
+            dismissals.add(dismissals[i-1]);    //Copies the previous total dismissals to this index
+          } else {
+            dismissals.add(dismissals[i-1] + 1);  //Add the previous total dismissals by 1
+          }
         } else {
-          dismissals.add(dismissals[i-1] + 1);  //Add the previous total dismissals by 1
+          dismissals.add(dismissals[i-1]);
         }
       }
     }
@@ -230,8 +238,8 @@ class _MyBattingTabState extends State<BattingTab> {
     double totalStrikeRate = 0.0;
 
     for (int i = 0; i < statistics.length; i++) {
-      //If the person did not score any runs or did not set their batting score then add 1 to the first bucket
-      if (statistics[i].ballsFaced == 0 || statistics[i].runs == 0) {
+      //If the person did not score any runs and actually batted in this innings (ballsFaced != 0) then add 1 to the first bucket
+      if (statistics[i].ballsFaced != 0 && statistics[i].runs == 0) {
         strikeRates[0] += 1;
       } else {
         //Calculates their strike rate for that inning
@@ -279,11 +287,13 @@ class _MyBattingTabState extends State<BattingTab> {
     List<DonutChartData> finalList = [];
 
     for (int i = 0; i < statistics.length; i++) {
-      //Counts number of dismissals
-      if (statistics[i].notOut == 0) {
-        dismissals += 1;
-      } else {
-        notOuts += 1;
+      //If the batsman actually batted in this innings then handle their dismissals
+      if (statistics[i].ballsFaced != 0) {
+        if (statistics[i].notOut == 0) {
+          dismissals += 1;
+        } else {
+          notOuts += 1;
+        }
       }
     }
     finalList.add(DonutChartData(0, dismissals, Colors.red));

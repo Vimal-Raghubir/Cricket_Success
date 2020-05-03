@@ -14,7 +14,9 @@ final String columnStatisticsRunOuts = 'Run_Outs';
 final String columnStatisticsCatches = 'Catches';
 final String columnStatisticsStumpings = 'Stumpings';
 
-final String columnStatisticsRating = 'Rating';
+final String columnStatisticsRunOutsMissed = 'Run_Outs_Missed';
+final String columnStatisticsCatchesMissed = 'Catches_Missed';
+final String columnStatisticsStumpingsMissed = 'Stumpings_Missed';
 
 class StatisticInformation {
   int id;
@@ -30,11 +32,13 @@ class StatisticInformation {
   int runOuts;
   int catches;
   int stumpings;
-  int rating;
-
+  
+  int runOutsMissed;
+  int catchesMissed;
+  int stumpingsMissed;
 
     //Constructor initializing the values of the class variables. The constructor has default values in case a default statistic is needed
-  StatisticInformation([String statName = "", int statRuns = 0, int statBalls = 0, int statNotOut = 0, int statWickets = 0, int statOvers = 0, int statRunsConceeded = 0, int statRunOuts = 0, int statCatches = 0, int statStumpings = 0, int statRating = 0, int index = 0]) {
+  StatisticInformation([String statName = "", int statRuns = 0, int statBalls = 0, int statNotOut = 0, int statWickets = 0, int statOvers = 0, int statRunsConceeded = 0, int statRunOuts = 0, int statCatches = 0, int statStumpings = 0, int statRunOutsMissed = 0, int statCatchesMissed = 0, int statStumpingsMissed = 0, int index = 0]) {
     //initialize this by default to 0
     id = index;
     name = statName;
@@ -47,7 +51,9 @@ class StatisticInformation {
     runOuts = statRunOuts;
     catches = statCatches;
     stumpings = statStumpings;
-    rating = statRating;
+    runOutsMissed = statRunOutsMissed;
+    catchesMissed = statCatchesMissed;
+    stumpingsMissed = statStumpingsMissed;
   }
 
   // convenience constructor to create a Statistics object
@@ -62,7 +68,9 @@ class StatisticInformation {
     runOuts = map[columnStatisticsRunOuts];
     catches = map[columnStatisticsCatches];
     stumpings = map[columnStatisticsStumpings];
-    rating = map[columnStatisticsRating];
+    runOutsMissed = map[columnStatisticsRunOutsMissed];
+    catchesMissed = map[columnStatisticsCatchesMissed];
+    stumpingsMissed = map[columnStatisticsStumpingsMissed];
   }
 
     // convenience method to create a Map from this Statistics object
@@ -78,7 +86,9 @@ class StatisticInformation {
       columnStatisticsRunOuts: runOuts,
       columnStatisticsCatches: catches,
       columnStatisticsStumpings: stumpings,
-      columnStatisticsRating: rating
+      columnStatisticsRunOutsMissed: runOutsMissed,
+      columnStatisticsCatchesMissed: catchesMissed,
+      columnStatisticsStumpingsMissed: stumpingsMissed,
     };
     
       return map;

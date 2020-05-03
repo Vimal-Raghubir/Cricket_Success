@@ -33,7 +33,10 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
   var selectedStatisticRunOuts;
   var selectedStatisticCatches;
   var selectedStatisticStumpings;
-  var selectedStatisticRating;
+  
+  var selectedStatisticRunOutsMissed;
+  var selectedStatisticCatchesMissed;
+  var selectedStatisticStumpingsMissed;
 
   var ballError = false;
   var overError = false;
@@ -66,7 +69,10 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
     selectedStatisticRunOuts = widget.passedStatistic.runOuts;
     selectedStatisticCatches = widget.passedStatistic.catches;
     selectedStatisticStumpings = widget.passedStatistic.stumpings;
-    selectedStatisticRating = widget.passedStatistic.rating;
+    selectedStatisticRunOutsMissed = widget.passedStatistic.runOutsMissed;
+
+    selectedStatisticCatchesMissed = widget.passedStatistic.catchesMissed;
+    selectedStatisticStumpingsMissed = widget.passedStatistic.stumpingsMissed;
     statisticController = new TextEditingController(text: selectedStatisticName);
     //Retrieves a list of all Statisticnames in the database
     _getStatisticNames();
@@ -258,6 +264,24 @@ Widget catchesSlider(int minimum, int maximum, int divisions) {
   );
 }
 
+Widget catchesMissedSlider(int minimum, int maximum, int divisions) {
+  return Slider(
+    value: selectedStatisticCatchesMissed.toDouble(),
+    onChanged: (newRating) {
+    if (this.mounted) {
+      setState(() {
+        selectedStatisticCatchesMissed = newRating.toInt();
+      });
+    }
+    },
+    min: minimum.toDouble(),
+    max: maximum.toDouble(),
+    //Divisions help to show a label above the slider
+    divisions: divisions,
+    label: "$selectedStatisticCatchesMissed",
+  );
+}
+
 Widget runOutSlider(int minimum, int maximum, int divisions) {
   return Slider(
     value: selectedStatisticRunOuts.toDouble(),
@@ -276,6 +300,24 @@ Widget runOutSlider(int minimum, int maximum, int divisions) {
   );
 }
 
+Widget runOutMissedSlider(int minimum, int maximum, int divisions) {
+  return Slider(
+    value: selectedStatisticRunOutsMissed.toDouble(),
+    onChanged: (newRating) {
+    if (this.mounted) {
+      setState(() {
+        selectedStatisticRunOutsMissed = newRating.toInt();
+      });
+    }
+    },
+    min: minimum.toDouble(),
+    max: maximum.toDouble(),
+    //Divisions help to show a label above the slider
+    divisions: divisions,
+    label: "$selectedStatisticRunOutsMissed",
+  );
+}
+
 Widget stumpingSlider(int minimum, int maximum, int divisions) {
   return Slider(
     value: selectedStatisticStumpings.toDouble(),
@@ -291,6 +333,24 @@ Widget stumpingSlider(int minimum, int maximum, int divisions) {
     //Divisions help to show a label above the slider
     divisions: divisions,
     label: "$selectedStatisticStumpings",
+  );
+}
+
+Widget stumpingMissedSlider(int minimum, int maximum, int divisions) {
+  return Slider(
+    value: selectedStatisticStumpingsMissed.toDouble(),
+    onChanged: (newRating) {
+    if (this.mounted) {
+      setState(() {
+        selectedStatisticStumpingsMissed = newRating.toInt();
+      });
+    }
+    },
+    min: minimum.toDouble(),
+    max: maximum.toDouble(),
+    //Divisions help to show a label above the slider
+    divisions: divisions,
+    label: "$selectedStatisticStumpingsMissed",
   );
 }
 
@@ -354,7 +414,7 @@ Widget submitButton(String buttonText) {
       if (_statisticFormKey.currentState.validate() && validateBowling() && validateBatting()) {
         _statisticFormKey.currentState.save();
         //Create a new statistic object with the parameters
-        StatisticInformation newStatistic = new StatisticInformation(selectedStatisticName, selectedStatisticRuns, selectedStatisticBallsFaced, selectedStatisticNotOut, selectedStatisticWickets, selectedStatisticOvers, selectedStatisticRunsConceeded, selectedStatisticRunOuts, selectedStatisticCatches, selectedStatisticStumpings, selectedStatisticRating);
+        StatisticInformation newStatistic = new StatisticInformation(selectedStatisticName, selectedStatisticRuns, selectedStatisticBallsFaced, selectedStatisticNotOut, selectedStatisticWickets, selectedStatisticOvers, selectedStatisticRunsConceeded, selectedStatisticRunOuts, selectedStatisticCatches, selectedStatisticStumpings, selectedStatisticRunOutsMissed, selectedStatisticCatchesMissed, selectedStatisticStumpingsMissed);
         if (buttonText == "Submit") {
             //Insert the newStatistic into the database
           _save(newStatistic);
@@ -444,10 +504,18 @@ Widget showFieldingDetails() {
     children: <Widget>[
       createTextHeader("Did you take any catches? If yes then how many?"),
       catchesSlider(0, 10, 10),
+      createTextHeader("Did you drop any catches? If yes then how many?"),
+      catchesMissedSlider(0, 10, 10),
+
       createTextHeader("Did you initiate any run outs? If yes then how many?"),
       runOutSlider(0, 10, 10),
+      createTextHeader("Did you miss any run outs? If yes then how many?"),
+      runOutMissedSlider(0, 10, 10),
+
       createTextHeader("Did you have any stumpings? If yes then how many?"),
       stumpingSlider(0, 10, 10),
+      createTextHeader("Did you miss any stumpings? If yes then how many?"),
+      stumpingMissedSlider(0, 10, 10),
     ],
   );
   
