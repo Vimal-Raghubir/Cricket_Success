@@ -34,6 +34,10 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
   var selectedStatisticCatches;
   var selectedStatisticStumpings;
   var selectedStatisticRating;
+
+  var ballError = false;
+  var overError = false;
+  var runsConceededError = false;
   TextEditingController statisticController;
   //Stores all Statistic names for the Statistic name field. Used to prevent duplicate Statistic names
   List statisticNames = [];
@@ -290,13 +294,64 @@ Widget stumpingSlider(int minimum, int maximum, int divisions) {
   );
 }
 
+Widget showBallError() {
+  return Visibility(
+  child: Text("You forgot to set the number of balls you faced!", style: TextStyle(color: Colors.red)),
+  visible: ballError,
+  );
+}
+
+
+Widget showOverError() {
+  return Visibility(
+  child: Text("You forgot to set the number of overs you bowled!", style: TextStyle(color: Colors.red)),
+  visible: overError,
+  );
+}
+
+
+Widget showRunsConceededError() {
+  return Visibility(
+  child: Text("You forgot to set the number of runs conceeded!", style: TextStyle(color: Colors.red)),
+  visible: runsConceededError,
+  );
+}
+
+bool validateBowling() {
+  bool check = true;
+  if (selectedStatisticOvers == 0 && selectedStatisticRunsConceeded == 0 && selectedStatisticWickets != 0) {
+    check = false;
+    overError = true;
+    runsConceededError = true;
+  } else if (selectedStatisticOvers == 0 && selectedStatisticRunsConceeded != 0) {
+    check = false;
+    overError = true;
+    runsConceededError = false;
+  } else {
+    overError = false;
+    runsConceededError = false;
+  }
+  return check;
+}
+
+bool validateBatting() {
+  bool check = true;
+  if (selectedStatisticBallsFaced == 0 && selectedStatisticRuns != 0) {
+    check = false;
+    ballError = true;
+  } else {
+    ballError = false;
+  }
+  return check;
+}
+
 Widget submitButton(String buttonText) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 16.0),
     child: RaisedButton(
       onPressed: () {
       // Validate returns true if the form is valid
-      if (_statisticFormKey.currentState.validate()) {
+      if (_statisticFormKey.currentState.validate() && validateBowling() && validateBatting()) {
         _statisticFormKey.currentState.save();
         //Create a new statistic object with the parameters
         StatisticInformation newStatistic = new StatisticInformation(selectedStatisticName, selectedStatisticRuns, selectedStatisticBallsFaced, selectedStatisticNotOut, selectedStatisticWickets, selectedStatisticOvers, selectedStatisticRunsConceeded, selectedStatisticRunOuts, selectedStatisticCatches, selectedStatisticStumpings, selectedStatisticRating);
@@ -320,6 +375,12 @@ Widget submitButton(String buttonText) {
           //Toast message to indicate the Statistic was updated
           Toast.show("Successfully updated your Match Details!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
         } 
+      } else {
+        if (mounted) {
+          setState(() {
+            print("This is being called!");
+          });
+        }
       }                     
     },
       child: Text(buttonText),
@@ -352,7 +413,7 @@ Widget showBattingDetails() {
 
       createTextHeader("How many balls did you face?"),
       ballsFacedSlider(0, 300, 300),
-      
+      showBallError(),
       createTextHeader("Were you not out in this innings?"),
       checkNotOut()
     ],
@@ -365,12 +426,13 @@ Widget showBowlingDetails() {
     children: <Widget>[
       createTextHeader("How many overs did you bowl?"),
       overSlider(0, 50, 50),
-      
+      showOverError(),
       createTextHeader("How many wickets did you take?"),
       wicketSlider(0, 10, 10),
       
       createTextHeader("How many runs did you conceed?"),
-      runsConceededSlider(0, 200, 200)
+      runsConceededSlider(0, 200, 200),
+      showRunsConceededError(),
     ],
   );
   
