@@ -14,7 +14,7 @@ class SimpleSeriesLegend extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 450,
+      height: 350,
       padding: EdgeInsets.all(20),
       child: Card(
         child: Padding(

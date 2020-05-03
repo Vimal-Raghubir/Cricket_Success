@@ -19,9 +19,9 @@ class FieldingTab extends StatefulWidget {
 class _MyFieldingTabState extends State<FieldingTab> {
   
   //Variables below are used for header stats table
-  var totalCatches = 0;
-  var totalRunOuts = 0;
-  var totalStumpings = 0;
+  var catchingRatio = 0.0;
+  var runOutRatio = 0.0;
+  var stumpingRatio = 0.0;
   var width;
 
   @protected
@@ -47,7 +47,9 @@ class _MyFieldingTabState extends State<FieldingTab> {
     return Scaffold(
       body: ListView(children: <Widget>[
       createStatsTable(),
-      SimpleSeriesLegend(_createFieldingChart(), animate: true, title: "Fielding Dismissals"),
+      SimpleSeriesLegend(_createFieldingChart('Catches Taken', 'Catches Dropped', "Catches"), animate: true, title: "Catches Taken vs. Dropped"),
+      SimpleSeriesLegend(_createFieldingChart('Run Outs Taken', 'Missed Run Outs', "Run Outs"), animate: true, title: "Successful vs. Missed Run Outs"),
+      SimpleSeriesLegend(_createFieldingChart('Stumpings Taken', 'Missed Stumpings', "Stumpings"), animate: true, title: "Successful vs. Missed Stumpings"),
       //Add datatable here
       statList(),
     ]),
@@ -78,64 +80,88 @@ class _MyFieldingTabState extends State<FieldingTab> {
     //Might need to change the horizontalMargin if issues with space
     return DataTable( horizontalMargin: 30, columnSpacing: 0, columns: [
       //DataColumn(label: Text('Matches Played')),
-      DataColumn(label: Text('Total Catches')),
-      DataColumn(label: Text('Total Run Outs')),
-      DataColumn(label: Text('Total Stumpings')),
+      DataColumn(label: Text('Catching Ratio')),
+      DataColumn(label: Text('Run Out Ratio')),
+      DataColumn(label: Text('Stumping Ratio')),
     ], 
     rows: [
       DataRow(cells: [
         //DataCell(Text(statistics.length.toString())),
-        DataCell(Text(totalCatches.toString())),
-        DataCell(Text(totalRunOuts.toString())),
-        DataCell(Text(totalStumpings.toString())),
+        DataCell(Text(catchingRatio.toStringAsFixed(2))),
+        DataCell(Text(runOutRatio.toStringAsFixed(2))),
+        DataCell(Text(stumpingRatio.toStringAsFixed(2))),
       ])
     ]);
   }
   //Used to add up all the catches, run outs, and stumpings
   generateFieldingStats() {
-    totalCatches = totalRunOuts = totalStumpings = 0;
+    var totalCatches = 0;
+    var totalCatchesTaken = 0;
+    var totalRunOuts = 0;
+    var totalRunOutsTaken = 0;
+    var totalStumpings = 0;
+    var totalStumpingsTaken = 0;
+
+    catchingRatio = 0.0;
+    runOutRatio = 0.0;
+    stumpingRatio = 0.0;
+
     for (int i = 0; i < statistics.length; i++) {
-      totalCatches += statistics[i].catches;
-      totalRunOuts += statistics[i].runOuts;
-      totalStumpings += statistics[i].stumpings;
+      totalCatches += (statistics[i].catches + statistics[i].catchesMissed);
+      totalRunOuts += (statistics[i].runOuts + statistics[i].runOutsMissed);
+      totalStumpings += (statistics[i].stumpings + statistics[i].stumpingsMissed);
+
+      totalCatchesTaken += statistics[i].catches;
+      totalRunOutsTaken += statistics[i].runOuts;
+      totalStumpingsTaken += statistics[i].stumpings;
+    }
+
+    if (totalCatches != 0 && totalCatchesTaken != 0) {
+      catchingRatio = (totalCatchesTaken / totalCatches) * 100;
+    }
+
+    if (totalRunOuts != 0 && totalRunOutsTaken != 0) {
+      runOutRatio = (totalRunOutsTaken / totalRunOuts) * 100;
+    }
+
+    if (totalStumpings != 0 && totalStumpingsTaken != 0) {
+      stumpingRatio = (totalStumpingsTaken / totalStumpings) * 100;
     }
   }
 
   //Used to generate the fielding chart which is a series bar chart
-  List<charts.Series<SeriesChartData, String>> _createFieldingChart() {
-    List<SeriesChartData> catchesList;
-    List<SeriesChartData> runOutsList;
-    List<SeriesChartData> stumpingsList;
+  List<charts.Series<SeriesChartData, String>> _createFieldingChart(String firstKey, String secondKey, String type) {
+    List<SeriesChartData> takenList;
+    List<SeriesChartData> missedList;
 
-    catchesList = statistics.map((stat) => SeriesChartData(stat.name, stat.catches)).toList();
-    runOutsList = statistics.map((stat) => SeriesChartData(stat.name, stat.runOuts)).toList();
-    stumpingsList = statistics.map((stat) => SeriesChartData(stat.name, stat.stumpings)).toList();
+    if (type == "Catches") {
+      takenList = statistics.map((stat) => SeriesChartData(stat.name, stat.catches)).toList();
+      missedList = statistics.map((stat) => SeriesChartData(stat.name, stat.catchesMissed)).toList();
+    } else if (type == "Run Outs") {
+      takenList = statistics.map((stat) => SeriesChartData(stat.name, stat.runOuts)).toList();
+      missedList = statistics.map((stat) => SeriesChartData(stat.name, stat.runOutsMissed)).toList();
+    } else if (type == "Stumpings") {
+      takenList = statistics.map((stat) => SeriesChartData(stat.name, stat.stumpings)).toList();
+      missedList = statistics.map((stat) => SeriesChartData(stat.name, stat.stumpingsMissed)).toList();     
+    }
 
 
     return [
       new charts.Series<SeriesChartData, String>(
-        id: 'Catches',
+        id: firstKey,
         domainFn: (SeriesChartData runs, _) => runs.xAxis,
         measureFn: (SeriesChartData runs, _) => runs.yAxis,
         //Catches is denoted by a blue bar
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        data: catchesList,
-      ),
-      new charts.Series<SeriesChartData, String>(
-        id: 'Run Outs',
-        domainFn: (SeriesChartData runs, _) => runs.xAxis,
-        measureFn: (SeriesChartData runs, _) => runs.yAxis,
-        //Run Outs is denoted by a red bar
-        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        data: runOutsList,
-      ),
-      new charts.Series<SeriesChartData, String>(
-        id: 'Stumpings',
-        domainFn: (SeriesChartData runs, _) => runs.xAxis,
-        measureFn: (SeriesChartData runs, _) => runs.yAxis,
-        //Stumpings is denoted by a green bar
         colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-        data: stumpingsList,
+        data: takenList,
+      ),
+      new charts.Series<SeriesChartData, String>(
+        id: secondKey,
+        domainFn: (SeriesChartData runs, _) => runs.xAxis,
+        measureFn: (SeriesChartData runs, _) => runs.yAxis,
+        //Catches is denoted by a blue bar
+        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
+        data: missedList,
       ),
     ];
   }
