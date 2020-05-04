@@ -465,7 +465,7 @@ Widget deleteButton(BuildContext context) {
 }
 
 Widget showBattingDetails() {
-  return ExpansionTile(
+  return  ExpansionTile(
     title: Center(child: Text("Did you bat during this match?")),
     children: <Widget>[
       createTextHeader("How much runs did you score?"),
@@ -481,7 +481,14 @@ Widget showBattingDetails() {
 }
 
 Widget showBowlingDetails() {
-  return ExpansionTile(
+  return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child:  ExpansionTile(
     title: Center(child:Text("Did you bowl during this match?")),
     children: <Widget>[
       createTextHeader("How many overs did you bowl?"),
@@ -494,12 +501,20 @@ Widget showBowlingDetails() {
       runsConceededSlider(0, 200, 200),
       showRunsConceededError(),
     ],
+  )
   );
   
 }
 
 Widget showFieldingDetails() {
-  return ExpansionTile(
+  return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: ExpansionTile(
     title: Center(child:Text("Did you get any fielding dismissals?")),
     children: <Widget>[
       createTextHeader("Did you take any catches? If yes then how many?"),
@@ -517,6 +532,7 @@ Widget showFieldingDetails() {
       createTextHeader("Did you miss any stumpings? If yes then how many?"),
       stumpingMissedSlider(0, 10, 10),
     ],
+  )
   );
   
 }

@@ -22,7 +22,14 @@ class _StatisticDetailsState extends State<StatisticDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
       //This helps to avoid page overflow issues
       resizeToAvoidBottomPadding: false,
       body: Column(
@@ -32,9 +39,8 @@ class _StatisticDetailsState extends State<StatisticDetails> {
             //Create a form using dialogBox.dart implementation but not a dialog box.
             child: StatisticManagement(notifyParent: getId, passedStatistic: widget.statistic, type: "detail"),
           )
-      ],) 
-      
-      
+      ],)   
+    )
     );
   }
 }

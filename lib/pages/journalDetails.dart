@@ -24,7 +24,14 @@ class _JournalDetailState extends State<JournalDetails> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
       //This helps to avoid page overflow issues
       resizeToAvoidBottomPadding: false,
       body: Column(
@@ -34,9 +41,8 @@ class _JournalDetailState extends State<JournalDetails> {
             //Create a form using dialogBox.dart implementation but not a dialog box.
             child: JournalManagement(notifyParent: getId, passedJournal: widget.journal, type: "detail"),
           )
-      ],) 
-      
-      
+      ],)   
+    )
     );
   }
 }

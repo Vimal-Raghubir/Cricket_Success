@@ -23,7 +23,14 @@ class _NewJournalState extends State<NewJournal> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child:  Scaffold(
       //This helps to avoid page overflow issues
       resizeToAvoidBottomPadding: false,
       body: Column(
@@ -34,6 +41,7 @@ class _NewJournalState extends State<NewJournal> {
             child: JournalManagement(notifyParent: refresh, passedJournal: widget.journal, type: "new"),
       )
       ],)
+    )
     );
   }
 }

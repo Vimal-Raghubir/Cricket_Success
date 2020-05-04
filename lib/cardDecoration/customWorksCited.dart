@@ -17,7 +17,7 @@ class _MyCustomWorksCitedCardState extends State<CustomWorksCitedCard> {
   Widget createCustomWorksCitedCard() {
     width = widget.width;
     return Container(
-        height: 125,
+        height: 175,
         width: width - 10,
         decoration: BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.black))

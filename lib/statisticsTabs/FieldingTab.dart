@@ -47,9 +47,9 @@ class _MyFieldingTabState extends State<FieldingTab> {
     return Scaffold(
       body: ListView(children: <Widget>[
       createStatsTable(),
-      SimpleSeriesLegend(_createFieldingChart('Catches Taken', 'Catches Dropped', "Catches"), animate: true, title: "Catches Taken vs. Dropped"),
-      SimpleSeriesLegend(_createFieldingChart('Run Outs Taken', 'Missed Run Outs', "Run Outs"), animate: true, title: "Successful vs. Missed Run Outs"),
-      SimpleSeriesLegend(_createFieldingChart('Stumpings Taken', 'Missed Stumpings', "Stumpings"), animate: true, title: "Successful vs. Missed Stumpings"),
+      SimpleSeriesLegend(_createFieldingChart('Taken', 'Dropped', "Catches"), animate: true, title: "Catches Taken vs. Dropped"),
+      SimpleSeriesLegend(_createFieldingChart('Taken', 'Missed', "Run Outs"), animate: true, title: "Successful vs. Missed Run Outs"),
+      SimpleSeriesLegend(_createFieldingChart('Taken', 'Missed', "Stumpings"), animate: true, title: "Successful vs. Missed Stumpings"),
       //Add datatable here
       statList(),
     ]),
