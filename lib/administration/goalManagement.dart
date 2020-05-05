@@ -32,6 +32,8 @@ class _MyGoalManagementState extends State<GoalManagement> {
   var selectedGoalName;
   var selectedGoalDescription;
   var currentProgress;
+
+  var goalHintText;
   //Stores all goal names for the goal name field. Used to prevent duplicate goal names
   List goalNames = [];
   int index;
@@ -53,6 +55,7 @@ class _MyGoalManagementState extends State<GoalManagement> {
     currentProgress = widget.passedGoal.currentProgress;
     goalController = new TextEditingController(text: selectedGoalName);
     descriptionController = new TextEditingController(text: selectedGoalDescription);
+    goalHintText = "e.g. Watch the ball";
     //Retrieves a list of all goalnames in the database
     _getGoalNames();
   }
@@ -87,10 +90,13 @@ Widget createDropdownMenu() {
                 if (selectedGoal == 'Process Goal') {
                   //selectedGoalIndex is the index of the dropdown menu item selected and is used in the card creation
                   selectedGoalIndex = 0;
+                  goalHintText = "e.g. Watch the ball";
                 } else if (selectedGoal == 'Performance Goal') {
                   selectedGoalIndex = 1;
+                  goalHintText = "e.g. Scoring a century";
                 } else if (selectedGoal == 'Outcome Goal') {
                   selectedGoalIndex = 2;
+                  goalHintText = "e.g. Win the division";
                 }
               });
             }
@@ -113,12 +119,12 @@ Widget createGoalNameField() {
     keyboardType: TextInputType.text ,
     decoration: InputDecoration(
       labelText: "What is your goal?",
-      hintText: "e.g. Work on bowling run up",
+      hintText: goalHintText,
     ),
     textInputAction: TextInputAction.next,
     //Used to validate user input
     validator: (value) {
-      RegExp regex = new RegExp(r"^[a-zA-Z0-9\s]*$");
+      RegExp regex = new RegExp(r"^[a-zA-Z0-9'\s]*$");
       //Checks if the value is empty or else return error message
       if (value.isEmpty) {
         return 'Please enter a value';
@@ -149,7 +155,7 @@ Widget createDescriptionField() {
     ),
     textInputAction: TextInputAction.next,
     validator: (value) {
-      RegExp regex = new RegExp(r"^[a-zA-Z0-9.\s]*$");
+      RegExp regex = new RegExp(r"^[a-zA-Z0-9'\s]*$");
       if (value.isEmpty) {
         return 'Please enter a value';
       } else if(!regex.hasMatch(value)) {

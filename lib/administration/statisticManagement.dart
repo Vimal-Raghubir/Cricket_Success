@@ -90,7 +90,7 @@ Widget createStatisticNameField() {
     textInputAction: TextInputAction.next,
     //Used to validate user input
     validator: (value) {
-      RegExp regex = new RegExp(r"^[a-zA-Z0-9\s]*$");
+      RegExp regex = new RegExp(r"^[a-zA-Z0-9'\s]*$");
       //Checks if the value is empty or else return error message
       if (value.isEmpty) {
         return 'Please enter a value';
