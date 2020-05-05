@@ -36,7 +36,6 @@ class _MyFieldingTabState extends State<FieldingTab> {
     //Had to make read asynchronous to wait on the results of the database retrieval before rendering the UI
     await _read();
     if (this.mounted){
-      print("Refresh was called");
       setState(() {
       });
     }

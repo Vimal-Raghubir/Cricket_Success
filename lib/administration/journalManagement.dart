@@ -322,7 +322,7 @@ Widget updatePage(BuildContext context) {
   _save(JournalInformation journal) async {
     DatabaseHelper helper = DatabaseHelper.instance;
     int id = await helper.insertJournal(journal);
-    print('inserted row: $id');
+    //print('inserted row: $id');
   }
 
 

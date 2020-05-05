@@ -438,7 +438,6 @@ Widget submitButton(String buttonText) {
       } else {
         if (mounted) {
           setState(() {
-            print("This is being called!");
           });
         }
       }                     
@@ -608,7 +607,7 @@ Widget updatePage() {
   _save(StatisticInformation statistic) async {
     DatabaseHelper helper = DatabaseHelper.instance;
     int id = await helper.insertStatistic(statistic);
-    print('inserted row: $id');
+    //print('inserted row: $id');
   }
 
 

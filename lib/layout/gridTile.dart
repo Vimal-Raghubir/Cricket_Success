@@ -38,7 +38,6 @@ class CustomGridTile {
         finalList.add(createMainPageTile(e, context));
       }
     }
-    print(finalList.length.toString());
     return finalList;
   }
 

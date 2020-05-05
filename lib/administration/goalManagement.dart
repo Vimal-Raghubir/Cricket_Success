@@ -366,7 +366,6 @@ Widget updatePage() {
   
   void dispose() {
     super.dispose();
-    print("dispose was called");
     goalController.dispose();
     descriptionController.dispose();
   }
@@ -374,7 +373,7 @@ Widget updatePage() {
   _save(GoalInformation goal) async {
     DatabaseHelper helper = DatabaseHelper.instance;
     int id = await helper.insertGoal(goal);
-    print('inserted row: $id');
+    //print('inserted row: $id');
   }
 
 
