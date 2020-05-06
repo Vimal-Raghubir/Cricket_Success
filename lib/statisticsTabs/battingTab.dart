@@ -29,7 +29,7 @@ class _MyBattingTabState extends State<BattingTab> {
   var battingAverage = 0.0;
   var strikeRate = 0.0;
   var width;
-  final List<Color> barColors = [Colors.amber, Colors.blue, Colors.green, Colors.red, Colors.orange, Colors.purple, Colors.yellow[700], Colors.cyan, Colors.indigo, Colors.lightGreen, Colors.deepOrange, Colors.teal]; 
+  final List<Color> barColors = [Colors.amber, Colors.blue, Colors.green, Colors.red, Colors.orange, Colors.purple, Colors.yellow[700]]; 
 
     @protected
   @mustCallSuper

@@ -18,8 +18,7 @@ class BowlingTab extends StatefulWidget {
 }
 
 class _MyBowlingTabState extends State<BowlingTab> {
-  final List<Color> barColors = [Colors.amber, Colors.blue, Colors.green, Colors.red, Colors.orange, Colors.purple, Colors.yellow[700], Colors.cyan, Colors.indigo, Colors.lightGreen, Colors.deepOrange, Colors.teal]; 
-
+  final List<Color> barColors = [Colors.amber, Colors.blue, Colors.green, Colors.red, Colors.orange, Colors.purple, Colors.yellow[700]];
 
   //All of the variables below are used for the header stats table 
   var totalWickets = 0;
