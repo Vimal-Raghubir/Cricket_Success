@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:toast/toast.dart';
 
 class Header {
   double width;
+  DateTime currentBackPressTime;
+  BuildContext myContext;
 
   //Various page titles
   var pageTitles = ["Main Page", "My Goals", "New Goal", "Update Goal", "Tutorials", "My Journals", "New Journal", "Update Journal", "Add Match Stats", "Update Match Stats", "Bowling Tutorials", "Batting Tutorials", "Fielding Skills", "Mental Training", "Physical Training", "Credits"];
@@ -10,6 +14,7 @@ class Header {
 
 //Widget used to create the styled header for each page
 Widget createHeader(BuildContext context, int pageIndex) {
+    myContext = context;
     var width = MediaQuery.of(context).size.width;
     return ClipRRect(
       borderRadius: BorderRadius.only(
@@ -59,12 +64,16 @@ Widget createHeader(BuildContext context, int pageIndex) {
                       ))),
 
               Positioned(
-                child: IconButton(
+                  child: IconButton(
                   icon: const BackButtonIcon(),
                   color: Colors.black,
                   tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                   onPressed: () {
-                    Navigator.pop(context);
+                    if (pageIndex == 0) {
+                      SystemNavigator.pop();
+                    } else {
+                      Navigator.pop(context);
+                    }
                   },
                 ),
                 left: 0,
