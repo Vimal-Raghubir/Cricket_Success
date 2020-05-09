@@ -150,7 +150,7 @@ Widget createDescriptionField() {
     //Start with passed in goal description
     controller: descriptionController,
     keyboardType: TextInputType.text,
-    maxLength: 80,
+    maxLength: 60,
     decoration: InputDecoration(
       labelText: "Any additional details?",
     ),
@@ -161,7 +161,7 @@ Widget createDescriptionField() {
         return 'Please enter a value';
       } else if(!regex.hasMatch(value)) {
         return 'Invalid characters detected';
-      } else if (value.length > 80) {
+      } else if (value.length > 60) {
         return 'You have too much characters specified in your description';
       }
       else {

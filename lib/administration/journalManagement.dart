@@ -116,7 +116,7 @@ Widget createDetailField() {
     keyboardType: TextInputType.multiline,
     maxLines: 6,
     minLines: 1,
-    maxLength: 250,
+    maxLength: 200,
     decoration: InputDecoration(
       labelText: "How was your session? How did you feel?",
     ),
