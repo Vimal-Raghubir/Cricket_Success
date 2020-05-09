@@ -117,6 +117,7 @@ Widget createGoalNameField() {
     //Starts with the passed in goal as initial value
     controller: goalController,
     keyboardType: TextInputType.text ,
+    maxLength: 25,
     decoration: InputDecoration(
       labelText: "What is your goal?",
       hintText: goalHintText,
@@ -150,18 +151,18 @@ Widget createDescriptionField() {
     //Start with passed in goal description
     controller: descriptionController,
     keyboardType: TextInputType.text,
-    maxLength: 60,
+    maxLength: 50,
     decoration: InputDecoration(
       labelText: "Any additional details?",
     ),
     textInputAction: TextInputAction.next,
     validator: (value) {
-      RegExp regex = new RegExp(r"^[a-zA-Z0-9'\s]*$");
+      RegExp regex = new RegExp(r"^[a-zA-Z0-9.'\s]*$");
       if (value.isEmpty) {
         return 'Please enter a value';
       } else if(!regex.hasMatch(value)) {
         return 'Invalid characters detected';
-      } else if (value.length > 60) {
+      } else if (value.length > 50) {
         return 'You have too much characters specified in your description';
       }
       else {

@@ -83,6 +83,7 @@ Widget createStatisticNameField() {
     //Starts with the passed in Statistic as initial value
     controller: statisticController,
     keyboardType: TextInputType.text ,
+    maxLength: 20,
     decoration: InputDecoration(
       labelText: "What would you like to name this match?",
       hintText: "e.g. Match 3",

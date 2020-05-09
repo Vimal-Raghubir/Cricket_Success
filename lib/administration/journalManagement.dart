@@ -81,6 +81,7 @@ Widget createJournalNameField() {
     //Starts with the passed in journal as initial value
     controller: nameController,
     keyboardType: TextInputType.text ,
+    maxLength: 25,
     decoration: InputDecoration(
       labelText: "What would you like to name this journal entry?",
       hintText: "e.g. First training session",
@@ -116,7 +117,7 @@ Widget createDetailField() {
     keyboardType: TextInputType.multiline,
     maxLines: 6,
     minLines: 1,
-    maxLength: 200,
+    maxLength: 225,
     decoration: InputDecoration(
       labelText: "How was your session? How did you feel?",
     ),
@@ -127,7 +128,7 @@ Widget createDetailField() {
         return 'Please enter a value';
       } else if(!regex.hasMatch(value)) {
         return 'Invalid characters detected';
-      } else if (value.length > 250) {
+      } else if (value.length > 225) {
         return 'You have too much characters specified in your description';
       }
       else {
