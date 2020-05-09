@@ -113,17 +113,22 @@ Widget createDetailField() {
   return TextFormField(
     //Start with passed in journal details
     controller: detailsController,
-    keyboardType: TextInputType.text ,
+    keyboardType: TextInputType.multiline,
+    maxLines: 7,
+    minLines: 1,
+    maxLength: 250,
     decoration: InputDecoration(
       labelText: "How was your session? How did you feel?",
     ),
     textInputAction: TextInputAction.next,
     validator: (value) {
-      RegExp regex = new RegExp(r"^[a-zA-Z0-9'\s]*$");
+      RegExp regex = new RegExp(r"^[a-zA-Z0-9.'\s]*$");
       if (value.isEmpty) {
         return 'Please enter a value';
       } else if(!regex.hasMatch(value)) {
         return 'Invalid characters detected';
+      } else if (value.length > 250) {
+        return 'You have too much characters specified in your description';
       }
       else {
         return null;
