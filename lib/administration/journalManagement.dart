@@ -114,7 +114,7 @@ Widget createDetailField() {
     //Start with passed in journal details
     controller: detailsController,
     keyboardType: TextInputType.multiline,
-    maxLines: 7,
+    maxLines: 6,
     minLines: 1,
     maxLength: 250,
     decoration: InputDecoration(
