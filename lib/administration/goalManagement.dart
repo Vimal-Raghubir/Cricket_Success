@@ -151,7 +151,7 @@ Widget createDescriptionField() {
     //Start with passed in goal description
     controller: descriptionController,
     keyboardType: TextInputType.text,
-    maxLength: 50,
+    maxLength: 35,
     decoration: InputDecoration(
       labelText: "Any additional details?",
     ),

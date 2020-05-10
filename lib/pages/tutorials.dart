@@ -20,6 +20,7 @@ class Tutorials extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Header().createHeader(context, 4),
+          SizedBox(height: 10),
           Expanded(
             child:
               Center(child: CustomGridTile().buildGrid(context, 0)),

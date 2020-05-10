@@ -124,12 +124,13 @@ Widget createDetailField() {
     textInputAction: TextInputAction.next,
     validator: (value) {
       RegExp regex = new RegExp(r"^[a-zA-Z0-9.'\s]*$");
+      var numLines = '\n'.allMatches(value).length + 1;
       if (value.isEmpty) {
         return 'Please enter a value';
       } else if(!regex.hasMatch(value)) {
         return 'Invalid characters detected';
-      } else if (value.length > 225) {
-        return 'You have too much characters specified in your description';
+      } else if (numLines > 6) {
+        return 'You have $numLines lines. Reduce the number of lines to 6.';
       }
       else {
         return null;

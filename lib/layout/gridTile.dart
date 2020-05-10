@@ -6,6 +6,7 @@ import 'package:cricket_app/pages/tutorials.dart';
 import 'package:flutter/material.dart';
 
 class CustomGridTile {
+    //var tutorialList = { "Bowling Skills": "assets/images/tutorial/bowling_steyn.jpg", "Batting Skills": "assets/images/tutorial/brian_batting.jpg", "Fielding Skills": "assets/images/tutorial/fielding.jpg", "Mental Training": "assets/images/tutorial/mental_training.jpg", "Physical Training": "assets/images/tutorial/cardio.jpeg"};
     var tutorialList = { "Bowling Skills": "assets/images/tutorial/bowling_steyn.jpg", "Batting Skills": "assets/images/tutorial/brian_batting.jpg", "Fielding Skills": "assets/images/tutorial/fielding.jpg", "Mental Training": "assets/images/tutorial/mental_training.jpg", "Physical Training": "assets/images/tutorial/cardio.jpeg"};
     var mainPageList = { "Goals": "assets/images/homepage/goal.png", "Journal": "assets/images/homepage/journal.png", "Tutorials": "assets/images/homepage/tutorial.png", "Statistics": "assets/images/homepage/statistic.png"};
     var height = 0.0;
@@ -54,42 +55,36 @@ class CustomGridTile {
           ),
         );
       },
-      child:  Container(
-        height: 300,
-        width: width * .34,
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  offset: Offset(0, 5),
-                  blurRadius: 10,
-                  color: Color(0x12000000))
-            ]),
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-          child: Stack(
-      children: <Widget>[
-        //This is used to render the process.png image instead of previous card decoration
-        Positioned(
-          top: 0,
-          bottom: height * 0.04,
-          right: 0,
-          left: 0,
-          child: Image.asset(entry.value, fit: BoxFit.fill),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
         ),
-        Positioned(
-          top: height * 0.19,
-          bottom: 0,
-          right: 0,
-          left: width * .08,
-          child: Text(entry.key, style: TextStyle(color: Colors.black,fontSize: 16)),
-        ),
-      ],
-    ),
-    )
-    ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            AspectRatio(
+              aspectRatio: 14.0 / 12.0,
+              child: Image.asset(
+                entry.value,
+                fit: BoxFit.fill,
+              ),
+            ),
+            new Padding(
+              padding: EdgeInsets.fromLTRB(40.0, 7.5, 4.0, 2.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    entry.key,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ]
+              )
+            ),
+          ]
+        )
+      ),
     );
   }
 
@@ -118,42 +113,36 @@ class CustomGridTile {
           );
         }
       },
-      child:  Container(
-        height: 300,
-        width: width * .34,
-        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  offset: Offset(0, 5),
-                  blurRadius: 10,
-                  color: Color(0x12000000))
-            ]),
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-          child: Stack(
-      children: <Widget>[
-        //This is used to render the process.png image instead of previous card decoration
-        Positioned(
-          top: 0,
-          bottom: height * 0.04,
-          right: 0,
-          left: 0,
-          child: Image.asset(entry.value, fit: BoxFit.fill),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
         ),
-        Positioned(
-          top: height * 0.19,
-          bottom: 0,
-          right: 0,
-          left: width * .15,
-          child: Text(entry.key, style: TextStyle(color: Colors.black,fontSize: 16)),
-        ),
-      ],
-    ),
-    )
-    ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            AspectRatio(
+              aspectRatio: 14.0 / 12.0,
+              child: Image.asset(
+                entry.value,
+                fit: BoxFit.fill,
+              ),
+            ),
+            new Padding(
+              padding: EdgeInsets.fromLTRB(70.0, 7.5, 4.0, 2.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    entry.key,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ]
+              )
+            ),
+          ]
+        )
+      ),
     );
   }
 }
