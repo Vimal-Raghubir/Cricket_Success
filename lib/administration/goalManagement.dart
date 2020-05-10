@@ -162,7 +162,7 @@ Widget createDescriptionField() {
         return 'Please enter a value';
       } else if(!regex.hasMatch(value)) {
         return 'Invalid characters detected';
-      } else if (value.length > 50) {
+      } else if (value.length > 35) {
         return 'You have too much characters specified in your description';
       }
       else {
