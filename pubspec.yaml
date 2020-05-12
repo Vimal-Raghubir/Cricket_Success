@@ -13,7 +13,7 @@ description: A new Flutter project.
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 
 #Always update this line for each new release. It is VERSION_NAME: VERSION_CODE
-version: 1.0.2+4
+version: 1.0.2+5
 
 
 
