@@ -69,8 +69,8 @@ class CustomGridTile {
                 fit: BoxFit.fill,
               ),
             ),
-            new Padding(
-              padding: EdgeInsets.fromLTRB(40.0, 7.5, 4.0, 2.0),
+            new Center(
+              //padding: EdgeInsets.fromLTRB(40.0, 7.5, 4.0, 2.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -127,8 +127,8 @@ class CustomGridTile {
                 fit: BoxFit.fill,
               ),
             ),
-            new Padding(
-              padding: EdgeInsets.fromLTRB(70.0, 7.5, 4.0, 2.0),
+            new Center(
+              //padding: EdgeInsets.fromLTRB(67.5, 7.5, 4.0, 2.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[

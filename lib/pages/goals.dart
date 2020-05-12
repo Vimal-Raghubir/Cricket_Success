@@ -102,7 +102,7 @@ class _GoalState extends State<Goals> {
                         TextSpan(text: ' are goals that define the desired end result. These include large successes such as',
                           style: TextStyle(fontStyle: FontStyle.normal, color: Colors.black, fontSize: 14),
                         ),
-                        TextSpan(text: ' winning the player of the tournament award. (Mostly long-term)',
+                        TextSpan(text: ' winning the player of the tournament award. (Mostly long-term)\n',
                           style: TextStyle(fontStyle: FontStyle.italic, color: Colors.black, fontSize: 14),
                         )
                       ]
