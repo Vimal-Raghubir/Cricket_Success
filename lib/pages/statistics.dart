@@ -4,8 +4,9 @@ import 'package:cricket_app/statisticsTabs/bowlingTab.dart';
 import 'package:flutter/material.dart';
 import 'package:cricket_app/navigation/bottom_navigation.dart';
 import 'package:cricket_app/classes/statistics.dart';
-  //Stores all the statistics in the database
-  List<StatisticInformation> statistics = [];
+
+//Stores all the statistics in the database
+List<StatisticInformation> statistics = [];
 
 //Used to handle the tutorial page
 class Statistics extends StatefulWidget {
@@ -22,13 +23,23 @@ class _StatisticsState extends State<Statistics> {
       home: DefaultTabController(
         length: 3,
         child: Scaffold(
-          bottomNavigationBar: BottomNavigation().createBottomNavigation(context, 4),
+          bottomNavigationBar:
+              BottomNavigation().createBottomNavigation(context, 4),
           appBar: AppBar(
             bottom: TabBar(
               tabs: [
-                Tab(icon: Image.asset('assets/images/statistics/bat.png', width: 35, height: 35), text: "Batting"),
-                Tab(icon: Image.asset('assets/images/statistics/ball.png', width: 35, height: 35), text: "Bowling"),
-                Tab(icon: Image.asset('assets/images/statistics/fielding.png', width: 35, height: 35), text: "Fielding"),
+                Tab(
+                    icon: Image.asset('assets/images/statistics/bat.png',
+                        width: 35, height: 35),
+                    text: "Batting"),
+                Tab(
+                    icon: Image.asset('assets/images/statistics/ball.png',
+                        width: 35, height: 35),
+                    text: "Bowling"),
+                Tab(
+                    icon: Image.asset('assets/images/statistics/fielding.png',
+                        width: 35, height: 35),
+                    text: "Fielding"),
               ],
             ),
             title: Text("Statistics"),

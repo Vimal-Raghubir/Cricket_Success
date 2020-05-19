@@ -8,7 +8,7 @@ var quotes = [
   "Enjoy the game & Chase your dreams. Dreams do come true. – Sachin Tendulkar",
   "Compromise for your Dream but never Compromise on your Dream. – Imran Khan",
   "Finishing is one of the most difficult things to do in cricket. A player can't be a finisher in just 6 months or one year. You have to be used to that responsibility. - MS Dhoni",
-  "Any active sportsman has to be very focused; you've got to be in the right frame of mind. If your energy is diverted in various directions, you do not achieve the results. - Sachin Tendulkar", 
+  "Any active sportsman has to be very focused; you've got to be in the right frame of mind. If your energy is diverted in various directions, you do not achieve the results. - Sachin Tendulkar",
   "I need to know when to switch on and switch off: and the rest of the things happen around that. - Sachin Tendulkar",
   "Cricket is not rocket science. Bowlers often get wickets through perseverance, accuracy and being patient rather than trying to blast opposition teams out. - Andrew Strauss",
   "So I never forget how lucky I am. That's the reason above all else why I'm determined to keep enjoying cricket, whatever the wins or the losses. As long as I do that then the runs will come. - Andrew Strauss",

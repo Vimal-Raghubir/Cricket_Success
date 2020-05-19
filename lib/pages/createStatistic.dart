@@ -4,17 +4,15 @@ import 'package:cricket_app/header/header.dart';
 
 //Used to handle the tutorial page
 class NewStatistic extends StatefulWidget {
-
   //Stores passed in goal information in goal variable
   final statistic;
 
   const NewStatistic({Key key, this.statistic}) : super(key: key);
-  
+
   _NewStatisticState createState() => _NewStatisticState();
 }
 
 class _NewStatisticState extends State<NewStatistic> {
-
   refresh() {
     if (this.mounted) {
       setState(() {});
@@ -24,25 +22,26 @@ class _NewStatisticState extends State<NewStatistic> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
-      },
-      child:  Scaffold(
-      //This helps to avoid page overflow issues
-      resizeToAvoidBottomPadding: false,
-      body: Column(
-        children: <Widget>[
-          Header().createHeader(context, 8),
-          Container(
-            //Create a form using dialogBox.dart implementation but not a dialog box.
-            child: StatisticManagement(notifyParent: refresh, passedStatistic: widget.statistic, type: "new"),
-          )
-        ],)
-      
-    )
-    );
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: Scaffold(
+            //This helps to avoid page overflow issues
+            resizeToAvoidBottomPadding: false,
+            body: Column(
+              children: <Widget>[
+                Header().createHeader(context, 8),
+                Container(
+                  //Create a form using dialogBox.dart implementation but not a dialog box.
+                  child: StatisticManagement(
+                      notifyParent: refresh,
+                      passedStatistic: widget.statistic,
+                      type: "new"),
+                )
+              ],
+            )));
   }
 }

@@ -18,9 +18,16 @@ class GoalInformation {
   String description;
   int length;
   int currentProgress;
-  
+
   //Constructor initializing the values of the class variables. The constructor has default values in case a default goal is needed
-  GoalInformation([String goalName = "", String goalType = "Process Goal", int goalTypeIndex = 0, String goalDescription = "", double goalLength = 1.0, int completedDays = 0, int index = 0]) {
+  GoalInformation(
+      [String goalName = "",
+      String goalType = "Process Goal",
+      int goalTypeIndex = 0,
+      String goalDescription = "",
+      double goalLength = 1.0,
+      int completedDays = 0,
+      int index = 0]) {
     //initialize this by default to 0
     id = index;
     name = goalName;
@@ -73,7 +80,7 @@ class GoalInformation {
       columnLength: length,
       columnProgress: currentProgress
     };
-    
-      return map;
-    } 
+
+    return map;
+  }
 }

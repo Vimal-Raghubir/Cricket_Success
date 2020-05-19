@@ -5,30 +5,27 @@ import 'package:cricket_app/header/header.dart';
 
 //Used to handle the tutorial page
 class Credits extends StatelessWidget {
-
   //Stores passed in goal information in goal variable
   String type;
   var width;
 
   Credits({Key key, this.type}) : super(key: key);
 
-    @override
+  @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     return Scaffold(
-      //This helps to avoid page overflow issues
-      resizeToAvoidBottomPadding: false,
-      body: Column(
-        children: <Widget>[
-          Header().createHeader(context, 15),
-          Container(
-            //Create a form using dialogBox.dart implementation but not a dialog box.
-            child: createList(),
-          )
-      ],) 
-      
-      
-    );
+        //This helps to avoid page overflow issues
+        resizeToAvoidBottomPadding: false,
+        body: Column(
+          children: <Widget>[
+            Header().createHeader(context, 15),
+            Container(
+              //Create a form using dialogBox.dart implementation but not a dialog box.
+              child: createList(),
+            )
+          ],
+        ));
   }
 
   Widget createList() {
@@ -48,16 +45,14 @@ class Credits extends StatelessWidget {
   }
 
   Widget generateList(List<Tutorial> currentList) {
-    
     return Expanded(
-    //Used to dynamically render the goals in a list format
-      child: new ListView.builder (
-        physics: ScrollPhysics(),
-        itemCount: currentList.length,
-        itemBuilder: (BuildContext ctxt, int index) {
-          return CustomWorksCitedCard(object: currentList[index],width: width);  
-        }
-      )
-    );
+        //Used to dynamically render the goals in a list format
+        child: new ListView.builder(
+            physics: ScrollPhysics(),
+            itemCount: currentList.length,
+            itemBuilder: (BuildContext ctxt, int index) {
+              return CustomWorksCitedCard(
+                  object: currentList[index], width: width);
+            }));
   }
 }

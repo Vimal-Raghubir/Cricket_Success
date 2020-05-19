@@ -12,7 +12,9 @@ class JournalManagement extends StatefulWidget {
   //This describes the type of page. Either a new journal or existing journal
   final type;
 
-  const JournalManagement({Key key, this.notifyParent, this.passedJournal, this.type}) : super(key: key);
+  const JournalManagement(
+      {Key key, this.notifyParent, this.passedJournal, this.type})
+      : super(key: key);
 
   @override
   _MyJournalManagementState createState() => new _MyJournalManagementState();
@@ -20,7 +22,6 @@ class JournalManagement extends StatefulWidget {
   //This function is used to call the Journal page refresh function to setState
   final Function() notifyParent;
 }
-
 
 class _MyJournalManagementState extends State<JournalManagement> {
   var selectedJournalName;
@@ -57,98 +58,99 @@ class _MyJournalManagementState extends State<JournalManagement> {
       selectedJournalDate = DateTime.now();
     }
     //Allows the date to be a day after the current day
-    latestDate = DateTime(currentDate.year, currentDate.month, currentDate.day + 1);
+    latestDate =
+        DateTime(currentDate.year, currentDate.month, currentDate.day + 1);
     nameController = new TextEditingController(text: selectedJournalName);
     detailsController = new TextEditingController(text: selectedJournalDetails);
     //Retrieves a list of all journal names in the database
     _getJournalNames();
   }
 
-Widget createDropDownHeader(String dropDownMessage) {
-  //Allows dynamic dropdown header
-  return Container(
-    padding: const EdgeInsets.all(12),
-    child: Text(
-      dropDownMessage,
-      softWrap: true,
-    ),
-  );
-}
+  Widget createDropDownHeader(String dropDownMessage) {
+    //Allows dynamic dropdown header
+    return Container(
+      padding: const EdgeInsets.all(12),
+      child: Text(
+        dropDownMessage,
+        softWrap: true,
+      ),
+    );
+  }
 
+  Widget createJournalNameField() {
+    return TextFormField(
+      //Starts with the passed in journal as initial value
+      controller: nameController,
+      keyboardType: TextInputType.text,
+      maxLength: 25,
+      decoration: InputDecoration(
+        labelText: "What would you like to name this journal entry?",
+        hintText: "e.g. First training session",
+      ),
+      textInputAction: TextInputAction.next,
+      //Used to validate user input
+      validator: (value) {
+        RegExp regex = new RegExp(r"^[a-zA-Z0-9'\s]*$");
+        //Checks if the value is empty or else return error message
+        if (value.isEmpty) {
+          return 'Please enter a value';
+        } else if (!regex.hasMatch(value)) {
+          return 'Invalid characters detected';
 
-Widget createJournalNameField() {
-  return TextFormField(
-    //Starts with the passed in journal as initial value
-    controller: nameController,
-    keyboardType: TextInputType.text ,
-    maxLength: 25,
-    decoration: InputDecoration(
-      labelText: "What would you like to name this journal entry?",
-      hintText: "e.g. First training session",
-    ),
-    textInputAction: TextInputAction.next,
-    //Used to validate user input
-    validator: (value) {
-      RegExp regex = new RegExp(r"^[a-zA-Z0-9'\s]*$");
-      //Checks if the value is empty or else return error message
-      if (value.isEmpty) {
-        return 'Please enter a value';
-      } else if(!regex.hasMatch(value)) {
-        return 'Invalid characters detected';
-      
-      //Checks if the database journal names contain the passed in value to prevent duplicates and you are trying to create a new journal
-      } else if(journalNames.contains(value.toLowerCase()) && widget.type == "new") {
-        return 'A journal with the same name already exists';
-      //Checks if the journal name already exists in the database and the initial journal name has been modified. This guards against changing an existing journal name to another existing journal name
-      } else if (journalNames.contains(value.toLowerCase()) && widget.passedJournal.name != value) {
-        return 'An existing journal has that name';
-      } else {
-        return null;
-      }
-    },
-    onSaved: (value)=> selectedJournalName = value,
-  );
-}
+          //Checks if the database journal names contain the passed in value to prevent duplicates and you are trying to create a new journal
+        } else if (journalNames.contains(value.toLowerCase()) &&
+            widget.type == "new") {
+          return 'A journal with the same name already exists';
+          //Checks if the journal name already exists in the database and the initial journal name has been modified. This guards against changing an existing journal name to another existing journal name
+        } else if (journalNames.contains(value.toLowerCase()) &&
+            widget.passedJournal.name != value) {
+          return 'An existing journal has that name';
+        } else {
+          return null;
+        }
+      },
+      onSaved: (value) => selectedJournalName = value,
+    );
+  }
 
-Widget createDetailField() {
-  return TextFormField(
-    //Start with passed in journal details
-    controller: detailsController,
-    keyboardType: TextInputType.multiline,
-    maxLines: 6,
-    minLines: 1,
-    maxLength: 225,
-    decoration: InputDecoration(
-      labelText: "How was your session? How did you feel?",
-    ),
-    textInputAction: TextInputAction.next,
-    validator: (value) {
-      RegExp regex = new RegExp(r"^[a-zA-Z0-9.'\s]*$");
-      var numLines = '\n'.allMatches(value).length + 1;
-      if (value.isEmpty) {
-        return 'Please enter a value';
-      } else if(!regex.hasMatch(value)) {
-        return 'Invalid characters detected';
-      } else if (numLines > 6) {
-        return 'You have $numLines lines. Reduce the number of lines to 6.';
-      }
-      else {
-        return null;
-      }
-    },
-    onSaved: (value)=> selectedJournalDetails = value,
-  );
-}
+  Widget createDetailField() {
+    return TextFormField(
+      //Start with passed in journal details
+      controller: detailsController,
+      keyboardType: TextInputType.multiline,
+      maxLines: 6,
+      minLines: 1,
+      maxLength: 225,
+      decoration: InputDecoration(
+        labelText: "How was your session? How did you feel?",
+      ),
+      textInputAction: TextInputAction.next,
+      validator: (value) {
+        RegExp regex = new RegExp(r"^[a-zA-Z0-9.'\s]*$");
+        var numLines = '\n'.allMatches(value).length + 1;
+        if (value.isEmpty) {
+          return 'Please enter a value';
+        } else if (!regex.hasMatch(value)) {
+          return 'Invalid characters detected';
+        } else if (numLines > 6) {
+          return 'You have $numLines lines. Reduce the number of lines to 6.';
+        } else {
+          return null;
+        }
+      },
+      onSaved: (value) => selectedJournalDetails = value,
+    );
+  }
 
-Widget dayPickerHeader() {
-  return Container(
-    padding: const EdgeInsets.symmetric(vertical: 12),
-    child: Text(
-      'When did this session take place?',
-      softWrap: true,
-    ),
-  );
-}
+  Widget dayPickerHeader() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Text(
+        'When did this session take place?',
+        softWrap: true,
+      ),
+    );
+  }
 
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
@@ -165,129 +167,134 @@ Widget dayPickerHeader() {
     }
   }
 
-Widget dateButton(BuildContext context) {
-  return OutlineButton(
-    onPressed: () => _selectDate(context),
+  Widget dateButton(BuildContext context) {
+    return OutlineButton(
+      onPressed: () => _selectDate(context),
       child: Text(dateDisplay),
-  );
-}
-
-Widget submitButton(String buttonText) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 16.0),
-    child: RaisedButton(
-      onPressed: () {
-      // Validate returns true if the form is valid
-      if (_journalFormKey.currentState.validate()) {
-        _journalFormKey.currentState.save();
-        //Have to parse the datetime object to ISO string to be saved in the database
-        parsedDate = selectedJournalDate.toIso8601String();
-        //Create a new journal object with the parameters
-        JournalInformation newJournal = new JournalInformation(selectedJournalName, selectedJournalDetails, parsedDate);
-        if (buttonText == "Submit") {
-            //Insert the new Journal into the database
-          _save(newJournal);
-          //Calls the function in the journals.dart class to refresh the journal page with setState. This is used to fix cards not appearing on the journal page after submitting this form
-          widget.notifyParent();
-          //Navigates back to the previous page and in this case the journal page
-          Navigator.pop(context);
-          //Toast message to indicate successful creation of journal
-          Toast.show("Successfully created your journal entry!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-        } else if (buttonText == "Update") {
-          //Retrieve the index of the passed in journal
-          index = widget.notifyParent();
-          //Updates journal with newJournal content and id
-          _updateJournal(newJournal, index);
-          //Goes back to previous page which in this case is journals.dart
-          Navigator.pop(context);
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => Journal()));
-          //Toast message to indicate successful creation of journal
-          Toast.show("Successfully updated your journal entry!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-        } 
-      }                     
-    },
-      child: Text(buttonText),
-    ),
-  );
-}
-
- //Alert box to confirm deletion of a journal
-  void confirmDelete(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Are you sure you want to delete this journal?"),
-          content: Text("This action cannot be undone."),
-          actions: [
-           FlatButton(child: Text("No"), onPressed: () {
-             Navigator.pop(context);
-           },),
-           //Will delete the journal and pop back to the journals page
-           FlatButton(child: Text("Yes"), onPressed: () {
-             //Removed the reference to confirmDelete preventing this nested navigator pop issue
-             _deleteJournal(widget.passedJournal.id);
-             //Navigator.push(context, MaterialPageRoute(builder: (context) => Journal()));
-             Toast.show("Successfully deleted your journal entry!", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-           },),
-          ],
-          elevation: 24.0,
-          backgroundColor: Colors.white,
-        );
-      }
     );
   }
 
-
-Widget deleteButton(BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 16.0),
-    child: RaisedButton(
-      onPressed: () {
-       // confirmDelete(context);
-        _deleteJournal(widget.passedJournal.id);
-        Navigator.pop(context);
-        Toast.show("Successfully deleted your journal entry!", context, duration: Toast.LENGTH_LONG, gravity:  Toast.BOTTOM);
-      },
-      child: Text("Delete")
-    )
-    
-  );
-}
-
-//This widget is responsible for creating all the contents of the form
-Widget newPage() {
-  return Column(
-    children: <Widget>[
-      createJournalNameField(),
-      createDetailField(),
-      dayPickerHeader(),
-      dateButton(context),
-      submitButton("Submit"),    
-    ],
-  );
-}
-
-//This widget is responsible for creating all the contents of the form
-Widget updatePage(BuildContext context) {
-  return Column(
-    children: <Widget>[
-      createJournalNameField(),
-      createDetailField(),
-      dayPickerHeader(),
-      dateButton(context),
-      ButtonBar(
-        alignment: MainAxisAlignment.center,
-        children: <Widget> [
-          deleteButton(context),
-          submitButton("Update")
-        ]
+  Widget submitButton(String buttonText) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      child: RaisedButton(
+        onPressed: () {
+          // Validate returns true if the form is valid
+          if (_journalFormKey.currentState.validate()) {
+            _journalFormKey.currentState.save();
+            //Have to parse the datetime object to ISO string to be saved in the database
+            parsedDate = selectedJournalDate.toIso8601String();
+            //Create a new journal object with the parameters
+            JournalInformation newJournal = new JournalInformation(
+                selectedJournalName, selectedJournalDetails, parsedDate);
+            if (buttonText == "Submit") {
+              //Insert the new Journal into the database
+              _save(newJournal);
+              //Calls the function in the journals.dart class to refresh the journal page with setState. This is used to fix cards not appearing on the journal page after submitting this form
+              widget.notifyParent();
+              //Navigates back to the previous page and in this case the journal page
+              Navigator.pop(context);
+              //Toast message to indicate successful creation of journal
+              Toast.show("Successfully created your journal entry!", context,
+                  duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+            } else if (buttonText == "Update") {
+              //Retrieve the index of the passed in journal
+              index = widget.notifyParent();
+              //Updates journal with newJournal content and id
+              _updateJournal(newJournal, index);
+              //Goes back to previous page which in this case is journals.dart
+              Navigator.pop(context);
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => Journal()));
+              //Toast message to indicate successful creation of journal
+              Toast.show("Successfully updated your journal entry!", context,
+                  duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+            }
+          }
+        },
+        child: Text(buttonText),
       ),
-        
-    ],
-  );
-}
-  
+    );
+  }
+
+  //Alert box to confirm deletion of a journal
+  void confirmDelete(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Are you sure you want to delete this journal?"),
+            content: Text("This action cannot be undone."),
+            actions: [
+              FlatButton(
+                child: Text("No"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              //Will delete the journal and pop back to the journals page
+              FlatButton(
+                child: Text("Yes"),
+                onPressed: () {
+                  //Removed the reference to confirmDelete preventing this nested navigator pop issue
+                  _deleteJournal(widget.passedJournal.id);
+                  //Navigator.push(context, MaterialPageRoute(builder: (context) => Journal()));
+                  Toast.show(
+                      "Successfully deleted your journal entry!", context,
+                      duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+                },
+              ),
+            ],
+            elevation: 24.0,
+            backgroundColor: Colors.white,
+          );
+        });
+  }
+
+  Widget deleteButton(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: RaisedButton(
+            onPressed: () {
+              // confirmDelete(context);
+              _deleteJournal(widget.passedJournal.id);
+              Navigator.pop(context);
+              Toast.show("Successfully deleted your journal entry!", context,
+                  duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+            },
+            child: Text("Delete")));
+  }
+
+//This widget is responsible for creating all the contents of the form
+  Widget newPage() {
+    return Column(
+      children: <Widget>[
+        createJournalNameField(),
+        createDetailField(),
+        dayPickerHeader(),
+        dateButton(context),
+        submitButton("Submit"),
+      ],
+    );
+  }
+
+//This widget is responsible for creating all the contents of the form
+  Widget updatePage(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        createJournalNameField(),
+        createDetailField(),
+        dayPickerHeader(),
+        dateButton(context),
+        ButtonBar(
+            alignment: MainAxisAlignment.center,
+            children: <Widget>[deleteButton(context), submitButton("Update")]),
+      ],
+    );
+  }
+
   Widget build(BuildContext context) {
     //_getGoalNames();
     var formatter = new DateFormat('MMMM dd,yyyy');
@@ -295,28 +302,22 @@ Widget updatePage(BuildContext context) {
     //If the passed in widget type is a new journal then the call is being made from journals.dart
     if (widget.type == "new") {
       return Expanded(
-        child: Column(
-          children: <Widget>[
-            Form(
+          child: Column(
+        children: <Widget>[
+          Form(
               key: _journalFormKey,
               //Pass in correct variables for assignment
-              child: newPage()
-            ),
-          ],
-        )
-      );
-    // If the passed in widget type is not a new journal then it comes from journalDetails.dart
+              child: newPage()),
+        ],
+      ));
+      // If the passed in widget type is not a new journal then it comes from journalDetails.dart
     } else {
       return Expanded(
-        child: Column(
-          children: <Widget>[
-            Form(
-              key: _journalFormKey,
-              child: updatePage(context)
-            )
-          ],
-        )
-      );  
+          child: Column(
+        children: <Widget>[
+          Form(key: _journalFormKey, child: updatePage(context))
+        ],
+      ));
     }
   }
 
@@ -325,14 +326,13 @@ Widget updatePage(BuildContext context) {
     nameController.dispose();
     detailsController.dispose();
   }
+
   //Function to insert a  journal into the database
   _save(JournalInformation journal) async {
     DatabaseHelper helper = DatabaseHelper.instance;
     int id = await helper.insertJournal(journal);
     //print('inserted row: $id');
   }
-
-
 
   //Function to retrieve a journal by id and update in the database
   _updateJournal(JournalInformation journal, int index) async {
@@ -346,8 +346,8 @@ Widget updatePage(BuildContext context) {
     journalNames = await helper.getJournalNames();
   }
 
-    _deleteJournal(int id) async {
+  _deleteJournal(int id) async {
     DatabaseHelper helper = DatabaseHelper.instance;
     await helper.deleteJournal(id);
   }
-}        
+}

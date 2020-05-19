@@ -10,9 +10,12 @@ class JournalInformation {
   String details;
   String date;
 
-
-    //Constructor initializing the values of the class variables. The constructor has default values in case a default journal is needed
-  JournalInformation([String journalName = "", String journalDetails = "", String currentDate = "", int index = 0]) {
+  //Constructor initializing the values of the class variables. The constructor has default values in case a default journal is needed
+  JournalInformation(
+      [String journalName = "",
+      String journalDetails = "",
+      String currentDate = "",
+      int index = 0]) {
     //initialize this by default to 0
     id = index;
     name = journalName;
@@ -27,14 +30,14 @@ class JournalInformation {
     date = map[columnDate];
   }
 
-    // convenience method to create a Map from this Goal object
+  // convenience method to create a Map from this Goal object
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       columnJournalName: name,
       columnDetails: details,
       columnDate: date
     };
-    
-      return map;
-    } 
+
+    return map;
+  }
 }

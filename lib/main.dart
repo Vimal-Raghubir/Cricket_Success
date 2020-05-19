@@ -10,7 +10,6 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -45,31 +44,38 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigation().createBottomNavigation(context, 0),
-      body: new Column(
-        children: <Widget>[
-          Header().createHeader(context, 0),
-          SizedBox(height: 15),
-          //Text('Welcome to the MyCricket App!\n',
-          //  style: TextStyle(fontStyle: FontStyle.normal, color: Colors.black, fontSize: 22),
-          //  textAlign: TextAlign.center,
-          //),
-          RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(text: quotes[index], style: TextStyle(fontStyle: FontStyle.italic, color: Colors.black, fontSize: 15)),
-          ),
-          SizedBox(height: 20),
-          Text('Please select a page below that you would like to navigate to!\n',
-            style: TextStyle(fontStyle: FontStyle.normal, color: Colors.black, fontSize: 16),
-            textAlign: TextAlign.center,
-          ),
-          Expanded(
-            child:
-              Center(child: CustomGridTile().buildGrid(context, 1)),
-          )
-        ],
-      )
-    );
+        bottomNavigationBar:
+            BottomNavigation().createBottomNavigation(context, 0),
+        body: new Column(
+          children: <Widget>[
+            Header().createHeader(context, 0),
+            SizedBox(height: 15),
+            //Text('Welcome to the MyCricket App!\n',
+            //  style: TextStyle(fontStyle: FontStyle.normal, color: Colors.black, fontSize: 22),
+            //  textAlign: TextAlign.center,
+            //),
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                  text: quotes[index],
+                  style: TextStyle(
+                      fontStyle: FontStyle.italic,
+                      color: Colors.black,
+                      fontSize: 15)),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Please select a page below that you would like to navigate to!\n',
+              style: TextStyle(
+                  fontStyle: FontStyle.normal,
+                  color: Colors.black,
+                  fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+            Expanded(
+              child: Center(child: CustomGridTile().buildGrid(context, 1)),
+            )
+          ],
+        ));
   }
 }
-

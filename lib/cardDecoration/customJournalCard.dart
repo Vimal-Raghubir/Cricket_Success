@@ -6,16 +6,20 @@ class CustomJournalCard extends StatefulWidget {
   final width;
   final type;
 
-  const CustomJournalCard({Key key, this.object, this.width, this.type}) : super(key: key);
+  const CustomJournalCard({Key key, this.object, this.width, this.type})
+      : super(key: key);
 
-    _MyCustomJournalCardState createState() => new _MyCustomJournalCardState();
+  _MyCustomJournalCardState createState() => new _MyCustomJournalCardState();
 }
 
 class _MyCustomJournalCardState extends State<CustomJournalCard> {
   double width;
 
   //Card is the colorful display next to the journal information
-  Widget _card({Color primaryColor = Colors.redAccent,String imgPath,Widget backWidget}) {
+  Widget _card(
+      {Color primaryColor = Colors.redAccent,
+      String imgPath,
+      Widget backWidget}) {
     return Container(
         height: 190,
         width: widget.width * .34,
@@ -46,13 +50,14 @@ class _MyCustomJournalCardState extends State<CustomJournalCard> {
         height: 170,
         width: width - 20,
         decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.black))
-        ),
+            border: Border(bottom: BorderSide(color: Colors.black))),
         child: Row(
           children: <Widget>[
             AspectRatio(
               aspectRatio: .7,
-              child: _card(primaryColor: Colors.blue, backWidget: _decorationContainerJournal()),
+              child: _card(
+                  primaryColor: Colors.blue,
+                  backWidget: _decorationContainerJournal()),
             ),
             Expanded(
                 child: Column(
@@ -88,17 +93,17 @@ class _MyCustomJournalCardState extends State<CustomJournalCard> {
                 ),
                 SizedBox(height: 15),
                 Text(widget.object.details,
-                    style: TextStyle(fontSize: 14).copyWith(
-                        fontSize: 12, color: Colors.black)),
+                    style: TextStyle(fontSize: 14)
+                        .copyWith(fontSize: 12, color: Colors.black)),
                 SizedBox(height: 15),
               ],
             ))
           ],
         ));
-      }
+  }
 
-          //Used to render the journal card
-    Widget _decorationContainerJournal() {
+  //Used to render the journal card
+  Widget _decorationContainerJournal() {
     return Stack(
       children: <Widget>[
         //This is used to render the outcome.jpg image instead of previous card decoration

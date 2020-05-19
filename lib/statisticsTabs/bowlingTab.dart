@@ -7,9 +7,9 @@ import 'package:cricket_app/pages/createStatistic.dart';
 import 'package:cricket_app/pages/statisticDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-  
-  //Stores all the statistics in the database
-  List<StatisticInformation> statistics = [];
+
+//Stores all the statistics in the database
+List<StatisticInformation> statistics = [];
 
 //Class to handle the creation of the bowling statistic tab
 class BowlingTab extends StatefulWidget {
@@ -18,16 +18,24 @@ class BowlingTab extends StatefulWidget {
 }
 
 class _MyBowlingTabState extends State<BowlingTab> {
-  final List<Color> barColors = [Colors.amber, Colors.blue, Colors.green, Colors.red, Colors.orange, Colors.purple, Colors.yellow[700]];
+  final List<Color> barColors = [
+    Colors.amber,
+    Colors.blue,
+    Colors.green,
+    Colors.red,
+    Colors.orange,
+    Colors.purple,
+    Colors.yellow[700]
+  ];
 
-  //All of the variables below are used for the header stats table 
+  //All of the variables below are used for the header stats table
   var totalWickets = 0;
   var totalMatches = 0;
   var bowlingAverage = 0.0;
   var economyRate = 0.0;
   var width;
 
-      @protected
+  @protected
   @mustCallSuper
   initState() {
     super.initState();
@@ -38,9 +46,8 @@ class _MyBowlingTabState extends State<BowlingTab> {
   refresh() async {
     //Had to make read asynchronous to wait on the results of the database retrieval before rendering the UI
     await _read();
-    if (this.mounted){
-      setState(() {
-      });
+    if (this.mounted) {
+      setState(() {});
     }
   }
 
@@ -49,25 +56,27 @@ class _MyBowlingTabState extends State<BowlingTab> {
     return Scaffold(
       body: ListView(children: <Widget>[
         createStatsTable(),
-        SimpleBarChart(_createBarChart("Wickets"), animate: true, title: "Wickets per Game"),
-        SimpleLineChart(_createLineData("Bowling Average"), animate: true, title: "Bowling Average Progression"),
-        SimpleBarChart(_createBarChart("Economy Rate"), animate: true, title: "Economy Rate Frequency"),
+        SimpleBarChart(_createBarChart("Wickets"),
+            animate: true, title: "Wickets per Game"),
+        SimpleLineChart(_createLineData("Bowling Average"),
+            animate: true, title: "Bowling Average Progression"),
+        SimpleBarChart(_createBarChart("Economy Rate"),
+            animate: true, title: "Economy Rate Frequency"),
         //Put Datatable here
         statList(),
       ]),
-      floatingActionButton: FloatingActionButton (
-          //Need this to be asynchronous since you have to wait on the results of the new goal page
-          onPressed: () async {
-            await Navigator.push(
-              context,
-              MaterialPageRoute(
+      floatingActionButton: FloatingActionButton(
+        //Need this to be asynchronous since you have to wait on the results of the new goal page
+        onPressed: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
                 builder: (context) => NewStatistic(
-                  //Helps to prevent range issues
-                  statistic: StatisticInformation(),
-                )
-              ),
-            );
-            refresh();
+                      //Helps to prevent range issues
+                      statistic: StatisticInformation(),
+                    )),
+          );
+          refresh();
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.green,
@@ -80,13 +89,12 @@ class _MyBowlingTabState extends State<BowlingTab> {
     //Need to call this to set the bowling average
     generateBowlingAverage();
     //Might need to change the horizontalMargin if issues with space
-    return DataTable( horizontalMargin: 30, columnSpacing: 0, columns: [
+    return DataTable(horizontalMargin: 30, columnSpacing: 0, columns: [
       //DataColumn(label: Text('Matches Played')),
       DataColumn(label: Text('Total Wickets')),
       DataColumn(label: Text('Bowling Average')),
       DataColumn(label: Text('Economy Rate')),
-    ], 
-    rows: [
+    ], rows: [
       DataRow(cells: [
         //DataCell(Text(statistics.length.toString())),
         DataCell(Text(calculateWickets())),
@@ -134,7 +142,8 @@ class _MyBowlingTabState extends State<BowlingTab> {
         if (j == (barColors.length - 1)) {
           j = 0;
         }
-        list.add(BarChartData(statistics[i].name, statistics[i].wickets, barColors[j]));
+        list.add(BarChartData(
+            statistics[i].name, statistics[i].wickets, barColors[j]));
         j++;
       }
     } else if (type == "Economy Rate") {
@@ -152,6 +161,7 @@ class _MyBowlingTabState extends State<BowlingTab> {
       )
     ];
   }
+
   //Handles the economy rate calculation
   List<BarChartData> generateEconomyRate() {
     //Sets the array for the economy rate buckets
@@ -192,18 +202,17 @@ class _MyBowlingTabState extends State<BowlingTab> {
       finalList.add(BarChartData(ranges[i], economyRates[i], barColors[j]));
       j++;
     }
-    
+
     return finalList;
   }
 
   // Create a line chart for bowling average
   List<charts.Series<LineChartData, int>> _createLineData(String type) {
     List<LineChartData> list;
-    
+
     if (type == "Bowling Average") {
       list = generateBowlingAverage();
     }
-
 
     return [
       new charts.Series<LineChartData, int>(
@@ -215,6 +224,7 @@ class _MyBowlingTabState extends State<BowlingTab> {
       )
     ];
   }
+
   //Used to generate the bowling average after each game
   List<LineChartData> generateBowlingAverage() {
     List<int> dismissals = [];
@@ -229,9 +239,10 @@ class _MyBowlingTabState extends State<BowlingTab> {
         dismissals.add(statistics[i].wickets);
       } else {
         //Need to add the current runs conceeded scored to previous total runs conceeded
-        totalRunsConceeded.add(totalRunsConceeded[i-1] + statistics[i].runsConceeded);
+        totalRunsConceeded
+            .add(totalRunsConceeded[i - 1] + statistics[i].runsConceeded);
         //Need to add the current wickets scored to previous total wickets
-        dismissals.add(dismissals[i-1] + statistics[i].wickets);
+        dismissals.add(dismissals[i - 1] + statistics[i].wickets);
       }
     }
 
@@ -251,37 +262,35 @@ class _MyBowlingTabState extends State<BowlingTab> {
       }
 
       finalList.add(LineChartData(i, average));
-    } 
+    }
     return finalList;
   }
 
-    Widget statList() {
-    return ListView.builder (
-            shrinkWrap: true,
-            physics: ScrollPhysics(),
-            itemCount: statistics.length,
-            itemBuilder: (BuildContext ctxt, int index) {
-              return InkWell(
+  Widget statList() {
+    return ListView.builder(
+        shrinkWrap: true,
+        physics: ScrollPhysics(),
+        itemCount: statistics.length,
+        itemBuilder: (BuildContext ctxt, int index) {
+          return InkWell(
               //This needs to be asynchronous since you have to wait on the results of the update page
-                onTap: () async {
+              onTap: () async {
                 //Pass the statistic information to the statisticDetails.dart page
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
                       builder: (context) => StatisticDetails(
-                      //Helps to prevent range issues
-                        statistic: statistics?.elementAt(index) ?? "",
-                      )
-                    ),
-                  );
-                  //Then rebuild the widget
-                  refresh();
-                },
-                //Render custom card for each goal
-                child: CustomStatisticCard(object: statistics[index], width: width,type: 1)
-              );  
-            }
-        );
+                            //Helps to prevent range issues
+                            statistic: statistics?.elementAt(index) ?? "",
+                          )),
+                );
+                //Then rebuild the widget
+                refresh();
+              },
+              //Render custom card for each goal
+              child: CustomStatisticCard(
+                  object: statistics[index], width: width, type: 1));
+        });
   }
 
   //Function to read all statistics from the database for rendering

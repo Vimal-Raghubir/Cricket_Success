@@ -42,7 +42,7 @@ class BottomNavigation {
     }
 
     _selectedIndex = index;
-}
+  }
 
   //Widget used to generate the buttom navigation bar itself
   Widget createBottomNavigation(BuildContext context, int currentIndex) {

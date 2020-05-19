@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 class CustomWorksCitedCard extends StatefulWidget {
-
   final object;
   final width;
 
-  const CustomWorksCitedCard({Key key, this.object, this.width}) : super(key: key);
+  const CustomWorksCitedCard({Key key, this.object, this.width})
+      : super(key: key);
 
-    _MyCustomWorksCitedCardState createState() => new _MyCustomWorksCitedCardState();
+  _MyCustomWorksCitedCardState createState() =>
+      new _MyCustomWorksCitedCardState();
 }
 
 class _MyCustomWorksCitedCardState extends State<CustomWorksCitedCard> {
@@ -20,8 +21,7 @@ class _MyCustomWorksCitedCardState extends State<CustomWorksCitedCard> {
         height: 175,
         width: width - 10,
         decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.black))
-        ),
+            border: Border(bottom: BorderSide(color: Colors.black))),
         child: Row(
           children: <Widget>[
             Expanded(
@@ -44,17 +44,16 @@ class _MyCustomWorksCitedCardState extends State<CustomWorksCitedCard> {
                   ),
                 ),
                 SizedBox(height: 15),
-                Expanded(child: 
-                  Text(widget.object.credits,
-                    style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic).copyWith(
-                    fontSize: 14, color: Colors.black)
-                  )
-                ),
+                Expanded(
+                    child: Text(widget.object.credits,
+                        style:
+                            TextStyle(fontSize: 14, fontStyle: FontStyle.italic)
+                                .copyWith(fontSize: 14, color: Colors.black))),
               ],
             ))
           ],
         ));
-      }
+  }
 
   Widget build(BuildContext context) {
     if (this.mounted) {

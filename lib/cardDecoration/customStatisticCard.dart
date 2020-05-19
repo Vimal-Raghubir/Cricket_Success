@@ -5,9 +5,11 @@ class CustomStatisticCard extends StatefulWidget {
   final width;
   final type;
 
-  const CustomStatisticCard({Key key, this.object, this.width, this.type}) : super(key: key);
+  const CustomStatisticCard({Key key, this.object, this.width, this.type})
+      : super(key: key);
 
-    _MyCustomStatisticCardState createState() => new _MyCustomStatisticCardState();
+  _MyCustomStatisticCardState createState() =>
+      new _MyCustomStatisticCardState();
 }
 
 class _MyCustomStatisticCardState extends State<CustomStatisticCard> {
@@ -17,7 +19,10 @@ class _MyCustomStatisticCardState extends State<CustomStatisticCard> {
   var backgroundColors = [Colors.red, Colors.yellow[700], Colors.green];
 
   //Card is the colorful display next to the journal information
-  Widget _card({Color primaryColor = Colors.redAccent,String imgPath,Widget backWidget}) {
+  Widget _card(
+      {Color primaryColor = Colors.redAccent,
+      String imgPath,
+      Widget backWidget}) {
     return Container(
         height: 190,
         width: widget.width * .34,
@@ -43,20 +48,42 @@ class _MyCustomStatisticCardState extends State<CustomStatisticCard> {
       if (widget.object.ballsFaced == 0) {
         cardText = "You did not bat in this game.";
       } else {
-        cardText = "Runs: " + widget.object.runs.toString() + "\n\nBalls Faced: " + widget.object.ballsFaced.toString() + "\n\nNot out: ";
+        cardText = "Runs: " +
+            widget.object.runs.toString() +
+            "\n\nBalls Faced: " +
+            widget.object.ballsFaced.toString() +
+            "\n\nNot out: ";
         cardText += widget.object.notOut == 0 ? "no" : "yes";
       }
     } else if (widget.type == 1) {
       if (widget.object.overs == 0) {
         cardText = "You did not bowl in this game.";
       } else {
-        cardText = "Overs bowled: " + widget.object.overs.toString() + "\n\nRuns Conceeded: " + widget.object.runsConceeded.toString() + "\n\nWickets: " + widget.object.wickets.toString();
+        cardText = "Overs bowled: " +
+            widget.object.overs.toString() +
+            "\n\nRuns Conceeded: " +
+            widget.object.runsConceeded.toString() +
+            "\n\nWickets: " +
+            widget.object.wickets.toString();
       }
     } else if (widget.type == 2) {
-      if (widget.object.catches == 0 && widget.object.runOuts == 0 && widget.object.stumpings == 0) {
+      if (widget.object.catches == 0 &&
+          widget.object.runOuts == 0 &&
+          widget.object.stumpings == 0) {
         cardText = "You did not get any fielding dismissals in this game.";
       } else {
-        cardText = "Catches: " + widget.object.catches.toString() + "\t\t\t\t\t\t\tDropped Catches: " + widget.object.catchesMissed.toString() + "\n\nRun Outs: " + widget.object.runOuts.toString() + "\t\t\t\t\tMissed Run Outs: " + widget.object.runOutsMissed.toString() + "\n\nStumpings: " + widget.object.stumpings.toString() + "\t\tMissed Stumpings: " + widget.object.stumpingsMissed.toString();
+        cardText = "Catches: " +
+            widget.object.catches.toString() +
+            "\t\t\t\t\t\t\tDropped Catches: " +
+            widget.object.catchesMissed.toString() +
+            "\n\nRun Outs: " +
+            widget.object.runOuts.toString() +
+            "\t\t\t\t\tMissed Run Outs: " +
+            widget.object.runOutsMissed.toString() +
+            "\n\nStumpings: " +
+            widget.object.stumpings.toString() +
+            "\t\tMissed Stumpings: " +
+            widget.object.stumpingsMissed.toString();
       }
     }
     return cardText;
@@ -69,13 +96,14 @@ class _MyCustomStatisticCardState extends State<CustomStatisticCard> {
         height: 170,
         width: width - 20,
         decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.black))
-        ),
+            border: Border(bottom: BorderSide(color: Colors.black))),
         child: Row(
           children: <Widget>[
             AspectRatio(
               aspectRatio: .7,
-              child: _card(primaryColor: backgroundColors[widget.type], backWidget: _decorationContainer(widget.type)),
+              child: _card(
+                  primaryColor: backgroundColors[widget.type],
+                  backWidget: _decorationContainer(widget.type)),
             ),
             Expanded(
                 child: Column(
@@ -105,31 +133,36 @@ class _MyCustomStatisticCardState extends State<CustomStatisticCard> {
                 ),
                 SizedBox(height: 15),
                 Expanded(
-                  child: Text(generateCardMessage(),style: TextStyle(fontSize: 14).copyWith(fontSize: 14, color: Colors.black)),
+                  child: Text(generateCardMessage(),
+                      style: TextStyle(fontSize: 14)
+                          .copyWith(fontSize: 14, color: Colors.black)),
                 ),
                 SizedBox(height: 15),
               ],
             ))
           ],
         ));
-      }
+  }
 
   //Used to render the Statistic cards
   Widget _decorationContainer(int index) {
     String image = 'assets/images/statistics/bat.png';
-    switch(index) {
-      case 0: {
-        image = 'assets/images/statistics/bat.png';
-      }
-      break;
-      case 1: {
-        image = 'assets/images/statistics/ball.png';
-      }
-      break;
-      case 2: {
-        image = 'assets/images/statistics/fielding.png';
-      }
-      break;
+    switch (index) {
+      case 0:
+        {
+          image = 'assets/images/statistics/bat.png';
+        }
+        break;
+      case 1:
+        {
+          image = 'assets/images/statistics/ball.png';
+        }
+        break;
+      case 2:
+        {
+          image = 'assets/images/statistics/fielding.png';
+        }
+        break;
     }
 
     return Stack(

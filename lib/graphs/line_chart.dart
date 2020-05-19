@@ -9,30 +9,28 @@ class SimpleLineChart extends StatelessWidget {
 
   SimpleLineChart(this.seriesList, {this.animate, this.title});
 
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 250,
-      padding: EdgeInsets.all(20),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              Text(title,
-              style: Theme.of(context).textTheme.body2,
-              ),
-              Expanded(
-                child: charts.LineChart(seriesList, animate: animate, defaultRenderer: new charts.LineRendererConfig(includePoints: true)),
-              ),
-            ],
-          )
-        )
-      )
-    );
-
+        height: 250,
+        padding: EdgeInsets.all(20),
+        child: Card(
+            child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.body2,
+                    ),
+                    Expanded(
+                      child: charts.LineChart(seriesList,
+                          animate: animate,
+                          defaultRenderer: new charts.LineRendererConfig(
+                              includePoints: true)),
+                    ),
+                  ],
+                ))));
   }
 }
 

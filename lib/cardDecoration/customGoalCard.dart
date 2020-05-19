@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class CustomGoalCard extends StatefulWidget {
-
   final object;
   final width;
   final type;
 
-  const CustomGoalCard({Key key, this.object, this.width, this.type}) : super(key: key);
+  const CustomGoalCard({Key key, this.object, this.width, this.type})
+      : super(key: key);
 
-    _MyCustomGoalCardState createState() => new _MyCustomGoalCardState();
+  _MyCustomGoalCardState createState() => new _MyCustomGoalCardState();
 }
 
 class _MyCustomGoalCardState extends State<CustomGoalCard> {
@@ -19,10 +19,15 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
   //Colors for the different goal types
   var goalTypeColors = [Colors.blue, Colors.teal, Colors.deepOrange];
   //background colors corresponding to goal types
-  var backgroundColors = [Colors.cyan[400], Colors.tealAccent[700], Colors.deepOrange[400]];
+  var backgroundColors = [
+    Colors.cyan[400],
+    Colors.tealAccent[700],
+    Colors.deepOrange[400]
+  ];
 
   //Chip is for the goal type display circle
-  Widget _chip(String text, Color textColor,{double height = 0, bool isPrimaryCard = false}) {
+  Widget _chip(String text, Color textColor,
+      {double height = 0, bool isPrimaryCard = false}) {
     return Container(
       alignment: Alignment.center,
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: height),
@@ -39,7 +44,10 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
   }
 
   //Card is the colorful display next to the goal information
-  Widget _card({Color primaryColor = Colors.redAccent,String imgPath,Widget backWidget}) {
+  Widget _card(
+      {Color primaryColor = Colors.redAccent,
+      String imgPath,
+      Widget backWidget}) {
     return Container(
         height: 190,
         width: widget.width * .34,
@@ -62,19 +70,22 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
   //Used to render the Process Goal card
   Widget _decorationContainer(int index) {
     String image = 'assets/images/non-colored/process.png';
-    switch(index) {
-      case 0: {
-        image = 'assets/images/non-colored/process.png';
-      }
-      break;
-      case 1: {
-        image = 'assets/images/non-colored/performance.png';
-      }
-      break;
-      case 2: {
-        image = 'assets/images/non-colored/outcome.jpg';
-      }
-      break;
+    switch (index) {
+      case 0:
+        {
+          image = 'assets/images/non-colored/process.png';
+        }
+        break;
+      case 1:
+        {
+          image = 'assets/images/non-colored/performance.png';
+        }
+        break;
+      case 2:
+        {
+          image = 'assets/images/non-colored/outcome.jpg';
+        }
+        break;
     }
 
     return Stack(
@@ -93,7 +104,6 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
 
   //Used to create the display for all the goal information itself
   Widget createCustomGoalCard() {
-
     //Get the progress stored in the object and then multiply by 100 for viewing
     progress = widget.object.getProgress();
     viewProgress = (progress * 100).round();
@@ -101,16 +111,17 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
     viewProgress += "%";
     width = widget.width;
     return Container(
-      decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.black))
-        ),
+        decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: Colors.black))),
         height: 170,
         width: width - 20,
         child: Row(
           children: <Widget>[
             AspectRatio(
               aspectRatio: .7,
-              child: _card(primaryColor: backgroundColors[widget.object.typeIndex], backWidget: _decorationContainer(widget.object.typeIndex)),
+              child: _card(
+                  primaryColor: backgroundColors[widget.object.typeIndex],
+                  backWidget: _decorationContainer(widget.object.typeIndex)),
             ),
             Expanded(
                 child: Column(
@@ -130,7 +141,8 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
                       ),
                       CircleAvatar(
                         radius: 3,
-                        backgroundColor: backgroundColors[widget.object.typeIndex],
+                        backgroundColor:
+                            backgroundColors[widget.object.typeIndex],
                       ),
                       SizedBox(
                         width: 5,
@@ -146,14 +158,14 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
                 ),
                 SizedBox(height: 15),
                 Text(widget.object.description,
-                    style: TextStyle(fontSize: 14).copyWith(
-                        fontSize: 12, color: Colors.black)),
+                    style: TextStyle(fontSize: 14)
+                        .copyWith(fontSize: 12, color: Colors.black)),
                 SizedBox(height: 15),
 
                 //Putting progress text field
                 Text("Current Progress",
-                  style: TextStyle(fontSize: 14).copyWith(
-                  fontSize: 12, color: Colors.black)),
+                    style: TextStyle(fontSize: 14)
+                        .copyWith(fontSize: 12, color: Colors.black)),
                 SizedBox(height: 5),
 
                 //Progress bar
@@ -165,11 +177,13 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
                   center: Text("$viewProgress"),
                   animation: true,
                 ),
-                
+
                 SizedBox(height: 15),
                 Row(
                   children: <Widget>[
-                    _chip(widget.object.type, goalTypeColors[widget.object.typeIndex], height: 5),
+                    _chip(widget.object.type,
+                        goalTypeColors[widget.object.typeIndex],
+                        height: 5),
                     SizedBox(
                       width: 10,
                     ),
@@ -179,7 +193,7 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
             ))
           ],
         ));
-      }
+  }
 
   Widget build(BuildContext context) {
     if (this.mounted) {

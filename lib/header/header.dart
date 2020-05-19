@@ -8,12 +8,46 @@ class Header {
   BuildContext myContext;
 
   //Various page titles
-  var pageTitles = ["Main Page", "My Goals", "New Goal", "Update Goal", "Tutorials", "My Journals", "New Journal", "Update Journal", "Add Match Stats", "Update Match Stats", "Bowling Tutorials", "Batting Tutorials", "Fielding Skills", "Mental Training", "Physical Training", "Credits"];
+  var pageTitles = [
+    "Main Page",
+    "My Goals",
+    "New Goal",
+    "Update Goal",
+    "Tutorials",
+    "My Journals",
+    "New Journal",
+    "Update Journal",
+    "Add Match Stats",
+    "Update Match Stats",
+    "Bowling Tutorials",
+    "Batting Tutorials",
+    "Fielding Skills",
+    "Mental Training",
+    "Physical Training",
+    "Credits"
+  ];
   //Colors corresponding to page titles
-  var pageColors = [Colors.amber, Colors.deepOrange, Colors.lime, Colors.cyan, Colors.deepPurple, Colors.lightGreenAccent[700], Colors.greenAccent[700], Colors.pink, Colors.teal, Colors.red, Colors.blueGrey, Colors.pink, Colors.cyanAccent[700], Colors.greenAccent[700], Colors.redAccent[700], Colors.tealAccent[700]];
+  var pageColors = [
+    Colors.amber,
+    Colors.deepOrange,
+    Colors.lime,
+    Colors.cyan,
+    Colors.deepPurple,
+    Colors.lightGreenAccent[700],
+    Colors.greenAccent[700],
+    Colors.pink,
+    Colors.teal,
+    Colors.red,
+    Colors.blueGrey,
+    Colors.pink,
+    Colors.cyanAccent[700],
+    Colors.greenAccent[700],
+    Colors.redAccent[700],
+    Colors.tealAccent[700]
+  ];
 
 //Widget used to create the styled header for each page
-Widget createHeader(BuildContext context, int pageIndex) {
+  Widget createHeader(BuildContext context, int pageIndex) {
     myContext = context;
     var width = MediaQuery.of(context).size.width;
     return ClipRRect(
@@ -23,7 +57,7 @@ Widget createHeader(BuildContext context, int pageIndex) {
           height: 120,
           width: width,
           decoration: BoxDecoration(
-             color: pageColors[pageIndex],
+            color: pageColors[pageIndex],
           ),
           child: Stack(
             fit: StackFit.expand,
@@ -53,18 +87,17 @@ Widget createHeader(BuildContext context, int pageIndex) {
                           Center(
                               //alignment: Alignment.center,
                               child: Text(
-                                //Here is where the title is placed
-                                pageTitles[pageIndex],
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.w500),
-                              ))
+                            //Here is where the title is placed
+                            pageTitles[pageIndex],
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 30,
+                                fontWeight: FontWeight.w500),
+                          ))
                         ],
                       ))),
-
               Positioned(
-                  child: IconButton(
+                child: IconButton(
                   icon: const BackButtonIcon(),
                   color: Colors.black,
                   tooltip: MaterialLocalizations.of(context).backButtonTooltip,
@@ -85,16 +118,17 @@ Widget createHeader(BuildContext context, int pageIndex) {
     );
   }
 
-    //This is used to create the circular style of the header
-    Widget _circularContainer(double height, Color color, {Color borderColor = Colors.transparent, double borderWidth = 2}) {
-      return Container(
-        height: height,
-        width: height,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: color,
-          border: Border.all(color: borderColor, width: borderWidth),
-        ),
-      );
-    }
+  //This is used to create the circular style of the header
+  Widget _circularContainer(double height, Color color,
+      {Color borderColor = Colors.transparent, double borderWidth = 2}) {
+    return Container(
+      height: height,
+      width: height,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: color,
+        border: Border.all(color: borderColor, width: borderWidth),
+      ),
+    );
+  }
 }

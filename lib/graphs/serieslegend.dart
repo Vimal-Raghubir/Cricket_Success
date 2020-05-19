@@ -9,36 +9,31 @@ class SimpleSeriesLegend extends StatelessWidget {
 
   SimpleSeriesLegend(this.seriesList, {this.animate, this.title});
 
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 350,
-      padding: EdgeInsets.all(20),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              Text(title,
-              style: Theme.of(context).textTheme.body2,
-              ),
-              Expanded(
-                child: charts.BarChart(seriesList, animate: animate, 
-                vertical: false,
-                barGroupingType: charts.BarGroupingType.grouped, behaviors: [new charts.SeriesLegend()]),
-              ),
-            ],
-          )
-        )
-      )
-    );
-
+        height: 350,
+        padding: EdgeInsets.all(20),
+        child: Card(
+            child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.body2,
+                    ),
+                    Expanded(
+                      child: charts.BarChart(seriesList,
+                          animate: animate,
+                          vertical: false,
+                          barGroupingType: charts.BarGroupingType.grouped,
+                          behaviors: [new charts.SeriesLegend()]),
+                    ),
+                  ],
+                ))));
   }
 }
-
-
 
 /// Sample ordinal data type.
 class SeriesChartData {

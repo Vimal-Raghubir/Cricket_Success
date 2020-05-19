@@ -17,7 +17,11 @@ class Goals extends StatefulWidget {
 }
 
 class _GoalState extends State<Goals> {
-  final List<String> goalOptions = ['Process Goal', 'Performance Goal', 'Outcome Goal'];
+  final List<String> goalOptions = [
+    'Process Goal',
+    'Performance Goal',
+    'Outcome Goal'
+  ];
   double width;
 
   initState() {
@@ -35,125 +39,155 @@ class _GoalState extends State<Goals> {
     }
   }
 
-   Widget build(BuildContext context) {
-     width = MediaQuery.of(context).size.width;
+  Widget build(BuildContext context) {
+    width = MediaQuery.of(context).size.width;
     return Scaffold(
       //Creates bottom navigation and passes the index of the current page in relation to main page
-      bottomNavigationBar: BottomNavigation().createBottomNavigation(context, 1),
+      bottomNavigationBar:
+          BottomNavigation().createBottomNavigation(context, 1),
       body: Container(
-          child: Column(
-            children: <Widget>[
-              //Header for the page
-              Header().createHeader(context, 1),
+        child: Column(
+          children: <Widget>[
+            //Header for the page
+            Header().createHeader(context, 1),
 
-              //Expansion tile is the dropdown menu for more information
-              ExpansionTile(
-                title: Center(child:Text("        See more Details")),
-                children: <Widget>[
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      'There are 3 main types of goals that you will need to use.',
-                      textAlign: TextAlign.justify,
-                      softWrap: true,
-                    ),
-                  ),
-                  RichText(
+            //Expansion tile is the dropdown menu for more information
+            ExpansionTile(
+              title: Center(child: Text("        See more Details")),
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    'There are 3 main types of goals that you will need to use.',
                     textAlign: TextAlign.justify,
-                    text: TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(text: 'Process Goals', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 14),
-                        ),
-                        TextSpan(text: ' are strategies that help you to achieve success. These include small controllable habits such as',
-                          style: TextStyle(fontStyle: FontStyle.normal, color: Colors.black, fontSize: 14),
-                        ),
-                        TextSpan(text: ' watching the ball. (Usually short term)',
-                          style: TextStyle(fontStyle: FontStyle.italic, color: Colors.black, fontSize: 14),
-                        )
-                      ]
-                    )
+                    softWrap: true,
                   ),
-              
-                  SizedBox(height: 15),
-                  RichText(
+                ),
+                RichText(
                     textAlign: TextAlign.justify,
-                    text: TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(text: 'Performance Goals',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 14),
-                        ),
-                        TextSpan(text: ' are goals that define a level of performance you desire to reach. These include amibitions such as',
-                          style: TextStyle(fontStyle: FontStyle.normal, color: Colors.black, fontSize: 14),
-                        ),
-                        TextSpan(text: ' scoring a century. (Mix of short and long-term)',
-                          style: TextStyle(fontStyle: FontStyle.italic, color: Colors.black, fontSize: 14),
-                        )
-                      ]
-                    )
-                  ),
-                  SizedBox(height: 15),
-                  RichText(
+                    text: TextSpan(children: <TextSpan>[
+                      TextSpan(
+                        text: 'Process Goals',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 14),
+                      ),
+                      TextSpan(
+                        text:
+                            ' are strategies that help you to achieve success. These include small controllable habits such as',
+                        style: TextStyle(
+                            fontStyle: FontStyle.normal,
+                            color: Colors.black,
+                            fontSize: 14),
+                      ),
+                      TextSpan(
+                        text: ' watching the ball. (Usually short term)',
+                        style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            color: Colors.black,
+                            fontSize: 14),
+                      )
+                    ])),
+                SizedBox(height: 15),
+                RichText(
                     textAlign: TextAlign.justify,
-                    text: TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(text: 'Outcome Goals',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black, fontSize: 14),
-                        ),
-                        TextSpan(text: ' are goals that define the desired end result. These include large successes such as',
-                          style: TextStyle(fontStyle: FontStyle.normal, color: Colors.black, fontSize: 14),
-                        ),
-                        TextSpan(text: ' winning the player of the tournament award. (Mostly long-term)\n',
-                          style: TextStyle(fontStyle: FontStyle.italic, color: Colors.black, fontSize: 14),
-                        )
-                      ]
-                    )
-                  ),
-                ],
-              ),
-              
-              Expanded(
+                    text: TextSpan(children: <TextSpan>[
+                      TextSpan(
+                        text: 'Performance Goals',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 14),
+                      ),
+                      TextSpan(
+                        text:
+                            ' are goals that define a level of performance you desire to reach. These include amibitions such as',
+                        style: TextStyle(
+                            fontStyle: FontStyle.normal,
+                            color: Colors.black,
+                            fontSize: 14),
+                      ),
+                      TextSpan(
+                        text:
+                            ' scoring a century. (Mix of short and long-term)',
+                        style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            color: Colors.black,
+                            fontSize: 14),
+                      )
+                    ])),
+                SizedBox(height: 15),
+                RichText(
+                    textAlign: TextAlign.justify,
+                    text: TextSpan(children: <TextSpan>[
+                      TextSpan(
+                        text: 'Outcome Goals',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 14),
+                      ),
+                      TextSpan(
+                        text:
+                            ' are goals that define the desired end result. These include large successes such as',
+                        style: TextStyle(
+                            fontStyle: FontStyle.normal,
+                            color: Colors.black,
+                            fontSize: 14),
+                      ),
+                      TextSpan(
+                        text:
+                            ' winning the player of the tournament award. (Mostly long-term)\n',
+                        style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            color: Colors.black,
+                            fontSize: 14),
+                      )
+                    ])),
+              ],
+            ),
+
+            Expanded(
                 //Used to dynamically render the goals in a list format
-                child: new ListView.builder (
-                  physics: ScrollPhysics(),
-                  itemCount: goals.length,
-                  itemBuilder: (BuildContext ctxt, int index) {
-                    //Need to change below
-                    return InkWell(
-                      //This needs to be asynchronous since you have to wait on the results of the update page
-                      onTap: () async {
-                        //Pass the goal information to the goalDetails.dart page
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => GoalDetails(
-                            //Helps to prevent range issues
-                            goal: goals?.elementAt(index) ?? "",
-                            )
-                          ),
-                        );
-                        //Then rebuild the widget
-                        refresh();
-                      },
-                      //Render custom card for each goal
-                      child: CustomGoalCard(object: goals[index],width: width, type: "goal"),
-                    );  
-                  }
-                )
-              ),
-            ],
-          ),
+                child: new ListView.builder(
+                    physics: ScrollPhysics(),
+                    itemCount: goals.length,
+                    itemBuilder: (BuildContext ctxt, int index) {
+                      //Need to change below
+                      return InkWell(
+                        //This needs to be asynchronous since you have to wait on the results of the update page
+                        onTap: () async {
+                          //Pass the goal information to the goalDetails.dart page
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => GoalDetails(
+                                      //Helps to prevent range issues
+                                      goal: goals?.elementAt(index) ?? "",
+                                    )),
+                          );
+                          //Then rebuild the widget
+                          refresh();
+                        },
+                        //Render custom card for each goal
+                        child: CustomGoalCard(
+                            object: goals[index], width: width, type: "goal"),
+                      );
+                    })),
+          ],
         ),
-      floatingActionButton: FloatingActionButton (
+      ),
+      floatingActionButton: FloatingActionButton(
         //Need this to be asynchronous since you have to wait on the results of the new goal page
         onPressed: () async {
           await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => NewGoal(
-                //Helps to prevent range issues
-                goal: GoalInformation(),
-              )
-            ),
+                builder: (context) => NewGoal(
+                      //Helps to prevent range issues
+                      goal: GoalInformation(),
+                    )),
           );
           //Rebuild the widget
           refresh();

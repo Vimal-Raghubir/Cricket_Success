@@ -6,43 +6,38 @@ import 'package:cricket_app/header/header.dart';
 
 //Used to handle the tutorial page
 class TutorialDetails extends StatelessWidget {
-
   //Stores passed in goal information in goal variable
   String type;
   var width;
 
   TutorialDetails({Key key, this.type}) : super(key: key);
 
-    @override
+  @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     return Scaffold(
-      //This helps to avoid page overflow issues
-      resizeToAvoidBottomPadding: false,
-      body: Column(
-        children: <Widget>[
-          setHeader(context),
-          RaisedButton(
-            onPressed: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Credits(
-                      type: type,
-                    )
-                ),
-              );
-            },
-            child: Text("View Credits")
-          ),
-          Container(
-            //Create a form using dialogBox.dart implementation but not a dialog box.
-            child: createList(),
-          )
-      ],) 
-      
-      
-    );
+        //This helps to avoid page overflow issues
+        resizeToAvoidBottomPadding: false,
+        body: Column(
+          children: <Widget>[
+            setHeader(context),
+            RaisedButton(
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Credits(
+                              type: type,
+                            )),
+                  );
+                },
+                child: Text("View Credits")),
+            Container(
+              //Create a form using dialogBox.dart implementation but not a dialog box.
+              child: createList(),
+            )
+          ],
+        ));
   }
 
   Widget setHeader(BuildContext context) {
@@ -78,16 +73,14 @@ class TutorialDetails extends StatelessWidget {
   }
 
   Widget generateList(List<Tutorial> currentList) {
-    
     return Expanded(
-    //Used to dynamically render the goals in a list format
-      child: new ListView.builder (
-        physics: ScrollPhysics(),
-        itemCount: currentList.length,
-        itemBuilder: (BuildContext ctxt, int index) {
-          return CustomTutorialCard(object: currentList[index],width: width);  
-        }
-      )
-    );
+        //Used to dynamically render the goals in a list format
+        child: new ListView.builder(
+            physics: ScrollPhysics(),
+            itemCount: currentList.length,
+            itemBuilder: (BuildContext ctxt, int index) {
+              return CustomTutorialCard(
+                  object: currentList[index], width: width);
+            }));
   }
 }

@@ -3,7 +3,6 @@ import 'package:cricket_app/navigation/bottom_navigation.dart';
 import 'package:cricket_app/header/header.dart';
 import 'package:cricket_app/layout/gridTile.dart';
 
-
 //Used to handle the tutorial page
 class Tutorials extends StatelessWidget {
   var width;
@@ -15,24 +14,17 @@ class Tutorials extends StatelessWidget {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      bottomNavigationBar: BottomNavigation().createBottomNavigation(context, 3),
-      body: Column(
-        children: <Widget>[
-          Header().createHeader(context, 4),
-          SizedBox(height: 10),
-          Expanded(
-            child:
-              Center(child: CustomGridTile().buildGrid(context, 0)),
-          )
-        ],
-      )
-    );
+        resizeToAvoidBottomPadding: false,
+        bottomNavigationBar:
+            BottomNavigation().createBottomNavigation(context, 3),
+        body: Column(
+          children: <Widget>[
+            Header().createHeader(context, 4),
+            SizedBox(height: 10),
+            Expanded(
+              child: Center(child: CustomGridTile().buildGrid(context, 0)),
+            )
+          ],
+        ));
   }
-
-
-
 }
-
-
-

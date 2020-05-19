@@ -9,7 +9,6 @@ final String columnStatisticsWickets = 'Wickets';
 final String columnStatisticsOvers = 'Overs_Bowled';
 final String columnStatisticsRunsConceeded = 'Runs_Conceeded';
 
-
 final String columnStatisticsRunOuts = 'Run_Outs';
 final String columnStatisticsCatches = 'Catches';
 final String columnStatisticsStumpings = 'Stumpings';
@@ -24,7 +23,7 @@ class StatisticInformation {
   int runs;
   int ballsFaced;
   int notOut;
-  
+
   int wickets;
   int overs;
   int runsConceeded;
@@ -32,13 +31,27 @@ class StatisticInformation {
   int runOuts;
   int catches;
   int stumpings;
-  
+
   int runOutsMissed;
   int catchesMissed;
   int stumpingsMissed;
 
-    //Constructor initializing the values of the class variables. The constructor has default values in case a default statistic is needed
-  StatisticInformation([String statName = "", int statRuns = 0, int statBalls = 0, int statNotOut = 0, int statWickets = 0, int statOvers = 0, int statRunsConceeded = 0, int statRunOuts = 0, int statCatches = 0, int statStumpings = 0, int statRunOutsMissed = 0, int statCatchesMissed = 0, int statStumpingsMissed = 0, int index = 0]) {
+  //Constructor initializing the values of the class variables. The constructor has default values in case a default statistic is needed
+  StatisticInformation(
+      [String statName = "",
+      int statRuns = 0,
+      int statBalls = 0,
+      int statNotOut = 0,
+      int statWickets = 0,
+      int statOvers = 0,
+      int statRunsConceeded = 0,
+      int statRunOuts = 0,
+      int statCatches = 0,
+      int statStumpings = 0,
+      int statRunOutsMissed = 0,
+      int statCatchesMissed = 0,
+      int statStumpingsMissed = 0,
+      int index = 0]) {
     //initialize this by default to 0
     id = index;
     name = statName;
@@ -73,7 +86,7 @@ class StatisticInformation {
     stumpingsMissed = map[columnStatisticsStumpingsMissed];
   }
 
-    // convenience method to create a Map from this Statistics object
+  // convenience method to create a Map from this Statistics object
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{
       columnStatisticsName: name,
@@ -90,7 +103,7 @@ class StatisticInformation {
       columnStatisticsCatchesMissed: catchesMissed,
       columnStatisticsStumpingsMissed: stumpingsMissed,
     };
-    
-      return map;
-    } 
+
+    return map;
+  }
 }
