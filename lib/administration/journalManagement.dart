@@ -35,7 +35,6 @@ class _MyJournalManagementState extends State<JournalManagement> {
 
   DateTime selectedJournalDate;
   DateTime currentDate = DateTime.now();
-  DateTime latestDate;
   //Stores all journal names for the journal name field. Used to prevent duplicate journal names
   List journalNames = [];
   int index;
@@ -57,9 +56,6 @@ class _MyJournalManagementState extends State<JournalManagement> {
     } else {
       selectedJournalDate = DateTime.now();
     }
-    //Allows the date to be a day after the current day
-    latestDate =
-        DateTime(currentDate.year, currentDate.month, currentDate.day + 1);
     nameController = new TextEditingController(text: selectedJournalName);
     detailsController = new TextEditingController(text: selectedJournalDetails);
     //Retrieves a list of all journal names in the database
@@ -157,7 +153,7 @@ class _MyJournalManagementState extends State<JournalManagement> {
         context: context,
         initialDate: selectedJournalDate,
         firstDate: DateTime(2019, 1),
-        lastDate: latestDate);
+        lastDate: DateTime.now());
     if (picked != null && picked != selectedJournalDate) {
       if (this.mounted) {
         setState(() {
