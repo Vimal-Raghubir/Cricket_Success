@@ -110,6 +110,21 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
     viewProgress = viewProgress.toString();
     viewProgress += "%";
     width = widget.width;
+    var descriptionPreview = widget.object.description;
+    var namePreview = widget.object.name;
+
+    // This will generate a preview of the description to allow longer descriptions
+    if (widget.object.description.length > 35) {
+      descriptionPreview = widget.object.description.substring(0, 32);
+      descriptionPreview += "...";
+    }
+
+    // This will generate a preview of the name to allow longer names
+    if (widget.object.name.length > 25) {
+      namePreview = widget.object.name.substring(0, 22);
+      namePreview += "...";
+    }
+
     return Container(
         decoration: BoxDecoration(
             border: Border(bottom: BorderSide(color: Colors.black))),
@@ -133,7 +148,7 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
                       Expanded(
-                        child: Text(widget.object.name,
+                        child: Text(namePreview,
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
@@ -157,7 +172,7 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
                   ),
                 ),
                 SizedBox(height: 15),
-                Text(widget.object.description,
+                Text(descriptionPreview,
                     style: TextStyle(fontSize: 14)
                         .copyWith(fontSize: 12, color: Colors.black)),
                 SizedBox(height: 15),

@@ -78,7 +78,7 @@ class _MyJournalManagementState extends State<JournalManagement> {
       //Starts with the passed in journal as initial value
       controller: nameController,
       keyboardType: TextInputType.text,
-      maxLength: 25,
+      maxLength: 50,
       decoration: InputDecoration(
         labelText: "What would you like to name this journal entry?",
         hintText: "e.g. First training session",
@@ -86,7 +86,7 @@ class _MyJournalManagementState extends State<JournalManagement> {
       textInputAction: TextInputAction.next,
       //Used to validate user input
       validator: (value) {
-        RegExp regex = new RegExp(r"^[a-zA-Z0-9'\s]*$");
+        RegExp regex = new RegExp(r"^[a-zA-Z0-9-.'\s]*$");
         //Checks if the value is empty or else return error message
         if (value.isEmpty) {
           return 'Please enter a value';
@@ -114,22 +114,22 @@ class _MyJournalManagementState extends State<JournalManagement> {
       //Start with passed in journal details
       controller: detailsController,
       keyboardType: TextInputType.multiline,
-      maxLines: 6,
+      maxLines: 14,
       minLines: 1,
-      maxLength: 225,
+      maxLength: 600,
       decoration: InputDecoration(
         labelText: "How was your session? How did you feel?",
       ),
       textInputAction: TextInputAction.next,
       validator: (value) {
-        RegExp regex = new RegExp(r"^[a-zA-Z0-9.'\s]*$");
+        RegExp regex = new RegExp(r"^[a-zA-Z0-9-.'\s]*$");
         var numLines = '\n'.allMatches(value).length + 1;
         if (value.isEmpty) {
           return 'Please enter a value';
         } else if (!regex.hasMatch(value)) {
           return 'Invalid characters detected';
-        } else if (numLines > 6) {
-          return 'You have $numLines lines. Reduce the number of lines to 6.';
+        } else if (numLines > 14) {
+          return 'You have $numLines lines. Reduce the number of lines to 14.';
         } else {
           return null;
         }

@@ -50,10 +50,6 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Header().createHeader(context, 0),
             SizedBox(height: 15),
-            //Text('Welcome to the MyCricket App!\n',
-            //  style: TextStyle(fontStyle: FontStyle.normal, color: Colors.black, fontSize: 22),
-            //  textAlign: TextAlign.center,
-            //),
             RichText(
               textAlign: TextAlign.center,
               text: TextSpan(

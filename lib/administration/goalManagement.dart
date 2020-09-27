@@ -122,7 +122,7 @@ class _MyGoalManagementState extends State<GoalManagement> {
       //Starts with the passed in goal as initial value
       controller: goalController,
       keyboardType: TextInputType.text,
-      maxLength: 25,
+      maxLength: 50,
       decoration: InputDecoration(
         labelText: "What is your goal?",
         hintText: goalHintText,
@@ -130,7 +130,7 @@ class _MyGoalManagementState extends State<GoalManagement> {
       textInputAction: TextInputAction.next,
       //Used to validate user input
       validator: (value) {
-        RegExp regex = new RegExp(r"^[a-zA-Z0-9'\s]*$");
+        RegExp regex = new RegExp(r"^[a-zA-Z0-9-.'\s]*$");
         //Checks if the value is empty or else return error message
         if (value.isEmpty) {
           return 'Please enter a value';
@@ -158,19 +158,21 @@ class _MyGoalManagementState extends State<GoalManagement> {
     return TextFormField(
       //Start with passed in goal description
       controller: descriptionController,
-      keyboardType: TextInputType.text,
-      maxLength: 35,
+      keyboardType: TextInputType.multiline,
+      maxLines: 4,
+      minLines: 1,
+      maxLength: 190,
       decoration: InputDecoration(
         labelText: "Any additional details?",
       ),
       textInputAction: TextInputAction.next,
       validator: (value) {
-        RegExp regex = new RegExp(r"^[a-zA-Z0-9.'\s]*$");
+        RegExp regex = new RegExp(r"^[a-zA-Z0-9-.'\s]*$");
         if (value.isEmpty) {
           return 'Please enter a value';
         } else if (!regex.hasMatch(value)) {
           return 'Invalid characters detected';
-        } else if (value.length > 35) {
+        } else if (value.length > 190) {
           return 'You have too much characters specified in your description';
         } else {
           return null;

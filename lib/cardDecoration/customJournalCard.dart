@@ -44,8 +44,21 @@ class _MyCustomJournalCardState extends State<CustomJournalCard> {
     var journalDate = DateTime.parse(widget.object.date);
     var formatter = new DateFormat('MMMM dd,yyyy');
     String formatted = formatter.format(journalDate);
-
+    var namePreview = widget.object.name;
+    var detailPreview = widget.object.details;
     width = widget.width;
+
+    // This will generate a preview of the name to allow longer names
+    if (widget.object.name.length > 25) {
+      namePreview = widget.object.name.substring(0, 22);
+      namePreview += "...";
+    }
+
+    // This will generate a preview of the details to allow longer details
+    if (widget.object.details.length > 225) {
+      detailPreview = widget.object.details.substring(0, 222);
+      detailPreview += "...";
+    }
     return Container(
         height: 170,
         width: width - 20,
@@ -69,7 +82,7 @@ class _MyCustomJournalCardState extends State<CustomJournalCard> {
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
                       Expanded(
-                        child: Text(widget.object.name,
+                        child: Text(namePreview,
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
@@ -92,7 +105,7 @@ class _MyCustomJournalCardState extends State<CustomJournalCard> {
                   ),
                 ),
                 SizedBox(height: 15),
-                Text(widget.object.details,
+                Text(detailPreview,
                     style: TextStyle(fontSize: 14)
                         .copyWith(fontSize: 12, color: Colors.black)),
                 SizedBox(height: 15),
