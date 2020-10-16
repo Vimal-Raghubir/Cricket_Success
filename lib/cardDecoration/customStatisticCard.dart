@@ -92,6 +92,14 @@ class _MyCustomStatisticCardState extends State<CustomStatisticCard> {
   //Used to create the display for all the journal information itself
   Widget createCustomStatisticCard() {
     width = widget.width;
+    var namePreview = widget.object.name;
+
+    // This will generate a preview of the name to allow longer names
+    if (widget.object.name.length > 25) {
+      namePreview = widget.object.name.substring(0, 22);
+      namePreview += "...";
+    }
+
     return Container(
         height: 170,
         width: width - 20,
@@ -115,7 +123,7 @@ class _MyCustomStatisticCardState extends State<CustomStatisticCard> {
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
                       Expanded(
-                        child: Text(widget.object.name,
+                        child: Text(namePreview,
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,

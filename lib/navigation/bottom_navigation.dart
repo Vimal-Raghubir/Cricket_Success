@@ -1,4 +1,5 @@
 import 'package:cricket_app/main.dart';
+import 'package:cricket_app/pages/settings.dart';
 import 'package:cricket_app/pages/tutorials.dart';
 import 'package:cricket_app/pages/statistics.dart';
 import 'package:cricket_app/pages/goals.dart';
@@ -38,6 +39,11 @@ class BottomNavigation {
           temp,
           MaterialPageRoute(builder: (context) => Statistics()),
         );
+      } else if (index == 5) {
+        Navigator.push(
+          temp,
+          MaterialPageRoute(builder: (context) => Settings()),
+        );
       }
     }
 
@@ -59,24 +65,28 @@ class BottomNavigation {
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
-          title: Text('Home'),
+          label: 'Home',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.star),
-          title: Text('Goals'),
+          label: 'Goals',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.book),
-          title: Text('Journal'),
+          label: 'Journal',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.school),
-          title: Text('Tutorials'),
+          label: 'Tutorials',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.equalizer),
-          title: Text('Statistics'),
+          label: 'Statistics',
         ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: 'Settings',
+        )
       ],
       onTap: _onItemTapped,
     );

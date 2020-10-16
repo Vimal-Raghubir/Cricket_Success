@@ -65,6 +65,8 @@ class CustomGridTile {
         );
       },
       child: Card(
+          //Color of tutorial tile
+          color: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
@@ -85,6 +87,7 @@ class CustomGridTile {
                         children: <Widget>[
                       Text(
                         entry.key,
+                        style: TextStyle(color: Colors.black),
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -119,6 +122,8 @@ class CustomGridTile {
         }
       },
       child: Card(
+          //Color of main page tiles
+          color: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
@@ -139,6 +144,7 @@ class CustomGridTile {
                         children: <Widget>[
                       Text(
                         entry.key,
+                        style: TextStyle(color: Colors.black),
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
                       ),

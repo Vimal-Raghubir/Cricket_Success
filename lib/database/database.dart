@@ -9,7 +9,7 @@ import 'package:cricket_app/classes/journalInformation.dart';
 // singleton class to manage the database
 class DatabaseHelper {
   // This is the actual database filename that is saved in the docs directory.
-  static final _databaseName = "my_statistic_database.db";
+  static final _databaseName = "my_statistic_database2.db";
   // Increment this version when you need to change the schema.
   static final _databaseVersion = 1;
 

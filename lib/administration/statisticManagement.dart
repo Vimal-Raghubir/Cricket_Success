@@ -86,7 +86,7 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
       //Starts with the passed in Statistic as initial value
       controller: statisticController,
       keyboardType: TextInputType.text,
-      maxLength: 20,
+      maxLength: 50,
       decoration: InputDecoration(
         labelText: "What would you like to name this match?",
         hintText: "e.g. Match 3",

@@ -22,7 +22,7 @@ class DonutPieChart extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       title,
-                      style: Theme.of(context).textTheme.body2,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
                     Text(
                       subtitle,

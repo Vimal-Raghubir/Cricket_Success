@@ -1,24 +1,42 @@
 import 'package:cricket_app/navigation/bottom_navigation.dart';
 import 'package:cricket_app/header/header.dart';
 import 'package:cricket_app/classes/quotes.dart';
+import 'package:cricket_app/theme/config.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:cricket_app/layout/gridTile.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() => runApp(MyApp());
+bool theme;
+void main() async {
+  await Hive.initFlutter();
+  box = await Hive.openBox('easyTheme');
+  runApp(Main());
+}
 
-class MyApp extends StatelessWidget {
+class Main extends StatefulWidget {
+  _MainState createState() => _MainState();
+}
+
+class _MainState extends State<Main> {
   // This widget is the root of your application.
+  initState() {
+    super.initState();
+    currentTheme.addListener(() {
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'MyCricketCompanion',
-      theme: ThemeData(
-        // This is the theme of your application.
-        primarySwatch: Colors.lightBlue,
-      ),
+      // This is the theme of your application.
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: currentTheme.currentTheme(),
       home: MyHomePage(title: 'MyCricketCompanion'),
     );
   }

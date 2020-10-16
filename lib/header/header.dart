@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:toast/toast.dart';
 
 class Header {
   double width;
@@ -24,7 +23,8 @@ class Header {
     "Fielding Skills",
     "Mental Training",
     "Physical Training",
-    "Credits"
+    "Credits",
+    "Settings"
   ];
   //Colors corresponding to page titles
   var pageColors = [
@@ -43,7 +43,8 @@ class Header {
     Colors.cyanAccent[700],
     Colors.greenAccent[700],
     Colors.redAccent[700],
-    Colors.tealAccent[700]
+    Colors.tealAccent[700],
+    Colors.grey
   ];
 
 //Widget used to create the styled header for each page

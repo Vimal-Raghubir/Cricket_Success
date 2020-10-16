@@ -21,7 +21,7 @@ class SimpleSeriesLegend extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       title,
-                      style: Theme.of(context).textTheme.body2,
+                      style: Theme.of(context).textTheme.bodyText1,
                     ),
                     Expanded(
                       child: charts.BarChart(seriesList,

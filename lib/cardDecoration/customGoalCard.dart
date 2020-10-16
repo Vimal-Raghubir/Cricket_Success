@@ -127,7 +127,9 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
 
     return Container(
         decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.black))),
+            border: Border(bottom: BorderSide(color: Colors.black)),
+            // color of the goal box
+            color: Colors.white),
         height: 170,
         width: width - 20,
         child: Row(
