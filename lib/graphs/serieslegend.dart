@@ -1,5 +1,6 @@
 /// Bar chart example
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:cricket_app/theme/config.dart';
 import 'package:flutter/material.dart';
 
 class SimpleSeriesLegend extends StatelessWidget {
@@ -27,11 +28,44 @@ class SimpleSeriesLegend extends StatelessWidget {
                       child: charts.BarChart(seriesList,
                           animate: animate,
                           vertical: false,
+                          domainAxis: new charts.OrdinalAxisSpec(
+                              renderSpec: new charts.SmallTickRendererSpec(
+
+                                  // Tick and Label styling here.
+                                  labelStyle: new charts.TextStyleSpec(
+                                      fontSize: 14, // size in Pts.
+                                      color: getChartColor(
+                                          currentColor.currentColor())),
+
+                                  // Change the line colors to match text color.
+                                  lineStyle: new charts.LineStyleSpec(
+                                      color: getChartColor(
+                                          currentColor.currentColor())))),
+
+                          /// Assign a custom style for the measure axis.
+                          primaryMeasureAxis: new charts.NumericAxisSpec(
+                              renderSpec: new charts.GridlineRendererSpec(
+
+                                  // Tick and Label styling here.
+                                  labelStyle: new charts.TextStyleSpec(
+                                      fontSize: 14, // size in Pts.
+                                      color: getChartColor(
+                                          currentColor.currentColor())),
+
+                                  // Change the line colors to match text color.
+                                  lineStyle: new charts.LineStyleSpec(
+                                      color: getChartColor(
+                                          currentColor.currentColor())))),
                           barGroupingType: charts.BarGroupingType.grouped,
                           behaviors: [new charts.SeriesLegend()]),
                     ),
                   ],
                 ))));
+  }
+
+  charts.Color getChartColor(Color color) {
+    return charts.Color(
+        r: color.red, g: color.green, b: color.blue, a: color.alpha);
   }
 }
 

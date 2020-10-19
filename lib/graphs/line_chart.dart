@@ -1,5 +1,6 @@
 /// Line chart example
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:cricket_app/theme/config.dart';
 import 'package:flutter/material.dart';
 
 class SimpleLineChart extends StatelessWidget {
@@ -26,11 +27,31 @@ class SimpleLineChart extends StatelessWidget {
                     Expanded(
                       child: charts.LineChart(seriesList,
                           animate: animate,
+
+                          /// Assign a custom style for the measure axis.
+                          primaryMeasureAxis: new charts.NumericAxisSpec(
+                              renderSpec: new charts.GridlineRendererSpec(
+
+                                  // Tick and Label styling here.
+                                  labelStyle: new charts.TextStyleSpec(
+                                      fontSize: 14, // size in Pts.
+                                      color: getChartColor(
+                                          currentColor.currentColor())),
+
+                                  // Change the line colors to match text color.
+                                  lineStyle: new charts.LineStyleSpec(
+                                      color: getChartColor(
+                                          currentColor.currentColor())))),
                           defaultRenderer: new charts.LineRendererConfig(
                               includePoints: true)),
                     ),
                   ],
                 ))));
+  }
+
+  charts.Color getChartColor(Color color) {
+    return charts.Color(
+        r: color.red, g: color.green, b: color.blue, a: color.alpha);
   }
 }
 
