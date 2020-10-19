@@ -1,4 +1,5 @@
 import 'package:cricket_app/pages/createjournal.dart';
+import 'package:cricket_app/theme/config.dart';
 import 'package:flutter/material.dart';
 import 'package:cricket_app/navigation/bottom_navigation.dart';
 import 'package:cricket_app/header/header.dart';
@@ -58,21 +59,21 @@ class _JournalState extends State<Journal> {
                       text: 'Try to note down',
                       style: TextStyle(
                           fontStyle: FontStyle.normal,
-                          color: Colors.black,
+                          color: currentColor.currentColor(),
                           fontSize: 14),
                     ),
                     TextSpan(
                       text: ' 3 positives  and 1 area of improvement',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: currentColor.currentColor(),
                           fontSize: 14),
                     ),
                     TextSpan(
                       text: ' for each game or practice session.',
                       style: TextStyle(
                           fontStyle: FontStyle.normal,
-                          color: Colors.black,
+                          color: currentColor.currentColor(),
                           fontSize: 14),
                     )
                   ])),

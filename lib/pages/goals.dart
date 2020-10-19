@@ -1,5 +1,6 @@
 import 'package:cricket_app/pages/goalDetails.dart';
 import 'package:cricket_app/pages/createGoal.dart';
+import 'package:cricket_app/theme/config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cricket_app/navigation/bottom_navigation.dart';
@@ -70,7 +71,7 @@ class _GoalState extends State<Goals> {
                         text: 'Process Goals',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            color: currentColor.currentColor(),
                             fontSize: 14),
                       ),
                       TextSpan(
@@ -78,14 +79,14 @@ class _GoalState extends State<Goals> {
                             ' are strategies that help you to achieve success. These include small controllable habits such as',
                         style: TextStyle(
                             fontStyle: FontStyle.normal,
-                            color: Colors.black,
+                            color: currentColor.currentColor(),
                             fontSize: 14),
                       ),
                       TextSpan(
                         text: ' watching the ball. (Usually short term)',
                         style: TextStyle(
                             fontStyle: FontStyle.italic,
-                            color: Colors.black,
+                            color: currentColor.currentColor(),
                             fontSize: 14),
                       )
                     ])),
@@ -97,7 +98,7 @@ class _GoalState extends State<Goals> {
                         text: 'Performance Goals',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            color: currentColor.currentColor(),
                             fontSize: 14),
                       ),
                       TextSpan(
@@ -105,7 +106,7 @@ class _GoalState extends State<Goals> {
                             ' are goals that define a level of performance you desire to reach. These include amibitions such as',
                         style: TextStyle(
                             fontStyle: FontStyle.normal,
-                            color: Colors.black,
+                            color: currentColor.currentColor(),
                             fontSize: 14),
                       ),
                       TextSpan(
@@ -113,7 +114,7 @@ class _GoalState extends State<Goals> {
                             ' scoring a century. (Mix of short and long-term)',
                         style: TextStyle(
                             fontStyle: FontStyle.italic,
-                            color: Colors.black,
+                            color: currentColor.currentColor(),
                             fontSize: 14),
                       )
                     ])),
@@ -125,7 +126,7 @@ class _GoalState extends State<Goals> {
                         text: 'Outcome Goals',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
+                            color: currentColor.currentColor(),
                             fontSize: 14),
                       ),
                       TextSpan(
@@ -133,7 +134,7 @@ class _GoalState extends State<Goals> {
                             ' are goals that define the desired end result. These include large successes such as',
                         style: TextStyle(
                             fontStyle: FontStyle.normal,
-                            color: Colors.black,
+                            color: currentColor.currentColor(),
                             fontSize: 14),
                       ),
                       TextSpan(
@@ -141,7 +142,7 @@ class _GoalState extends State<Goals> {
                             ' winning the player of the tournament award. (Mostly long-term)\n',
                         style: TextStyle(
                             fontStyle: FontStyle.italic,
-                            color: Colors.black,
+                            color: currentColor.currentColor(),
                             fontSize: 14),
                       )
                     ])),

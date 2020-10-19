@@ -1,3 +1,4 @@
+import 'package:cricket_app/theme/config.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -85,7 +86,7 @@ class _MyCustomTutorialCardState extends State<CustomTutorialCard> {
                       Expanded(
                         child: Text(widget.object.name,
                             style: TextStyle(
-                                color: Colors.black,
+                                color: currentColor.currentColor(),
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold)),
                       ),
@@ -94,8 +95,8 @@ class _MyCustomTutorialCardState extends State<CustomTutorialCard> {
                 ),
                 SizedBox(height: 25),
                 Text(widget.object.summary,
-                    style: TextStyle(fontSize: 14)
-                        .copyWith(fontSize: 14, color: Colors.black)),
+                    style: TextStyle(fontSize: 14).copyWith(
+                        fontSize: 14, color: currentColor.currentColor())),
                 SizedBox(height: 15),
                 RichText(
                     text: new TextSpan(

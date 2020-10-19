@@ -1,3 +1,4 @@
+import 'package:cricket_app/theme/config.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -59,13 +60,19 @@ class _MyCustomJournalCardState extends State<CustomJournalCard> {
       detailPreview = widget.object.details.substring(0, 222);
       detailPreview += "...";
     }
+
+    var cardColor = currentColor.currentColor() == Colors.black
+        ? Colors.white
+        : Colors.grey[800];
+
     return Container(
         height: 170,
         width: width - 20,
         decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.black)),
+            border:
+                Border(bottom: BorderSide(color: currentColor.currentColor())),
             // color of the journal box
-            color: Colors.white),
+            color: cardColor),
         child: Row(
           children: <Widget>[
             AspectRatio(
@@ -86,7 +93,7 @@ class _MyCustomJournalCardState extends State<CustomJournalCard> {
                       Expanded(
                         child: Text(namePreview,
                             style: TextStyle(
-                                color: Colors.black,
+                                color: currentColor.currentColor(),
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold)),
                       ),
@@ -99,7 +106,7 @@ class _MyCustomJournalCardState extends State<CustomJournalCard> {
                       ),
                       Text(formatted,
                           style: TextStyle(
-                            color: Colors.grey,
+                            color: currentColor.currentColor(),
                             fontSize: 14,
                           )),
                       SizedBox(width: 10)
@@ -108,8 +115,8 @@ class _MyCustomJournalCardState extends State<CustomJournalCard> {
                 ),
                 SizedBox(height: 15),
                 Text(detailPreview,
-                    style: TextStyle(fontSize: 14)
-                        .copyWith(fontSize: 12, color: Colors.black)),
+                    style: TextStyle(fontSize: 14).copyWith(
+                        fontSize: 12, color: currentColor.currentColor())),
                 SizedBox(height: 15),
               ],
             ))

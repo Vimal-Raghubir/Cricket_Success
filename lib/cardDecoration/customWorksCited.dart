@@ -1,3 +1,4 @@
+import 'package:cricket_app/theme/config.dart';
 import 'package:flutter/material.dart';
 
 class CustomWorksCitedCard extends StatefulWidget {
@@ -21,7 +22,8 @@ class _MyCustomWorksCitedCardState extends State<CustomWorksCitedCard> {
         height: 175,
         width: width - 10,
         decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.black))),
+            border:
+                Border(bottom: BorderSide(color: currentColor.currentColor()))),
         child: Row(
           children: <Widget>[
             Expanded(
@@ -36,7 +38,7 @@ class _MyCustomWorksCitedCardState extends State<CustomWorksCitedCard> {
                       Expanded(
                         child: Text(widget.object.name,
                             style: TextStyle(
-                                color: Colors.black,
+                                color: currentColor.currentColor(),
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold)),
                       ),
@@ -48,7 +50,9 @@ class _MyCustomWorksCitedCardState extends State<CustomWorksCitedCard> {
                     child: Text(widget.object.credits,
                         style:
                             TextStyle(fontSize: 14, fontStyle: FontStyle.italic)
-                                .copyWith(fontSize: 14, color: Colors.black))),
+                                .copyWith(
+                                    fontSize: 14,
+                                    color: currentColor.currentColor()))),
               ],
             ))
           ],

@@ -1,3 +1,4 @@
+import 'package:cricket_app/theme/config.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -125,11 +126,16 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
       namePreview += "...";
     }
 
+    var cardColor = currentColor.currentColor() == Colors.black
+        ? Colors.white
+        : Colors.grey[800];
+
     return Container(
         decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.black)),
+            border:
+                Border(bottom: BorderSide(color: currentColor.currentColor())),
             // color of the goal box
-            color: Colors.white),
+            color: cardColor),
         height: 170,
         width: width - 20,
         child: Row(
@@ -152,7 +158,7 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
                       Expanded(
                         child: Text(namePreview,
                             style: TextStyle(
-                                color: Colors.black,
+                                color: currentColor.currentColor(),
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold)),
                       ),
@@ -166,7 +172,7 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
                       ),
                       Text(widget.object.length.toString() + " days",
                           style: TextStyle(
-                            color: Colors.grey,
+                            color: currentColor.currentColor(),
                             fontSize: 14,
                           )),
                       SizedBox(width: 10)
@@ -175,14 +181,14 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
                 ),
                 SizedBox(height: 15),
                 Text(descriptionPreview,
-                    style: TextStyle(fontSize: 14)
-                        .copyWith(fontSize: 12, color: Colors.black)),
+                    style: TextStyle(fontSize: 14).copyWith(
+                        fontSize: 12, color: currentColor.currentColor())),
                 SizedBox(height: 15),
 
                 //Putting progress text field
                 Text("Current Progress",
-                    style: TextStyle(fontSize: 14)
-                        .copyWith(fontSize: 12, color: Colors.black)),
+                    style: TextStyle(fontSize: 14).copyWith(
+                        fontSize: 12, color: currentColor.currentColor())),
                 SizedBox(height: 5),
 
                 //Progress bar

@@ -1,3 +1,4 @@
+import 'package:cricket_app/theme/config.dart';
 import 'package:flutter/material.dart';
 
 class CustomStatisticCard extends StatefulWidget {
@@ -100,11 +101,16 @@ class _MyCustomStatisticCardState extends State<CustomStatisticCard> {
       namePreview += "...";
     }
 
+    var cardColor = currentColor.currentColor() == Colors.black
+        ? Colors.white
+        : Colors.grey[800];
+
     return Container(
         height: 170,
         width: width - 20,
         decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.black))),
+            border:
+                Border(bottom: BorderSide(color: currentColor.currentColor()))),
         child: Row(
           children: <Widget>[
             AspectRatio(
@@ -125,7 +131,7 @@ class _MyCustomStatisticCardState extends State<CustomStatisticCard> {
                       Expanded(
                         child: Text(namePreview,
                             style: TextStyle(
-                                color: Colors.black,
+                                color: currentColor.currentColor(),
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold)),
                       ),
@@ -142,8 +148,8 @@ class _MyCustomStatisticCardState extends State<CustomStatisticCard> {
                 SizedBox(height: 15),
                 Expanded(
                   child: Text(generateCardMessage(),
-                      style: TextStyle(fontSize: 14)
-                          .copyWith(fontSize: 14, color: Colors.black)),
+                      style: TextStyle(fontSize: 14).copyWith(
+                          fontSize: 14, color: currentColor.currentColor())),
                 ),
                 SizedBox(height: 15),
               ],

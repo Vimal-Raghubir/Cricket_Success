@@ -11,7 +11,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 bool theme;
 void main() async {
   await Hive.initFlutter();
-  box = await Hive.openBox('easyTheme');
+  themeBox = await Hive.openBox('easyTheme');
+  fontBox = await Hive.openBox('Fonts');
   runApp(Main());
 }
 
@@ -24,6 +25,10 @@ class _MainState extends State<Main> {
   initState() {
     super.initState();
     currentTheme.addListener(() {
+      setState(() {});
+    });
+
+    currentColor.addListener(() {
       setState(() {});
     });
   }
@@ -74,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   text: quotes[index],
                   style: TextStyle(
                       fontStyle: FontStyle.italic,
-                      color: Colors.black,
+                      color: currentColor.currentColor(),
                       fontSize: 15)),
             ),
             SizedBox(height: 20),
@@ -82,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
               'Please select a page below that you would like to navigate to!\n',
               style: TextStyle(
                   fontStyle: FontStyle.normal,
-                  color: Colors.black,
+                  color: currentColor.currentColor(),
                   fontSize: 16),
               textAlign: TextAlign.center,
             ),

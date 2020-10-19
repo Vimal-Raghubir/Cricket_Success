@@ -36,7 +36,8 @@ class _SettingsState extends State<Settings> {
             onChanged: (toggle) {
               setState(() {
                 if (_light != toggle) {
-                  currentTheme.switchTheme();
+                  currentTheme.switchTheme(); // Used to change the theme
+                  currentColor.switchColor(); // Used to change the font color
                   _light = toggle;
                 }
               });
