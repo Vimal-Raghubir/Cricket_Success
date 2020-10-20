@@ -52,6 +52,10 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
   bool bowling = false;
   bool fielding = false;
 
+  //Used to allow tabbing to next input field
+  final focus = FocusNode();
+  final focus2 = FocusNode();
+
   //Key used to validate form input
   final _statisticFormKey = GlobalKey<FormState>();
 
@@ -114,6 +118,10 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
         }
       },
       onSaved: (value) => selectedStatisticName = value,
+      //This will allow the user to click next and focus the next input field
+      onFieldSubmitted: (v) {
+        FocusScope.of(context).requestFocus(focus);
+      },
     );
   }
 
@@ -130,6 +138,7 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
 
   Widget runsSlider(int minimum, int maximum, int divisions) {
     return Slider(
+      focusNode: focus,
       value: selectedStatisticRuns.toDouble(),
       onChanged: (newRating) {
         if (this.mounted) {

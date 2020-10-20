@@ -39,6 +39,10 @@ class _MyJournalManagementState extends State<JournalManagement> {
   List journalNames = [];
   int index;
 
+  //Used to allow tabbing to next input field
+  final focus = FocusNode();
+  final focus2 = FocusNode();
+
   //Key used to validate form input
   final _journalFormKey = GlobalKey<FormState>();
 
@@ -106,11 +110,16 @@ class _MyJournalManagementState extends State<JournalManagement> {
         }
       },
       onSaved: (value) => selectedJournalName = value,
+      //This will allow the user to click next and focus the next input field
+      onFieldSubmitted: (v) {
+        FocusScope.of(context).requestFocus(focus);
+      },
     );
   }
 
   Widget createDetailField() {
     return TextFormField(
+      focusNode: focus,
       //Start with passed in journal details
       controller: detailsController,
       keyboardType: TextInputType.multiline,
@@ -135,6 +144,10 @@ class _MyJournalManagementState extends State<JournalManagement> {
         }
       },
       onSaved: (value) => selectedJournalDetails = value,
+      //This will allow the user to click next and focus the next input field
+      onFieldSubmitted: (v) {
+        FocusScope.of(context).requestFocus(focus2);
+      },
     );
   }
 
@@ -165,6 +178,7 @@ class _MyJournalManagementState extends State<JournalManagement> {
 
   Widget dateButton(BuildContext context) {
     return OutlineButton(
+      focusNode: focus2,
       onPressed: () => _selectDate(context),
       child: Text(dateDisplay),
     );

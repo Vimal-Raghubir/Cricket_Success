@@ -1,3 +1,4 @@
+import 'package:cricket_app/theme/config.dart';
 import 'package:flutter/material.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/classes/goalInformation.dart';
@@ -32,6 +33,10 @@ class _MyGoalManagementState extends State<GoalManagement> {
   var selectedGoalName;
   var selectedGoalDescription;
   var currentProgress;
+
+  //Used to allow tabbing to next input field
+  final focus = FocusNode();
+  final focus2 = FocusNode();
 
   var goalHintText;
   //Stores all goal names for the goal name field. Used to prevent duplicate goal names
@@ -150,12 +155,17 @@ class _MyGoalManagementState extends State<GoalManagement> {
         }
       },
       onSaved: (value) => selectedGoalName = value,
+      //This will allow the user to click next and focus the next input field
+      onFieldSubmitted: (v) {
+        FocusScope.of(context).requestFocus(focus);
+      },
     );
   }
 
 //This is causing setState() called after dispose(): BaseChartState<dynamic>#685de(lifecycle state: defunct, not mounted, tickers: tracking 0 tickers) errors
   Widget createDescriptionField() {
     return TextFormField(
+      focusNode: focus,
       //Start with passed in goal description
       controller: descriptionController,
       keyboardType: TextInputType.multiline,
@@ -179,6 +189,10 @@ class _MyGoalManagementState extends State<GoalManagement> {
         }
       },
       onSaved: (value) => selectedGoalDescription = value,
+      //This will allow the user to click next and focus the next input field
+      onFieldSubmitted: (v) {
+        FocusScope.of(context).requestFocus(focus2);
+      },
     );
   }
 
@@ -194,6 +208,7 @@ class _MyGoalManagementState extends State<GoalManagement> {
 
   Widget dayPicker() {
     return Slider(
+      focusNode: focus2,
       value: selectedGoalLength,
       onChanged: (newRating) {
         if (this.mounted) {
@@ -468,11 +483,11 @@ class _NumberCountDemoState extends State<NumberCountDemo> {
                 onPressed: minus,
                 child: new Icon(
                     const IconData(0xe15b, fontFamily: 'MaterialIcons'),
-                    color: Colors.black)),
+                    color: currentColor.currentColor())),
             new Text('$_n', style: new TextStyle(fontSize: 28.0)),
             new FlatButton(
                 onPressed: add,
-                child: new Icon(Icons.add, color: Colors.black)),
+                child: new Icon(Icons.add, color: currentColor.currentColor())),
           ],
         ),
       ),
