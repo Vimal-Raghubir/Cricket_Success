@@ -2,6 +2,7 @@ import 'package:cricket_app/theme/config.dart';
 import 'package:flutter/material.dart';
 import 'package:cricket_app/database/database.dart';
 import 'package:cricket_app/classes/goalInformation.dart';
+import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
 
 GlobalKey<_NumberCountDemoState> key = new GlobalKey<_NumberCountDemoState>();
@@ -26,6 +27,7 @@ class GoalManagement extends StatefulWidget {
 class _MyGoalManagementState extends State<GoalManagement> {
   TextEditingController goalController;
   TextEditingController descriptionController;
+  TextEditingController dateController;
   var selectedGoal;
   var selectedGoalIndex;
   var selectedGoalLength;
@@ -58,11 +60,13 @@ class _MyGoalManagementState extends State<GoalManagement> {
     //Extract passed in goal and initializes dynamic variables with their values. Starting point
     selectedGoal = widget.passedGoal.type;
     selectedGoalIndex = widget.passedGoal.typeIndex;
-    selectedGoalLength = widget.passedGoal.length.toDouble();
+    selectedGoalLength = widget.passedGoal.length;
     selectedGoalName = widget.passedGoal.name;
     selectedGoalDescription = widget.passedGoal.description;
     currentProgress = widget.passedGoal.currentProgress;
     goalController = new TextEditingController(text: selectedGoalName);
+    dateController =
+        new TextEditingController(text: selectedGoalLength.toString());
     descriptionController =
         new TextEditingController(text: selectedGoalDescription);
     goalHintText = "e.g. Watch the ball";
@@ -206,9 +210,40 @@ class _MyGoalManagementState extends State<GoalManagement> {
     );
   }
 
+  Widget dateEntry() {
+    return TextFormField(
+      focusNode: focus2,
+      controller: dateController,
+      decoration: new InputDecoration(
+          labelText: "How many days before you achieve your goal?"),
+      keyboardType: TextInputType.number,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly
+      ],
+      // Only numbers can be entered
+      validator: (value) {
+        RegExp regex = new RegExp(r"^[0-9\s]*$");
+        if (value.isEmpty) {
+          return 'Please enter a value';
+        } else if (!regex.hasMatch(value)) {
+          return 'Invalid characters detected';
+        } else if (int.parse(value) < 1 || int.parse(value) > 366) {
+          return 'Needs to be in the range of 1 and 365';
+        } else if (int.parse(value) < currentProgress) {
+          return 'Selected value is less than or equal to the progress';
+        } else {
+          return null;
+        }
+      },
+      onSaved: (value) => selectedGoalLength = int.parse(value),
+      onFieldSubmitted: (v) {
+        FocusScope.of(context).requestFocus();
+      },
+    );
+  }
+
   Widget dayPicker() {
     return Slider(
-      focusNode: focus2,
       value: selectedGoalLength,
       onChanged: (newRating) {
         if (this.mounted) {
@@ -269,7 +304,7 @@ class _MyGoalManagementState extends State<GoalManagement> {
               _updateGoal(newGoal, index);
 
               //If the current progress equals length then delete the goal and print completion message
-              if (newGoal.currentProgress == newGoal.length) {
+              if (newGoal.currentProgress >= newGoal.length) {
                 _deleteGoal(widget.passedGoal.id);
                 Navigator.pop(context);
                 Toast.show(
@@ -342,18 +377,20 @@ class _MyGoalManagementState extends State<GoalManagement> {
 
 //This widget is responsible for creating all the contents of the form
   Widget newPage() {
-    return Column(
+    return SingleChildScrollView(
+        child: Column(
       children: <Widget>[
         createDropDownHeader("What kind of goal would you like to create?"),
         createDropdownMenu(),
         createGoalNameField(),
         createDescriptionField(),
-        dayPickerHeader(),
+        //dayPickerHeader(),
         //This is a slider used to handle the number of days for a goal
-        dayPicker(),
+        //dayPicker(),
+        dateEntry(),
         submitButton("Submit"),
       ],
-    );
+    ));
   }
 
 //This widget is responsible for creating all the contents of the form
@@ -364,9 +401,10 @@ class _MyGoalManagementState extends State<GoalManagement> {
         createDropdownMenu(),
         createGoalNameField(),
         createDescriptionField(),
-        dayPickerHeader(),
+        //dayPickerHeader(),
         //This is a slider used to handle the number of days for a goal
-        dayPicker(),
+        //dayPicker(),
+        dateEntry(),
         //Header for progress portion
         progressHeader(),
         //Progress tracker
@@ -407,6 +445,7 @@ class _MyGoalManagementState extends State<GoalManagement> {
   //Function to insert a goal into the database
   _save(GoalInformation goal) async {
     DatabaseHelper helper = DatabaseHelper.instance;
+    print(goal.length);
     int id = await helper.insertGoal(goal);
     //print('inserted row: $id');
   }

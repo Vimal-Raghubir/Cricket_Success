@@ -188,7 +188,7 @@ class DatabaseHelper {
           maps[i][columnType],
           maps[i][columnTypeIndex],
           maps[i][columnDescription],
-          maps[i][columnLength].toDouble(),
+          maps[i][columnLength],
           maps[i][columnProgress],
           maps[i][columnGoalId]);
     });

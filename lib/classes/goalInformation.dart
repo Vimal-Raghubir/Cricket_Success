@@ -25,7 +25,7 @@ class GoalInformation {
       String goalType = "Process Goal",
       int goalTypeIndex = 0,
       String goalDescription = "",
-      double goalLength = 1.0,
+      int goalLength = 1,
       int completedDays = 0,
       int index = 0]) {
     //initialize this by default to 0
@@ -34,7 +34,7 @@ class GoalInformation {
     type = goalType;
     typeIndex = goalTypeIndex;
     description = goalDescription;
-    length = goalLength.toInt();
+    length = goalLength;
     currentProgress = completedDays;
   }
 
@@ -51,13 +51,6 @@ class GoalInformation {
   //Convenience function set this value
   void setId(int index) {
     id = index;
-  }
-
-  //Function to updateProgress by 1 day
-  double updateProgress() {
-    currentProgress += 1;
-    var progress = (currentProgress / length);
-    return num.parse(progress.toStringAsFixed(2));
   }
 
   //Retrieve progress percentage fixed to 2 decimal points

@@ -107,8 +107,9 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
   Widget createCustomGoalCard() {
     //Get the progress stored in the object and then multiply by 100 for viewing
     progress = widget.object.getProgress();
-    viewProgress = (progress * 100).round();
-    viewProgress = viewProgress.toString();
+    progress = progress > 1.0 ? 1.0 : progress;
+    viewProgress = (progress * 100);
+    viewProgress = viewProgress.round().toString();
     viewProgress += "%";
     width = widget.width;
     var descriptionPreview = widget.object.description;
@@ -196,7 +197,7 @@ class _MyCustomGoalCardState extends State<CustomGoalCard> {
                   width: width - 120,
                   lineHeight: 15.0,
                   progressColor: Colors.blue,
-                  percent: progress,
+                  percent: progress.toDouble(),
                   center: Text("$viewProgress"),
                   animation: true,
                 ),
