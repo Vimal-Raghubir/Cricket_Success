@@ -200,16 +200,6 @@ class _MyGoalManagementState extends State<GoalManagement> {
     );
   }
 
-  Widget dayPickerHeader() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Text(
-        'How many days do you think before you can achieve this goal?',
-        softWrap: true,
-      ),
-    );
-  }
-
   Widget dateEntry() {
     return TextFormField(
       focusNode: focus2,
@@ -239,25 +229,6 @@ class _MyGoalManagementState extends State<GoalManagement> {
       onFieldSubmitted: (v) {
         FocusScope.of(context).requestFocus();
       },
-    );
-  }
-
-  Widget dayPicker() {
-    return Slider(
-      value: selectedGoalLength,
-      onChanged: (newRating) {
-        if (this.mounted) {
-          setState(() {
-            selectedGoalLength = newRating;
-            goalLengthLabel = selectedGoalLength.round();
-          });
-        }
-      },
-      min: currentProgress == 0 ? 1.0 : currentProgress.toDouble(),
-      max: 365.0,
-      //Divisions help to show a label above the slider
-      divisions: 364,
-      label: "$goalLengthLabel",
     );
   }
 
@@ -401,9 +372,6 @@ class _MyGoalManagementState extends State<GoalManagement> {
         createDropdownMenu(),
         createGoalNameField(),
         createDescriptionField(),
-        //dayPickerHeader(),
-        //This is a slider used to handle the number of days for a goal
-        //dayPicker(),
         dateEntry(),
         //Header for progress portion
         progressHeader(),

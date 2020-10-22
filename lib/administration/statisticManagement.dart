@@ -24,12 +24,8 @@ class StatisticManagement extends StatefulWidget {
 }
 
 class _MyStatisticManagementState extends State<StatisticManagement> {
-  var selectedStatisticName;
-  var selectedStatisticRuns;
-  var selectedStatisticBallsFaced;
   var selectedStatisticNotOut;
   var selectedStatisticWickets;
-  var selectedStatisticOvers;
 
   var selectedStatisticRunsConceeded;
   var selectedStatisticRunOuts;
@@ -44,6 +40,10 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
   var overError = false;
   var runsConceededError = false;
   TextEditingController statisticController;
+  TextEditingController runsController;
+  TextEditingController ballsFacedController;
+  TextEditingController overController;
+  TextEditingController runsConceededController;
   //Stores all Statistic names for the Statistic name field. Used to prevent duplicate Statistic names
   List statisticNames = [];
   int index;
@@ -55,6 +55,8 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
   //Used to allow tabbing to next input field
   final focus = FocusNode();
   final focus2 = FocusNode();
+  final focus3 = FocusNode();
+  final focus4 = FocusNode();
 
   //Key used to validate form input
   final _statisticFormKey = GlobalKey<FormState>();
@@ -64,13 +66,8 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
   initState() {
     super.initState();
     //Extract passed in Statistic and initializes dynamic variables with their values. Starting point
-    selectedStatisticName = widget.passedStatistic.name;
-    selectedStatisticRuns = widget.passedStatistic.runs;
-    selectedStatisticBallsFaced = widget.passedStatistic.ballsFaced;
     selectedStatisticNotOut = widget.passedStatistic.notOut;
     selectedStatisticWickets = widget.passedStatistic.wickets;
-
-    selectedStatisticOvers = widget.passedStatistic.overs;
     selectedStatisticRunsConceeded = widget.passedStatistic.runsConceeded;
     selectedStatisticRunOuts = widget.passedStatistic.runOuts;
     selectedStatisticCatches = widget.passedStatistic.catches;
@@ -79,8 +76,22 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
 
     selectedStatisticCatchesMissed = widget.passedStatistic.catchesMissed;
     selectedStatisticStumpingsMissed = widget.passedStatistic.stumpingsMissed;
+
+    // Setting up the controllers for the input fields
     statisticController =
-        new TextEditingController(text: selectedStatisticName);
+        new TextEditingController(text: widget.passedStatistic.name);
+
+    runsController =
+        new TextEditingController(text: widget.passedStatistic.runs.toString());
+
+    ballsFacedController = new TextEditingController(
+        text: widget.passedStatistic.ballsFaced.toString());
+
+    overController = new TextEditingController(
+        text: widget.passedStatistic.overs.toString());
+
+    runsConceededController = new TextEditingController(
+        text: selectedStatisticRunsConceeded.toString());
     //Retrieves a list of all Statisticnames in the database
     _getStatisticNames();
   }
@@ -117,7 +128,6 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
           return null;
         }
       },
-      onSaved: (value) => selectedStatisticName = value,
       //This will allow the user to click next and focus the next input field
       onFieldSubmitted: (v) {
         FocusScope.of(context).requestFocus(focus);
@@ -136,40 +146,64 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
     );
   }
 
-  Widget runsSlider(int minimum, int maximum, int divisions) {
-    return Slider(
+  Widget runsEntry() {
+    return TextFormField(
       focusNode: focus,
-      value: selectedStatisticRuns.toDouble(),
-      onChanged: (newRating) {
-        if (this.mounted) {
-          setState(() {
-            selectedStatisticRuns = newRating.toInt();
-          });
+      controller: runsController,
+      decoration:
+          new InputDecoration(labelText: "How much runs did you score?"),
+      keyboardType: TextInputType.number,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly
+      ],
+      // Only numbers can be entered
+      validator: (value) {
+        RegExp regex = new RegExp(r"^[0-9\s]*$");
+        if (value.isEmpty) {
+          return 'Please enter a value';
+        } else if (!regex.hasMatch(value)) {
+          return 'Invalid characters detected';
+        } else if (int.parse(value) < 0 || int.parse(value) > 400) {
+          return 'Needs to be in the range of 0 and 401';
+        } else {
+          return null;
         }
       },
-      min: minimum.toDouble(),
-      max: maximum.toDouble(),
-      //Divisions help to show a label above the slider
-      divisions: divisions,
-      label: "$selectedStatisticRuns",
+      onFieldSubmitted: (v) {
+        FocusScope.of(context).requestFocus(focus2);
+      },
     );
   }
 
-  Widget ballsFacedSlider(int minimum, int maximum, int divisions) {
-    return Slider(
-      value: selectedStatisticBallsFaced.toDouble(),
-      onChanged: (newRating) {
-        if (this.mounted) {
-          setState(() {
-            selectedStatisticBallsFaced = newRating.toInt();
-          });
+  Widget ballsEntry() {
+    return TextFormField(
+      focusNode: focus2,
+      controller: ballsFacedController,
+      decoration:
+          new InputDecoration(labelText: "How much balls did you face?"),
+      keyboardType: TextInputType.number,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly
+      ],
+      // Only numbers can be entered
+      validator: (value) {
+        RegExp regex = new RegExp(r"^[0-9\s]*$");
+        if (value.isEmpty) {
+          return 'Please enter a value';
+        } else if (!regex.hasMatch(value)) {
+          return 'Invalid characters detected';
+        } else if (int.parse(value) < 0 || int.parse(value) > 601) {
+          return 'Needs to be in the range of 0 and 600';
+        } else if (int.parse(value) == 0 &&
+            int.parse(runsController.text) != 0) {
+          return 'You did not set the number of balls faced';
+        } else {
+          return null;
         }
       },
-      min: minimum.toDouble(),
-      max: maximum.toDouble(),
-      //Divisions help to show a label above the slider
-      divisions: divisions,
-      label: "$selectedStatisticBallsFaced",
+      onFieldSubmitted: (v) {
+        FocusScope.of(context).requestFocus();
+      },
     );
   }
 
@@ -205,26 +239,41 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
     );
   }
 
-  Widget overSlider(int minimum, int maximum, int divisions) {
-    return Slider(
-      value: selectedStatisticOvers.toDouble(),
-      onChanged: (newRating) {
-        if (this.mounted) {
-          setState(() {
-            selectedStatisticOvers = newRating.toInt();
-          });
+  Widget oversEntry() {
+    return TextFormField(
+      controller: overController,
+      decoration:
+          new InputDecoration(labelText: "How much overs did you bowl?"),
+      keyboardType: TextInputType.number,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly
+      ],
+      // Only numbers can be entered
+      validator: (value) {
+        RegExp regex = new RegExp(r"^[0-9\s]*$");
+        if (value.isEmpty) {
+          return 'Please enter a value';
+        } else if (!regex.hasMatch(value)) {
+          return 'Invalid characters detected';
+        } else if (int.parse(value) < 0 || int.parse(value) > 50) {
+          return 'Needs to be in the range of 0 and 50';
+        } else if (int.parse(value) == 0 &&
+                int.parse(runsConceededController.text) != 0 ||
+            int.parse(value) == 0 && selectedStatisticWickets != 0) {
+          return 'You did not set the number of overs you bowled';
+        } else {
+          return null;
         }
       },
-      min: minimum.toDouble(),
-      max: maximum.toDouble(),
-      //Divisions help to show a label above the slider
-      divisions: divisions,
-      label: "$selectedStatisticOvers",
+      onFieldSubmitted: (v) {
+        FocusScope.of(context).requestFocus(focus3);
+      },
     );
   }
 
   Widget wicketSlider(int minimum, int maximum, int divisions) {
     return Slider(
+      focusNode: focus4,
       value: selectedStatisticWickets.toDouble(),
       onChanged: (newRating) {
         if (this.mounted) {
@@ -241,21 +290,32 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
     );
   }
 
-  Widget runsConceededSlider(int minimum, int maximum, int divisions) {
-    return Slider(
-      value: selectedStatisticRunsConceeded.toDouble(),
-      onChanged: (newRating) {
-        if (this.mounted) {
-          setState(() {
-            selectedStatisticRunsConceeded = newRating.toInt();
-          });
+  Widget runsConceededEntry() {
+    return TextFormField(
+      focusNode: focus3,
+      controller: runsConceededController,
+      decoration:
+          new InputDecoration(labelText: "How much runs did you conceed?"),
+      keyboardType: TextInputType.number,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.digitsOnly
+      ],
+      // Only numbers can be entered
+      validator: (value) {
+        RegExp regex = new RegExp(r"^[0-9\s]*$");
+        if (value.isEmpty) {
+          return 'Please enter a value';
+        } else if (!regex.hasMatch(value)) {
+          return 'Invalid characters detected';
+        } else if (int.parse(value) < 0 || int.parse(value) > 600) {
+          return 'Needs to be in the range of 0 and 600';
+        } else {
+          return null;
         }
       },
-      min: minimum.toDouble(),
-      max: maximum.toDouble(),
-      //Divisions help to show a label above the slider
-      divisions: divisions,
-      label: "$selectedStatisticRunsConceeded",
+      onFieldSubmitted: (v) {
+        FocusScope.of(context).requestFocus(focus4);
+      },
     );
   }
 
@@ -367,80 +427,23 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
     );
   }
 
-  Widget showBallError() {
-    return Visibility(
-      child: Text("You forgot to set the number of balls you faced!",
-          style: TextStyle(color: Colors.red)),
-      visible: ballError,
-    );
-  }
-
-  Widget showOverError() {
-    return Visibility(
-      child: Text("You forgot to set the number of overs you bowled!",
-          style: TextStyle(color: Colors.red)),
-      visible: overError,
-    );
-  }
-
-  Widget showRunsConceededError() {
-    return Visibility(
-      child: Text("You forgot to set the number of runs conceeded!",
-          style: TextStyle(color: Colors.red)),
-      visible: runsConceededError,
-    );
-  }
-
-  bool validateBowling() {
-    bool check = true;
-    if (selectedStatisticOvers == 0 &&
-        selectedStatisticRunsConceeded == 0 &&
-        selectedStatisticWickets != 0) {
-      check = false;
-      overError = true;
-      runsConceededError = true;
-    } else if (selectedStatisticOvers == 0 &&
-        selectedStatisticRunsConceeded != 0) {
-      check = false;
-      overError = true;
-      runsConceededError = false;
-    } else {
-      overError = false;
-      runsConceededError = false;
-    }
-    return check;
-  }
-
-  bool validateBatting() {
-    bool check = true;
-    if (selectedStatisticBallsFaced == 0 && selectedStatisticRuns != 0) {
-      check = false;
-      ballError = true;
-    } else {
-      ballError = false;
-    }
-    return check;
-  }
-
   Widget submitButton(String buttonText) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: RaisedButton(
         onPressed: () {
           // Validate returns true if the form is valid
-          if (_statisticFormKey.currentState.validate() &&
-              validateBowling() &&
-              validateBatting()) {
+          if (_statisticFormKey.currentState.validate()) {
             _statisticFormKey.currentState.save();
             //Create a new statistic object with the parameters
             StatisticInformation newStatistic = new StatisticInformation(
-                selectedStatisticName,
-                selectedStatisticRuns,
-                selectedStatisticBallsFaced,
+                statisticController.text,
+                int.parse(runsController.text),
+                int.parse(ballsFacedController.text),
                 selectedStatisticNotOut,
                 selectedStatisticWickets,
-                selectedStatisticOvers,
-                selectedStatisticRunsConceeded,
+                int.parse(overController.text),
+                int.parse(runsConceededController.text),
                 selectedStatisticRunOuts,
                 selectedStatisticCatches,
                 selectedStatisticStumpings,
@@ -450,13 +453,11 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
             if (buttonText == "Submit") {
               //Insert the newStatistic into the database
               _save(newStatistic);
-              //Calls the function in the Statistics.dart class to refresh the Statistics page with setState. This is used to fix cards not appearing on the Statistics page after submitting this form
-              //widget.notifyParent();
               //Navigates back to the previous page and in this case the Statistics page
               Navigator.pop(context);
               //Toast message to indicate the Statistic was created
               Toast.show("Successfully created your Match Details!", context,
-                  duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+                  duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
             } else if (buttonText == "Update") {
               //Retrieve the index of the passed in Statistic
               index = widget.notifyParent();
@@ -498,11 +499,8 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
     return ExpansionTile(
       title: Center(child: Text("Did you bat during this match?")),
       children: <Widget>[
-        createTextHeader("How much runs did you score?"),
-        runsSlider(0, 200, 200),
-        createTextHeader("How many balls did you face?"),
-        ballsFacedSlider(0, 300, 300),
-        showBallError(),
+        runsEntry(),
+        ballsEntry(),
         createTextHeader("Were you not out in this innings?"),
         checkNotOut()
       ],
@@ -520,14 +518,10 @@ class _MyStatisticManagementState extends State<StatisticManagement> {
         child: ExpansionTile(
           title: Center(child: Text("Did you bowl during this match?")),
           children: <Widget>[
-            createTextHeader("How many overs did you bowl?"),
-            overSlider(0, 50, 50),
-            showOverError(),
+            oversEntry(),
+            runsConceededEntry(),
             createTextHeader("How many wickets did you take?"),
             wicketSlider(0, 10, 10),
-            createTextHeader("How many runs did you conceed?"),
-            runsConceededSlider(0, 200, 200),
-            showRunsConceededError(),
           ],
         ));
   }
