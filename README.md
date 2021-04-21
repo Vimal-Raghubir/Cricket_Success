@@ -1,16 +1,9 @@
-# cricket_app
+# My Cricket Companion
 
-A new Flutter project.
+My Cricket Companion is a mobile application that helps a cricketer improve their performance. How does it do this? It does this by targeting the mental side of the game.
 
-## Getting Started
+My Cricket Companion supports the creation and tracking of a cricketer's goals, creation of daily journals, tutorials curated from online cricket coaches, and a statistics section that allows a player to analyze their performance.
 
-This project is a starting point for a Flutter application.
+My Cricket Companion aims to be a central location for a cricketer to record all of their performances, strengths, weaknesses, goals, and areas of improvement.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Having all of this information written down allows the cricketer to focus on actually playing the game with a clearer purpose!
