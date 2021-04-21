@@ -7,3 +7,6 @@ My Cricket Companion supports the creation and tracking of a cricketer's goals, 
 My Cricket Companion aims to be a central location for a cricketer to record all of their performances, strengths, weaknesses, goals, and areas of improvement.
 
 Having all of this information written down allows the cricketer to focus on actually playing the game with a clearer purpose!
+
+![My Cricket Companion](https://github.com/Vimal-Raghubir/Cricket_Success/blob/master/playstore.PNG)
+
